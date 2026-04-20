@@ -50,3 +50,18 @@ def iniciar_sesion(nombre: str, id_alumno: str = ""):
         "intentos": alumno.total_intentos(),
         "precision": alumno.precision_global(),
     })
+
+@app.get("/api/alumno/{id_alumno}")
+def obtener_alumno(id_alumno: str):
+    """Devuelve el perfil completo de un alumno."""
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado"})
+    alumno = Alumno(**datos)
+    return JSONResponse(content={
+        "id_alumno": alumno.id_alumno,
+        "nombre": alumno.nombre,
+        "intentos": alumno.total_intentos(),
+        "correctas": alumno.total_correctas(),
+        "precision": alumno.precision_global(),
+    })
