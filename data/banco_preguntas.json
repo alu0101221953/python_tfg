@@ -460,6 +460,806 @@
       "error_asociado": "3.3",
       "explicacion": "float() convierte el string de input a número decimal para poder operar con él.",
       "pista": "¿Qué función convierte a número decimal?"
+    },
+    {
+      "id": "cat4_basico_01",
+      "categoria": 4,
+      "subcategoria": "4.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 3\nif x > 5:\n    print('mayor')\nelse:\n    print('menor')",
+      "opciones": [
+        "mayor",
+        "menor",
+        "mayor\nmenor",
+        "nada"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "4.1",
+      "explicacion": "x es 3, que no es mayor que 5, así que se ejecuta el else.",
+      "pista": "¿Es 3 mayor que 5?"
+    },
+    {
+      "id": "cat4_basico_02",
+      "categoria": 4,
+      "subcategoria": "4.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "nota = 5\nif nota >= 5:\n    print('aprobado')\nif nota >= 7:\n    print('notable')",
+      "opciones": [
+        "aprobado",
+        "notable",
+        "aprobado\nnotable",
+        "nada"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "4.1",
+      "explicacion": "nota >= 5 es True (imprime aprobado), nota >= 7 es False (no imprime notable).",
+      "pista": "¿Cuáles de las condiciones son True?"
+    },
+    {
+      "id": "cat4_basico_03",
+      "categoria": 4,
+      "subcategoria": "4.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 7\nif x < 5:\n    print('pequeño')\nelif x < 10:\n    print('mediano')\nelse:\n    print('grande')",
+      "opciones": [
+        "pequeño",
+        "mediano",
+        "grande",
+        "pequeño\nmediano"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "4.2",
+      "explicacion": "x < 5 es False, x < 10 es True, así que imprime 'mediano'.",
+      "pista": "¿Cuál es la primera condición que resulta True?"
+    },
+    {
+      "id": "cat4_basico_04",
+      "categoria": 4,
+      "subcategoria": "4.3",
+      "nivel": "basico",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa el código para que imprima 'aprobado' si nota es mayor o igual a 5.",
+      "codigo": "nota = 6\nif nota >= 5:\n    print('aprobado')\n___:\n    print('suspendido')",
+      "hueco": "___",
+      "respuesta_correcta": "else",
+      "error_asociado": "4.3",
+      "explicacion": "else captura todos los casos que no cumplen la condición del if.",
+      "pista": "¿Qué palabra clave se usa para el caso contrario del if?"
+    },
+    {
+      "id": "cat4_intermedio_01",
+      "categoria": 4,
+      "subcategoria": "4.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 5\nif x > 3 and x < 10:\n    print('en rango')\nelse:\n    print('fuera')",
+      "opciones": [
+        "en rango",
+        "fuera",
+        "True",
+        "nada"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "4.3",
+      "explicacion": "x > 3 es True y x < 10 es True. Con and ambas deben ser True, que es el caso.",
+      "pista": "¿Qué hace el operador and?"
+    },
+    {
+      "id": "cat4_intermedio_02",
+      "categoria": 4,
+      "subcategoria": "4.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 15\nif x > 10:\n    if x > 20:\n        print('muy grande')\n    else:\n        print('grande')\nelse:\n    print('pequeño')",
+      "opciones": [
+        "muy grande",
+        "grande",
+        "pequeño",
+        "nada"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "4.3",
+      "explicacion": "x > 10 es True, x > 20 es False, así que imprime 'grande'.",
+      "pista": "Evalúa primero el if exterior y luego el interior."
+    },
+    {
+      "id": "cat4_intermedio_03",
+      "categoria": 4,
+      "subcategoria": "4.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 5\nif x > 10:\n    print('A')\nelif x > 3:\n    print('B')\nelif x > 1:\n    print('C')\nelse:\n    print('D')",
+      "opciones": [
+        "A",
+        "B",
+        "B\nC",
+        "C"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "4.2",
+      "explicacion": "elif solo se evalúa si las condiciones anteriores son False. x > 3 es la primera True.",
+      "pista": "¿Cuál es la primera condición que resulta True?"
+    },
+    {
+      "id": "cat4_intermedio_04",
+      "categoria": 4,
+      "subcategoria": "4.3",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para que imprima 'acceso' si usuario es 'admin' Y clave es '1234'.",
+      "codigo": "usuario = 'admin'\nclave = '1234'\nif usuario == 'admin' ___ clave == '1234':\n    print('acceso')",
+      "hueco": "___",
+      "respuesta_correcta": "and",
+      "error_asociado": "4.3",
+      "explicacion": "El operador and requiere que ambas condiciones sean True.",
+      "pista": "¿Qué operador lógico exige que se cumplan las dos condiciones?"
+    },
+    {
+      "id": "cat4_avanzado_01",
+      "categoria": 4,
+      "subcategoria": "4.4",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 0\nif x:\n    print('verdadero')\nelse:\n    print('falso')",
+      "opciones": [
+        "verdadero",
+        "falso",
+        "0",
+        "None"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "4.4",
+      "explicacion": "En Python, 0 se evalúa como False en un contexto booleano.",
+      "pista": "¿Qué valores se consideran False en Python?"
+    },
+    {
+      "id": "cat4_avanzado_02",
+      "categoria": 4,
+      "subcategoria": "4.4",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = []\nif not lista:\n    print('vacía')\nelse:\n    print('con elementos')",
+      "opciones": [
+        "vacía",
+        "con elementos",
+        "False",
+        "True"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "4.4",
+      "explicacion": "Una lista vacía se evalúa como False. not False es True, así que imprime 'vacía'.",
+      "pista": "¿Cómo se evalúa una lista vacía en un contexto booleano?"
+    },
+    {
+      "id": "cat5_basico_01",
+      "categoria": 5,
+      "subcategoria": "5.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "for i in range(5):\n    print(i)",
+      "opciones": [
+        "0 1 2 3 4",
+        "1 2 3 4 5",
+        "0 1 2 3 4 5",
+        "1 2 3 4"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "5.1",
+      "explicacion": "range(5) genera los números 0, 1, 2, 3, 4. El 5 no se incluye.",
+      "pista": "¿Desde qué número empieza range() y cuál es el último?"
+    },
+    {
+      "id": "cat5_basico_02",
+      "categoria": 5,
+      "subcategoria": "5.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "total = 0\nfor i in range(4):\n    total += i\nprint(total)",
+      "opciones": [
+        "10",
+        "6",
+        "4",
+        "0"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "5.1",
+      "explicacion": "0 + 1 + 2 + 3 = 6. range(4) genera 0, 1, 2, 3.",
+      "pista": "Suma los valores que genera range(4)."
+    },
+    {
+      "id": "cat5_basico_03",
+      "categoria": 5,
+      "subcategoria": "5.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "i = 1\nwhile i <= 5:\n    print(i)\n    i += 1",
+      "opciones": [
+        "1 2 3 4 5",
+        "1 2 3 4",
+        "0 1 2 3 4 5",
+        "bucle infinito"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "5.2",
+      "explicacion": "El bucle while imprime i y luego lo incrementa. Para cuando i es 6.",
+      "pista": "¿Cuándo se detiene el bucle while?"
+    },
+    {
+      "id": "cat5_basico_04",
+      "categoria": 5,
+      "subcategoria": "5.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "i = 0\nwhile i < 5:\n    print(i)",
+      "opciones": [
+        "0 1 2 3 4",
+        "0",
+        "bucle infinito",
+        "nada"
+      ],
+      "respuesta_correcta": 2,
+      "error_asociado": "5.2",
+      "explicacion": "i nunca se incrementa, así que la condición siempre es True y el bucle no termina.",
+      "pista": "¿Cambia el valor de i en algún momento?"
+    },
+    {
+      "id": "cat5_intermedio_01",
+      "categoria": 5,
+      "subcategoria": "5.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [1, 2, 3, 4]\nfor elemento in lista:\n    if elemento % 2 == 0:\n        lista.remove(elemento)\nprint(lista)",
+      "opciones": [
+        "[1, 3]",
+        "[2, 4]",
+        "[1, 2, 3, 4]",
+        "[1, 3, 4]"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "5.3",
+      "explicacion": "Modificar una lista mientras se itera produce resultados inesperados. El 2 se elimina pero el 4 se salta.",
+      "pista": "¿Qué pasa cuando eliminas un elemento de una lista mientras la recorres?"
+    },
+    {
+      "id": "cat5_intermedio_02",
+      "categoria": 5,
+      "subcategoria": "5.1",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para que el range itere de 10 a 0 de 2 en 2 (descendente).",
+      "codigo": "for i in range(___):\n    print(i)",
+      "hueco": "___",
+      "respuesta_correcta": "10, 0, -2",
+      "error_asociado": "5.1",
+      "explicacion": "range(inicio, fin, paso) con paso negativo genera una secuencia descendente.",
+      "pista": "¿Cómo se usa range con tres argumentos para ir hacia atrás?"
+    },
+    {
+      "id": "cat5_intermedio_03",
+      "categoria": 5,
+      "subcategoria": "5.2",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa el código para que el bucle avance correctamente.",
+      "codigo": "x = 0\nwhile x < 10:\n    print(x)\n    ___",
+      "hueco": "___",
+      "respuesta_correcta": "x += 1",
+      "error_asociado": "5.2",
+      "explicacion": "Sin incrementar x el bucle sería infinito. x += 1 avanza la variable de control.",
+      "pista": "¿Qué le falta al bucle para que no sea infinito?"
+    },
+    {
+      "id": "cat5_avanzado_01",
+      "categoria": 5,
+      "subcategoria": "5.1",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "for i in range(0, 10, 3):\n    print(i)",
+      "opciones": [
+        "0 3 6 9",
+        "0 3 6",
+        "3 6 9",
+        "0 3 6 9 10"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "5.1",
+      "explicacion": "range(0, 10, 3) genera 0, 3, 6, 9. El paso es 3 y el 10 no se incluye.",
+      "pista": "¿Cuál es el paso de este range?"
+    },
+    {
+      "id": "cat5_avanzado_02",
+      "categoria": 5,
+      "subcategoria": "5.3",
+      "nivel": "avanzado",
+      "tipo": "completar_codigo",
+      "enunciado": "Corrige el código para eliminar correctamente los pares de la lista.",
+      "codigo": "lista = [1, 2, 3, 4, 5, 6]\n___\nfor elemento in lista_copia:\n    if elemento % 2 == 0:\n        lista.remove(elemento)\nprint(lista)",
+      "hueco": "___",
+      "respuesta_correcta": "lista_copia = lista[:]",
+      "error_asociado": "5.3",
+      "explicacion": "Para evitar modificar la lista mientras se itera, se crea una copia con lista[:] y se itera sobre ella.",
+      "pista": "¿Cómo puedes iterar sobre una copia de la lista en vez de la original?"
+    },
+    {
+      "id": "cat6_basico_01",
+      "categoria": 6,
+      "subcategoria": "6.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def saluda():\n    print('Hola')\n\nsaluda()\nsaluda()",
+      "opciones": [
+        "Hola",
+        "Hola\nHola",
+        "saluda\nsaluda",
+        "nada"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "6.1",
+      "explicacion": "La función saluda() se llama dos veces, por lo que imprime 'Hola' dos veces.",
+      "pista": "¿Cuántas veces se llama a la función?"
+    },
+    {
+      "id": "cat6_basico_02",
+      "categoria": 6,
+      "subcategoria": "6.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def doble(x):\n    return x * 2\n\nresultado = doble(5)\nprint(resultado)",
+      "opciones": [
+        "5",
+        "10",
+        "x * 2",
+        "nada"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "6.2",
+      "explicacion": "doble(5) devuelve 5 * 2 = 10, que se guarda en resultado y se imprime.",
+      "pista": "¿Qué devuelve la función con x=5?"
+    },
+    {
+      "id": "cat6_basico_03",
+      "categoria": 6,
+      "subcategoria": "6.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def suma(a, b):\n    return a + b\n\nprint(suma(3, 4))\nprint(suma(10, 5))",
+      "opciones": [
+        "7\n15",
+        "7",
+        "15",
+        "3 4\n10 5"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "6.2",
+      "explicacion": "suma(3,4) = 7 y suma(10,5) = 15. Se imprimen los dos resultados.",
+      "pista": "¿Cuántas veces se llama a la función y con qué valores?"
+    },
+    {
+      "id": "cat6_basico_04",
+      "categoria": 6,
+      "subcategoria": "6.3",
+      "nivel": "basico",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa la función para que devuelva el doble del número.",
+      "codigo": "def doble(n):\n    ___ n * 2",
+      "hueco": "___",
+      "respuesta_correcta": "return",
+      "error_asociado": "6.3",
+      "explicacion": "Sin return la función no devuelve el valor calculado, solo lo calcula.",
+      "pista": "¿Qué palabra clave devuelve un valor desde una función?"
+    },
+    {
+      "id": "cat6_intermedio_01",
+      "categoria": 6,
+      "subcategoria": "6.1",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def f(x, y=10):\n    return x + y\n\nprint(f(5))\nprint(f(5, 3))",
+      "opciones": [
+        "15\n8",
+        "5\n8",
+        "10\n3",
+        "error"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "6.1",
+      "explicacion": "y tiene valor por defecto 10. f(5) usa y=10 → 15. f(5,3) usa y=3 → 8.",
+      "pista": "¿Qué pasa con el parámetro y cuando no se especifica?"
+    },
+    {
+      "id": "cat6_intermedio_02",
+      "categoria": 6,
+      "subcategoria": "6.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def f():\n    return 1\n    return 2\n\nprint(f())",
+      "opciones": [
+        "1",
+        "2",
+        "1\n2",
+        "None"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "6.3",
+      "explicacion": "El primer return termina la función inmediatamente. El segundo return nunca se ejecuta.",
+      "pista": "¿Qué ocurre cuando se ejecuta un return?"
+    },
+    {
+      "id": "cat6_intermedio_03",
+      "categoria": 6,
+      "subcategoria": "6.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def multiplica(a, b):\n    print(a * b)\n\nresultado = multiplica(3, 4)\nprint(resultado)",
+      "opciones": [
+        "12\n12",
+        "12\nNone",
+        "None\n12",
+        "12"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "6.2",
+      "explicacion": "La función imprime 12 pero no tiene return, así que devuelve None. resultado vale None.",
+      "pista": "¿Qué devuelve una función sin return?"
+    },
+    {
+      "id": "cat6_intermedio_04",
+      "categoria": 6,
+      "subcategoria": "6.4",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para que la función pueda modificar la variable global.",
+      "codigo": "contador = 0\n\ndef incrementar():\n    ___ contador\n    contador += 1",
+      "hueco": "___",
+      "respuesta_correcta": "global",
+      "error_asociado": "6.4",
+      "explicacion": "Sin global, Python crea una variable local. Con global se accede a la variable del ámbito global.",
+      "pista": "¿Qué palabra clave permite modificar una variable global desde una función?"
+    },
+    {
+      "id": "cat6_avanzado_01",
+      "categoria": 6,
+      "subcategoria": "6.1",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def f(lista=[]):\n    lista.append(1)\n    return lista\n\nprint(f())\nprint(f())",
+      "opciones": [
+        "[1]\n[1]",
+        "[1]\n[1, 1]",
+        "[1, 1]\n[1, 1]",
+        "error"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "6.1",
+      "explicacion": "Los argumentos por defecto mutables se crean una sola vez. La misma lista se reutiliza en cada llamada.",
+      "pista": "¿Se crea una lista nueva en cada llamada o se reutiliza la misma?"
+    },
+    {
+      "id": "cat6_avanzado_02",
+      "categoria": 6,
+      "subcategoria": "6.2",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def potencia(base, exp=2):\n    return base ** exp\n\nprint(potencia(3))\nprint(potencia(2, 10))",
+      "opciones": [
+        "9\n1024",
+        "6\n20",
+        "9\n20",
+        "error"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "6.2",
+      "explicacion": "potencia(3) usa exp=2 → 3²=9. potencia(2,10) → 2¹⁰=1024.",
+      "pista": "¿Qué valor toma exp en cada llamada?"
+    },
+    {
+      "id": "cat7_basico_01",
+      "categoria": 7,
+      "subcategoria": "7.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [10, 20, 30, 40]\nprint(lista[0])\nprint(lista[-1])",
+      "opciones": [
+        "10\n40",
+        "10\n30",
+        "20\n40",
+        "error"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "7.1",
+      "explicacion": "lista[0] es el primer elemento (10) y lista[-1] es el último (40).",
+      "pista": "¿Qué índice tiene el primer y el último elemento?"
+    },
+    {
+      "id": "cat7_basico_02",
+      "categoria": 7,
+      "subcategoria": "7.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "lista = [1, 2, 3]\nprint(lista[5])",
+      "opciones": [
+        "None",
+        "3",
+        "IndexError",
+        "0"
+      ],
+      "respuesta_correcta": 2,
+      "error_asociado": "7.1",
+      "explicacion": "La lista tiene índices 0, 1 y 2. El índice 5 no existe y Python lanza IndexError.",
+      "pista": "¿Cuántos elementos tiene la lista y cuál es el último índice válido?"
+    },
+    {
+      "id": "cat7_basico_03",
+      "categoria": 7,
+      "subcategoria": "7.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [1, 2, 3]\nlista.append(4)\nprint(lista)",
+      "opciones": [
+        "[1, 2, 3]",
+        "[4, 1, 2, 3]",
+        "[1, 2, 3, 4]",
+        "[1, 2, 4]"
+      ],
+      "respuesta_correcta": 2,
+      "error_asociado": "7.2",
+      "explicacion": "append() añade el elemento al final de la lista.",
+      "pista": "¿Dónde añade elementos el método append?"
+    },
+    {
+      "id": "cat7_intermedio_01",
+      "categoria": 7,
+      "subcategoria": "7.1",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [0, 1, 2, 3, 4, 5]\nprint(lista[2:4])\nprint(lista[:3])",
+      "opciones": [
+        "[2, 3]\n[0, 1, 2]",
+        "[2, 4]\n[0, 1, 2]",
+        "[2, 3, 4]\n[0, 1, 2]",
+        "[2, 3]\n[0, 1, 2, 3]"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "7.1",
+      "explicacion": "lista[2:4] va del índice 2 al 3 (el 4 no se incluye). lista[:3] va del 0 al 2.",
+      "pista": "En un slice, ¿el índice final se incluye o no?"
+    },
+    {
+      "id": "cat7_intermedio_02",
+      "categoria": 7,
+      "subcategoria": "7.2",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para añadir todos los elementos de lista2 al final de lista1.",
+      "codigo": "lista1 = [1, 2, 3]\nlista2 = [4, 5, 6]\nlista1.___(lista2)\nprint(lista1)",
+      "hueco": "___",
+      "respuesta_correcta": "extend",
+      "error_asociado": "7.2",
+      "explicacion": "extend() añade todos los elementos de otra lista. append() añadiría la lista como un único elemento.",
+      "pista": "¿Qué método añade todos los elementos de otra lista?"
+    },
+    {
+      "id": "cat7_intermedio_03",
+      "categoria": 7,
+      "subcategoria": "7.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [3, 1, 4, 1, 5, 9]\nprint(len(lista))\nprint(sum(lista))",
+      "opciones": [
+        "6\n23",
+        "5\n23",
+        "6\n22",
+        "6\n13"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "7.3",
+      "explicacion": "La lista tiene 6 elementos. La suma es 3+1+4+1+5+9 = 23.",
+      "pista": "Cuenta los elementos y súmalos."
+    },
+    {
+      "id": "cat7_avanzado_01",
+      "categoria": 7,
+      "subcategoria": "7.2",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "lista = [1, 2, 3, 4, 5]\nresultado = [x for x in lista if x % 2 == 0]\nprint(resultado)",
+      "opciones": [
+        "[1, 3, 5]",
+        "[2, 4]",
+        "[1, 2, 3, 4, 5]",
+        "[True, False, True]"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "7.2",
+      "explicacion": "La comprensión de lista filtra los elementos pares (divisibles por 2).",
+      "pista": "¿Qué condición tiene que cumplir x para incluirse?"
+    },
+    {
+      "id": "cat7_avanzado_02",
+      "categoria": 7,
+      "subcategoria": "7.2",
+      "nivel": "avanzado",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para crear una lista con los cuadrados de 1 a 5 usando comprensión de listas.",
+      "codigo": "cuadrados = [___ for x in range(1, 6)]\nprint(cuadrados)",
+      "hueco": "___",
+      "respuesta_correcta": "x ** 2",
+      "error_asociado": "7.2",
+      "explicacion": "La comprensión de listas aplica la expresión x**2 a cada elemento del rango.",
+      "pista": "¿Qué expresión calcula el cuadrado de x?"
+    },
+    {
+      "id": "cat8_basico_01",
+      "categoria": 8,
+      "subcategoria": "8.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "print(type(42))\nprint(type('hola'))",
+      "opciones": [
+        "int\nstr",
+        "<class 'int'>\n<class 'str'>",
+        "42\nhola",
+        "number\nstring"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "8.1",
+      "explicacion": "type() devuelve el tipo del objeto en formato <class 'tipo'>.",
+      "pista": "¿Qué formato usa Python para mostrar los tipos?"
+    },
+    {
+      "id": "cat8_basico_02",
+      "categoria": 8,
+      "subcategoria": "8.2",
+      "nivel": "basico",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa la función para que devuelva el mayor de dos números.",
+      "codigo": "def mayor(a, b):\n    if a > b:\n        ___ a\n    else:\n        ___ b",
+      "hueco": "___",
+      "respuesta_correcta": "return",
+      "error_asociado": "8.2",
+      "explicacion": "Se necesita return en ambas ramas para devolver el valor correspondiente.",
+      "pista": "¿Qué palabra clave devuelve un valor?"
+    },
+    {
+      "id": "cat8_basico_03",
+      "categoria": 8,
+      "subcategoria": "8.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "total = 0\nfor i in range(1, 6):\n    total = i\nprint(total)",
+      "opciones": [
+        "15",
+        "5",
+        "0",
+        "1 2 3 4 5"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "8.1",
+      "explicacion": "total = i sobreescribe total en cada iteración. Al final total vale 5 (el último valor de i).",
+      "pista": "¿Acumula o sobreescribe la variable total?"
+    },
+    {
+      "id": "cat8_intermedio_01",
+      "categoria": 8,
+      "subcategoria": "8.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def es_par(n):\n    return n % 2 == 0\n\nprint(es_par(4))\nprint(es_par(7))",
+      "opciones": [
+        "True\nFalse",
+        "False\nTrue",
+        "4\n7",
+        "0\n1"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "8.3",
+      "explicacion": "4 % 2 == 0 es True (4 es par). 7 % 2 == 0 es False (7 es impar).",
+      "pista": "¿Cuál es el resto de dividir 4 y 7 entre 2?"
+    },
+    {
+      "id": "cat8_intermedio_02",
+      "categoria": 8,
+      "subcategoria": "8.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "numeros = [1, 2, 3, 4, 5]\npares = list(filter(lambda x: x % 2 == 0, numeros))\nprint(pares)",
+      "opciones": [
+        "[2, 4]",
+        "[1, 3, 5]",
+        "[1, 2, 3, 4, 5]",
+        "error"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "8.2",
+      "explicacion": "filter() aplica la función lambda a cada elemento y conserva los que devuelven True.",
+      "pista": "¿Qué condición debe cumplir x para pasar el filtro?"
+    },
+    {
+      "id": "cat8_intermedio_03",
+      "categoria": 8,
+      "subcategoria": "8.3",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Completa para invertir la cadena usando slicing.",
+      "codigo": "texto = 'Python'\nprint(texto[___])",
+      "hueco": "___",
+      "respuesta_correcta": "::-1",
+      "error_asociado": "8.3",
+      "explicacion": "El slice [::-1] recorre la cadena de fin a inicio con paso -1, invirtiendo el orden.",
+      "pista": "¿Cómo se usa el paso negativo en un slice para invertir?"
+    },
+    {
+      "id": "cat8_avanzado_01",
+      "categoria": 8,
+      "subcategoria": "8.3",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "a = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)",
+      "opciones": [
+        "[1, 2, 3]",
+        "[1, 2, 3, 4]",
+        "[4]",
+        "error"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "8.3",
+      "explicacion": "b = a no crea una copia, sino que ambas variables apuntan a la misma lista. Al modificar b, a también cambia.",
+      "pista": "¿b es una copia de a o apuntan a la misma lista?"
+    },
+    {
+      "id": "cat8_avanzado_02",
+      "categoria": 8,
+      "subcategoria": "8.2",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "numeros = [1, 2, 3, 4, 5]\nresultado = list(map(lambda x: x ** 2, numeros))\nprint(resultado)",
+      "opciones": [
+        "[1, 4, 9, 16, 25]",
+        "[2, 4, 6, 8, 10]",
+        "[1, 2, 3, 4, 5]",
+        "error"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "8.2",
+      "explicacion": "map() aplica la función lambda a cada elemento. x**2 calcula el cuadrado de cada número.",
+      "pista": "¿Qué hace la expresión lambda x: x**2?"
     }
   ]
 }
