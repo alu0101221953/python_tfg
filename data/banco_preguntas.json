@@ -20,7 +20,12 @@
       "tipo": "prediccion_output",
       "enunciado": "¿Qué ocurre al ejecutar este código?",
       "codigo": "print('Hola mundo'",
-      "opciones": ["Hola mundo", "SyntaxError", "None", "Error de indentación"],
+      "opciones": [
+        "Hola mundo",
+        "SyntaxError",
+        "None",
+        "Error de indentación"
+      ],
       "respuesta_correcta": 1,
       "error_asociado": "1.1",
       "explicacion": "Falta el paréntesis de cierre. Python lanza un SyntaxError.",
@@ -48,7 +53,12 @@
       "tipo": "prediccion_output",
       "enunciado": "¿Qué imprime este código?",
       "codigo": "x = 5\ny = 3\nprint(x + y)",
-      "opciones": ["53", "8", "x + y", "SyntaxError"],
+      "opciones": [
+        "53",
+        "8",
+        "x + y",
+        "SyntaxError"
+      ],
       "respuesta_correcta": 1,
       "error_asociado": "1.3",
       "explicacion": "x e y son enteros, así que + hace suma aritmética. Resultado: 8.",
@@ -62,7 +72,12 @@
       "tipo": "prediccion_output",
       "enunciado": "¿Qué ocurre al ejecutar este código?",
       "codigo": "x = 5\nif x = 5:\n    print('igual')",
-      "opciones": ["igual", "SyntaxError", "True", "False"],
+      "opciones": [
+        "igual",
+        "SyntaxError",
+        "True",
+        "False"
+      ],
       "respuesta_correcta": 1,
       "error_asociado": "1.4",
       "explicacion": "El operador de asignación (=) no puede usarse en una condición. Para comparar se usa ==.",
@@ -90,7 +105,12 @@
       "tipo": "prediccion_output",
       "enunciado": "¿Qué imprime este código?",
       "codigo": "x = '3'\ny = '5'\nprint(x + y)",
-      "opciones": ["8", "35", "TypeError", "'3''5'"],
+      "opciones": [
+        "8",
+        "35",
+        "TypeError",
+        "'3''5'"
+      ],
       "respuesta_correcta": 1,
       "error_asociado": "1.3",
       "explicacion": "x e y son strings. El operador + con strings hace concatenación, no suma.",
@@ -118,7 +138,12 @@
       "tipo": "prediccion_output",
       "enunciado": "¿Qué imprime este código?",
       "codigo": "x = 5\nresultado = 'mayor' if x > 3 else 'menor'\nprint(resultado)",
-      "opciones": ["mayor", "menor", "True", "SyntaxError"],
+      "opciones": [
+        "mayor",
+        "menor",
+        "True",
+        "SyntaxError"
+      ],
       "respuesta_correcta": 0,
       "error_asociado": "1.4",
       "explicacion": "El operador ternario evalúa x > 3 (True) y devuelve 'mayor'.",
@@ -137,6 +162,304 @@
       "error_asociado": "1.4",
       "explicacion": "Para comparar igualdad en Python se usa == (doble igual), no = que es asignación.",
       "pista": "¿Qué operador se usa para comparar igualdad?"
+    },
+    {
+      "id": "cat2_basico_01",
+      "categoria": 2,
+      "subcategoria": "2.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "if True:\nprint('hola')",
+      "opciones": [
+        "hola",
+        "IndentationError",
+        "True",
+        "None"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "2.1",
+      "explicacion": "El print debe estar indentado dentro del if. Python lanza IndentationError.",
+      "pista": "¿Está el print dentro del bloque if?"
+    },
+    {
+      "id": "cat2_basico_02",
+      "categoria": 2,
+      "subcategoria": "2.1",
+      "nivel": "basico",
+      "tipo": "completar_codigo",
+      "enunciado": "Corrige el código para que print esté dentro de la función.",
+      "codigo": "def saluda():\n___print('Hola')",
+      "hueco": "___",
+      "respuesta_correcta": "    print('Hola')",
+      "error_asociado": "2.1",
+      "explicacion": "El cuerpo de una función debe indentarse con 4 espacios.",
+      "pista": "¿Cuántos espacios lleva el cuerpo de una función?"
+    },
+    {
+      "id": "cat2_basico_03",
+      "categoria": 2,
+      "subcategoria": "2.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 10\nif x > 5:\n    print('mayor')\nprint('fin')",
+      "opciones": [
+        "mayor",
+        "fin",
+        "mayor\nfin",
+        "IndentationError"
+      ],
+      "respuesta_correcta": 2,
+      "error_asociado": "2.2",
+      "explicacion": "print('mayor') está dentro del if y print('fin') está fuera, así que se imprimen los dos.",
+      "pista": "¿Qué líneas están dentro del if y cuáles fuera?"
+    },
+    {
+      "id": "cat2_basico_04",
+      "categoria": 2,
+      "subcategoria": "2.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 10\nif x > 5:\n    print('mayor')\nprint('que cinco')",
+      "opciones": [
+        "mayor\nque cinco",
+        "mayor",
+        "que cinco",
+        "mayor que cinco"
+      ],
+      "respuesta_correcta": 0,
+      "error_asociado": "2.2",
+      "explicacion": "print('que cinco') no está indentado, así que siempre se ejecuta.",
+      "pista": "¿Dentro de qué bloque está cada print?"
+    },
+    {
+      "id": "cat2_intermedio_01",
+      "categoria": 2,
+      "subcategoria": "2.3",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "def suma(a, b):\n    return a + b\n  resultado = suma(3, 4)",
+      "opciones": [
+        "7",
+        "IndentationError",
+        "None",
+        "SyntaxError"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "2.3",
+      "explicacion": "La línea resultado tiene 2 espacios de indentación pero está fuera de la función. Python lanza IndentationError.",
+      "pista": "¿Cuántos espacios tiene la línea resultado?"
+    },
+    {
+      "id": "cat2_intermedio_02",
+      "categoria": 2,
+      "subcategoria": "2.1",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "El código tiene un error de indentación. Escribe la línea correcta con la indentación adecuada.",
+      "codigo": "def calcula(x):\n    if x > 0:\n___return x * 2\n    return 0",
+      "hueco": "___",
+      "respuesta_correcta": "        return x * 2",
+      "error_asociado": "2.1",
+      "explicacion": "return x * 2 está dentro del if, que a su vez está dentro de la función. Necesita 8 espacios (2 niveles).",
+      "pista": "¿Dentro de cuántos bloques está ese return?"
+    },
+    {
+      "id": "cat2_intermedio_03",
+      "categoria": 2,
+      "subcategoria": "2.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "for i in range(3):\n    if i == 1:\n        print('uno')\n    print(i)",
+      "opciones": [
+        "uno\n0\n1\n2",
+        "0\nuno\n1\n2",
+        "uno\n1",
+        "0\n1\n2"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "2.2",
+      "explicacion": "print('uno') solo se ejecuta cuando i==1, pero print(i) se ejecuta siempre dentro del for.",
+      "pista": "¿Cuál de los dos print está dentro del if?"
+    },
+    {
+      "id": "cat2_intermedio_04",
+      "categoria": 2,
+      "subcategoria": "2.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Cuántas veces se imprime 'ok'?",
+      "codigo": "for i in range(4):\n    for j in range(2):\n        pass\nprint('ok')",
+      "opciones": [
+        "8",
+        "4",
+        "2",
+        "1"
+      ],
+      "respuesta_correcta": 3,
+      "error_asociado": "2.2",
+      "explicacion": "print('ok') está fuera de ambos bucles, así que se ejecuta solo una vez.",
+      "pista": "¿Dentro de qué bloque está el print?"
+    },
+    {
+      "id": "cat2_avanzado_01",
+      "categoria": 2,
+      "subcategoria": "2.3",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "def f(x):\n    if x > 0:\n        return x\n    return -x\nprint(f(-3))",
+      "opciones": [
+        "-3",
+        "3",
+        "0",
+        "None"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "2.3",
+      "explicacion": "x es -3 (no > 0), así que se ejecuta return -x = -(-3) = 3.",
+      "pista": "¿Cuál de los dos return se ejecuta cuando x es negativo?"
+    },
+    {
+      "id": "cat3_basico_01",
+      "categoria": 3,
+      "subcategoria": "3.1",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "print(nombre)",
+      "opciones": [
+        "None",
+        "NameError",
+        "''",
+        "SyntaxError"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "3.1",
+      "explicacion": "La variable 'nombre' no ha sido definida antes de usarla. Python lanza NameError.",
+      "pista": "¿Ha sido definida la variable antes de usarla?"
+    },
+    {
+      "id": "cat3_basico_02",
+      "categoria": 3,
+      "subcategoria": "3.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué ocurre al ejecutar este código?",
+      "codigo": "edad = 20\nprint('Tienes ' + edad + ' años')",
+      "opciones": [
+        "Tienes 20 años",
+        "TypeError",
+        "Tienes edad años",
+        "20"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "3.2",
+      "explicacion": "No se puede concatenar un string con un entero. Hay que convertir: str(edad).",
+      "pista": "¿De qué tipo es 'edad' y de qué tipo es el texto?"
+    },
+    {
+      "id": "cat3_basico_03",
+      "categoria": 3,
+      "subcategoria": "3.3",
+      "nivel": "basico",
+      "tipo": "completar_codigo",
+      "enunciado": "Corrige el código para que funcione correctamente. ¿Cómo debes tratar la variable numero?",
+      "codigo": "numero = input('Introduce un número: ')\nresultado = ___ + 10\nprint(resultado)",
+      "hueco": "___",
+      "respuesta_correcta": "int(numero) + 10",
+      "error_asociado": "3.3",
+      "explicacion": "input() siempre devuelve un string. Hay que convertirlo con int() para operar con él.",
+      "pista": "¿Qué tipo devuelve siempre la función input()?"
+    },
+    {
+      "id": "cat3_basico_04",
+      "categoria": 3,
+      "subcategoria": "3.2",
+      "nivel": "basico",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = '3'\ny = '5'\nprint(x + y)",
+      "opciones": [
+        "8",
+        "35",
+        "TypeError",
+        "'3''5'"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "3.2",
+      "explicacion": "x e y son strings. El operador + con strings hace concatenación, no suma.",
+      "pista": "¿De qué tipo son x e y? ¿Llevan comillas?"
+    },
+    {
+      "id": "cat3_intermedio_01",
+      "categoria": 3,
+      "subcategoria": "3.3",
+      "nivel": "intermedio",
+      "tipo": "completar_codigo",
+      "enunciado": "Corrige el código para que la suma funcione con decimales.",
+      "codigo": "a = input('Primer número: ')\nb = input('Segundo número: ')\nprint(___ + ___)",
+      "hueco": "___",
+      "respuesta_correcta": "float(a), float(b)",
+      "error_asociado": "3.3",
+      "explicacion": "input() devuelve strings. Para sumar decimales hay que convertir con float().",
+      "pista": "¿Qué función convierte un string a número decimal?"
+    },
+    {
+      "id": "cat3_intermedio_02",
+      "categoria": 3,
+      "subcategoria": "3.2",
+      "nivel": "intermedio",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 5\ny = '5'\nprint(x == y)",
+      "opciones": [
+        "True",
+        "False",
+        "TypeError",
+        "5"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "3.2",
+      "explicacion": "x es un entero y y es un string. Aunque tienen el mismo valor, son de distinto tipo, así que == devuelve False.",
+      "pista": "¿Son del mismo tipo x e y?"
+    },
+    {
+      "id": "cat3_avanzado_01",
+      "categoria": 3,
+      "subcategoria": "3.4",
+      "nivel": "avanzado",
+      "tipo": "prediccion_output",
+      "enunciado": "¿Qué imprime este código?",
+      "codigo": "x = 10\ndef cambiar():\n    x = 20\ncambiar()\nprint(x)",
+      "opciones": [
+        "20",
+        "10",
+        "None",
+        "NameError"
+      ],
+      "respuesta_correcta": 1,
+      "error_asociado": "3.4",
+      "explicacion": "La x dentro de cambiar() es una variable local. No modifica la x global.",
+      "pista": "¿La x dentro de la función es la misma que la de fuera?"
+    },
+    {
+      "id": "cat3_avanzado_02",
+      "categoria": 3,
+      "subcategoria": "3.3",
+      "nivel": "avanzado",
+      "tipo": "completar_codigo",
+      "enunciado": "Corrige el código para que convierta correctamente el input a decimal.",
+      "codigo": "valor = input('Valor: ')\nresultado = ___(valor) * 2\nprint(resultado)",
+      "hueco": "___",
+      "respuesta_correcta": "float",
+      "error_asociado": "3.3",
+      "explicacion": "float() convierte el string de input a número decimal para poder operar con él.",
+      "pista": "¿Qué función convierte a número decimal?"
     }
   ]
 }
