@@ -3,7 +3,10 @@ Sistema tutor inteligente para Python básico.
 TFG · Víctor Cánovas del Pino · Universidad de La Laguna · 2025-2026
 """
 
+import json
 from datetime import datetime
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
@@ -15,12 +18,35 @@ load_dotenv()
 
 app = FastAPI(title="TFG", version="0.1.0")
 
+_banco_cache: list[dict] | None = None
+
+def cargar_banco_preguntas() -> list[dict]:
+    global _banco_cache
+    if _banco_cache is None:
+        with open(Path("data/banco_preguntas.json"), encoding="utf-8") as f:
+            _banco_cache = json.load(f)["preguntas"]
+    return _banco_cache
+
 
 @app.get("/")
 def index():
     return JSONResponse(content={
         "mensaje": "TFG API funcionando",
         "version": "0.1.0",
+    })
+
+
+@app.get("/api/banco/info")
+def banco_info():
+    """Devuelve información general del banco de preguntas."""
+    banco = cargar_banco_preguntas()
+    por_categoria = {}
+    for p in banco:
+        cat = str(p["categoria"])
+        por_categoria[cat] = por_categoria.get(cat, 0) + 1
+    return JSONResponse(content={
+        "total": len(banco),
+        "categorias": por_categoria,
     })
 
 
