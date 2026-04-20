@@ -65,3 +65,10 @@ def obtener_alumno(id_alumno: str):
         "correctas": alumno.total_correctas(),
         "precision": alumno.precision_global(),
     })
+
+@app.delete("/api/alumno/{id_alumno}")
+def borrar_alumno(id_alumno: str):
+    """Elimina el perfil de un alumno."""
+    if eliminar_alumno(id_alumno):
+        return JSONResponse(content={"ok": True})
+    return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
