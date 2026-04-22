@@ -253,8 +253,9 @@
             const tiempo = Math.round((Date.now() - tiempoInicio) / 1000);
             let respuesta = respuestaSeleccionada;
             if (preguntaActual.tipo === 'completar_codigo') {
-                respuesta = document.getElementById('fill-input')?.value?.trim() || '';
-                if (!respuesta) return;
+                const val = document.getElementById('fill-input')?.value || '';
+                respuesta = preguntaActual.categoria === 2 ? val : val.trim();
+                if (!respuesta.trim()) return;
             }
             if (!respuesta && respuesta !== '0') return;
             document.getElementById('btn-responder').disabled = true;
