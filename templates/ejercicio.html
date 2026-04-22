@@ -59,6 +59,75 @@
     .kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#f1fa8c}
     .num{color:#bd93f9}.cm{color:#6272a4;font-style:italic}
     @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Opciones múltiples */
+    .options-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+    .option-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);
+        border-radius:8px;padding:12px 16px;cursor:pointer;text-align:left;
+        font-family:var(--mono);font-size:13px;color:var(--text);
+        transition:all .18s;display:flex;align-items:center;gap:10px}
+    .option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(124,106,247,.08)}
+    .option-btn.selected{border-color:var(--accent);background:rgba(124,106,247,.12)}
+    .option-btn:disabled{cursor:default}
+    .option-idx{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);
+        display:flex;align-items:center;justify-content:center;
+        font-size:11px;color:var(--muted);flex-shrink:0}
+    
+    /* Input completar código */
+    .fill-area { margin-bottom: 20px; }
+    .fill-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .fill-input {
+        width: 100%;
+        background: #0a0c12;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--text);
+        outline: none;
+        transition: border-color .2s;
+    }
+    .fill-input:focus { border-color: var(--accent); }
+
+    /* Selector de indentación (cat. 2) */
+    .indent-area { margin-bottom: 20px; }
+    .indent-btns { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+    .indent-btn {
+        background: rgba(255,255,255,.03);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 7px 14px;
+        cursor: pointer;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        transition: all .18s;
+    }
+    .indent-btn:hover  { border-color: var(--accent); color: var(--accent); }
+    .indent-btn.active {
+        border-color: var(--accent);
+        background: rgba(124,106,247,.12);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    .indent-preview {
+        background: #0a0c12;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 11px 16px;
+        font-family: var(--mono);
+        font-size: 13px;
+        min-height: 40px;
+        margin-bottom: 12px;
+    }
+
+    /* Botón comprobar */
+    .btn-responder{background:var(--accent);color:#fff;border:none;padding:11px 26px;
+        border-radius:8px;font-family:var(--sans);font-size:14px;font-weight:600;
+        cursor:pointer;transition:all .2s;margin-top:4px}
+    .btn-responder:hover:not(:disabled){background:#6b59e8;transform:translateY(-1px)}
+    .btn-responder:disabled{opacity:.4;cursor:default;transform:none}
     </style>
 </head>
 <body>
@@ -86,7 +155,9 @@
             1:'Sintaxis', 2:'Indentación', 3:'Variables', 4:'Condicionales',
             5:'Bucles', 6:'Funciones', 7:'Listas', 8:'Otros'
         };
-        let preguntaActual = null;
+        let preguntaActual        = null;
+        let respuestaSeleccionada = null;
+        let tiempoInicio          = null;
 
         window.addEventListener('DOMContentLoaded', async () => {
             if (!ID_ALUMNO) { location.href = '/'; return; }
@@ -110,7 +181,9 @@
                 if (res.status === 404) { location.href = '/'; return; }
                 const data = await res.json();
                 if (data.fin_banco) { mostrarFin(data.mensaje); return; }
-                preguntaActual = data;
+                preguntaActual        = data;
+                respuestaSeleccionada = null;
+                tiempoInicio          = Date.now();
                 renderizarEjercicio(data);
             } catch(e) { console.error(e); }
             finally { mostrarLoading(false); }
@@ -126,9 +199,80 @@
                     <span class="badge badge-tipo">${esPrediccion ? 'Predecir output' : 'Completar código'}</span>
                 </div>
                 <div class="ex-enunciado">${p.enunciado}</div>
-                ${p.codigo ? `<div class="code-block"><pre>${resaltarSintaxis(p.codigo)}</pre></div>` : ''}
+                ${p.codigo ? `<div class="code-block"><pre>${
+                    p.tipo === 'completar_codigo'
+                        ? resaltarHueco(resaltarSintaxis(p.codigo))
+                        : resaltarSintaxis(p.codigo)
+                }</pre></div>` : ''}
+                ${esPrediccion ? renderOpciones(p.opciones) : renderCompletarCodigo(p)}
+                <button class="btn-responder" id="btn-responder" onclick="enviarRespuesta()" disabled>
+                    Comprobar
+                </button>
             `;
             cont.style.display = 'block';
+        }
+
+        function renderOpciones(opciones) {
+            if (!opciones?.length) return '';
+            return `<div class="options-grid" id="options-grid">
+                ${opciones.map((op, i) => {
+                    const opHtml = op.includes('\n')
+                        ? op.split('\n').map(l => `<span style="display:block">${l || '&nbsp;'}</span>`).join('')
+                        : op;
+                    return `<button class="option-btn" id="opt-${i}" onclick="seleccionarOpcion(${i})">
+                        <span class="option-idx">${String.fromCharCode(65 + i)}</span>
+                        <code style="font-family:var(--mono);font-size:13px;text-align:left">${opHtml}</code>
+                    </button>`;
+                }).join('')}
+            </div>`;
+        }
+
+        function renderCompletarCodigo(p) {
+            if (p.categoria === 2) {
+                return `<div class="indent-area">
+                    <div class="fill-label">Selecciona la indentación correcta para la línea marcada:</div>
+                    <div class="indent-btns">
+                        <button class="indent-btn" onclick="seleccionarIndent(0)">Sin indentación</button>
+                        <button class="indent-btn" onclick="seleccionarIndent(1)">1 nivel (4 espacios)</button>
+                        <button class="indent-btn" onclick="seleccionarIndent(2)">2 niveles (8 espacios)</button>
+                        <button class="indent-btn" onclick="seleccionarIndent(3)">3 niveles (12 espacios)</button>
+                    </div>
+                    <div class="fill-label">Vista previa:</div>
+                    <div class="indent-preview" id="indent-preview" style="color:var(--muted)">
+                        — Selecciona un nivel —
+                    </div>
+                    <input type="hidden" id="fill-input" value="">
+                </div>`;
+            }
+            return `<div class="fill-area">
+                <div class="fill-label">Escribe lo que va en el hueco:</div>
+                <input class="fill-input" id="fill-input" type="text" placeholder="Tu respuesta..."
+                       onkeydown="if(event.key==='Enter') enviarRespuesta()"
+                       oninput="document.getElementById('btn-responder').disabled = !this.value.trim()">
+            </div>`;
+        }
+
+        function seleccionarOpcion(idx) {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`opt-${idx}`)?.classList.add('selected');
+            respuestaSeleccionada = String(idx);
+            document.getElementById('btn-responder').disabled = false;
+        }
+
+        async function enviarRespuesta() {
+            // Se implementará en el siguiente commit (feedback)
+        }
+
+        function seleccionarIndent(niveles) {
+            const lineaHueco = (preguntaActual?.codigo || '').split('\n').find(l => l.includes('___')) || '';
+            const cuerpo  = lineaHueco.replace('___', '').trim();
+            const valor  = '    '.repeat(niveles) + cuerpo;
+            document.querySelectorAll('.indent-btn').forEach((b, i) =>
+                b.classList.toggle('active', i === niveles));
+            document.getElementById('indent-preview').innerHTML =
+                `<span style="color:var(--accent2)">${'·'.repeat(niveles * 4)}</span>${cuerpo}`;
+            document.getElementById('fill-input').value = valor;
+            document.getElementById('btn-responder').disabled = !cuerpo;
         }
 
         function mostrarLoading(show) {
@@ -139,11 +283,11 @@
         function mostrarFin(msg) {
             document.getElementById('ejercicio-content').innerHTML = `
                 <div style="text-align:center;padding:48px 24px">
-                <div style="font-size:48px;margin-bottom:16px">🎉</div>
-                <div style="font-size:22px;font-weight:600;color:var(--accent);margin-bottom:8px">¡Completado!</div>
-                <div style="font-size:14px;color:var(--muted)">${msg || '¡Has respondido todas las preguntas!'}</div>
-                <button class="btn-sm" style="margin-top:24px;padding:10px 24px"
-                    onclick="location.href='/'">Volver al inicio</button>
+                    <div style="font-size:48px;margin-bottom:16px">🎉</div>
+                    <div style="font-size:22px;font-weight:600;color:var(--accent);margin-bottom:8px">¡Completado!</div>
+                    <div style="font-size:14px;color:var(--muted)">${msg || '¡Has respondido todas las preguntas!'}</div>
+                    <button class="btn-sm" style="margin-top:24px;padding:10px 24px"
+                            onclick="location.href='/'">Volver al inicio</button>
                 </div>`;
             mostrarLoading(false);
         }
@@ -169,6 +313,13 @@
                 l = l.replace(/STRPLACEHOLDER/g, function() { return strs[idx++]; });
                 return l + comment;
             }).join('\n');
+        }
+
+        function resaltarHueco(html) {
+            return html.replace(/___/g,
+                '<span style="background:rgba(124,106,247,.25);color:var(--accent);' +
+                'border-bottom:2px solid var(--accent);padding:0 4px;border-radius:3px;' +
+                'font-weight:600">___</span>');
         }
     </script>
 </body>
