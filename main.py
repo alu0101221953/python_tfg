@@ -36,6 +36,9 @@ def cargar_banco() -> list[dict]:
 def index(request: Request):
     return templates.TemplateResponse(request=request, name="index.html", context={})
 
+@app.get("/ejercicio", response_class=HTMLResponse)
+def ejercicio(request: Request):
+    return templates.TemplateResponse(request=request, name="ejercicio.html", context={})
 
 # ===========================================================================
 # API — Banco
@@ -50,7 +53,7 @@ def banco_info():
         cat = str(p["categoria"])
         por_categoria[cat] = por_categoria.get(cat, 0) + 1
     return JSONResponse(content={
-        "total":         len(banco),
+        "total": len(banco),
         "por_categoria": por_categoria,
     })
 
@@ -63,7 +66,7 @@ def banco_info():
 def iniciar_sesion(nombre: str, id_alumno: str = ""):
     """Crea un perfil nuevo o carga uno existente."""
     if not id_alumno:
-        sufijo    = datetime.now().strftime("%H%M%S")
+        sufijo = datetime.now().strftime("%H%M%S")
         id_alumno = f"{nombre.lower().strip()[:10].replace(' ', '_')}_{sufijo}"
 
     datos = cargar_alumno(id_alumno)
@@ -80,8 +83,8 @@ def iniciar_sesion(nombre: str, id_alumno: str = ""):
 
     return JSONResponse(content={
         "id_alumno": alumno.id_alumno,
-        "nombre":    alumno.nombre,
-        "nuevo":     nuevo,
+        "nombre": alumno.nombre,
+        "nuevo": nuevo,
         "intentos":  alumno.total_intentos(),
         "precision": alumno.precision_global(),
     })
@@ -95,8 +98,8 @@ def obtener_alumno(id_alumno: str):
     alumno = Alumno(**datos)
     return JSONResponse(content={
         "id_alumno": alumno.id_alumno,
-        "nombre":    alumno.nombre,
-        "intentos":  alumno.total_intentos(),
+        "nombre": alumno.nombre,
+        "intentos": alumno.total_intentos(),
         "correctas": alumno.total_correctas(),
         "precision": alumno.precision_global(),
     })
@@ -120,32 +123,32 @@ def siguiente_ejercicio(id_alumno: str):
     if datos is None:
         return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
 
-    alumno      = Alumno(**datos)
-    vistas      = alumno.preguntas_vistas()
-    banco       = cargar_banco()
+    alumno = Alumno(**datos)
+    vistas = alumno.preguntas_vistas()
+    banco = cargar_banco()
     disponibles = [p for p in banco if p["id"] not in vistas]
 
     if not disponibles:
         return JSONResponse(content={
             "fin_banco": True,
-            "mensaje":   "¡Has respondido todas las preguntas! Vuelve más tarde.",
+            "mensaje": "¡Has respondido todas las preguntas! Vuelve más tarde.",
         })
 
     pregunta = random.choice(disponibles)
     return JSONResponse(content={
-        "id":           pregunta["id"],
-        "categoria":    pregunta["categoria"],
+        "id": pregunta["id"],
+        "categoria": pregunta["categoria"],
         "subcategoria": pregunta["subcategoria"],
-        "nivel":        pregunta["nivel"],
-        "tipo":         pregunta["tipo"],
-        "enunciado":    pregunta["enunciado"],
-        "codigo":       pregunta.get("codigo", ""),
-        "opciones":     pregunta.get("opciones", []),
-        "hueco":        pregunta.get("hueco", ""),
-        "pista":        pregunta.get("pista", ""),
+        "nivel": pregunta["nivel"],
+        "tipo": pregunta["tipo"],
+        "enunciado": pregunta["enunciado"],
+        "codigo": pregunta.get("codigo", ""),
+        "opciones": pregunta.get("opciones", []),
+        "hueco": pregunta.get("hueco", ""),
+        "pista": pregunta.get("pista", ""),
         "contador": {
             "vistas": len(vistas),
-            "total":  len(banco),
+            "total": len(banco),
         },
     })
 
@@ -172,36 +175,36 @@ def responder_ejercicio(payload: RespuestaAlumno):
     guardar_alumno(alumno)
 
     # Siguiente pregunta aleatoria
-    vistas      = alumno.preguntas_vistas()
-    banco       = cargar_banco()
+    vistas = alumno.preguntas_vistas()
+    banco = cargar_banco()
     disponibles = [p for p in banco if p["id"] not in vistas]
-    siguiente   = random.choice(disponibles) if disponibles else None
+    siguiente = random.choice(disponibles) if disponibles else None
 
     sig_data = None
     if siguiente:
         sig_data = {
-            "id":           siguiente["id"],
-            "categoria":    siguiente["categoria"],
+            "id": siguiente["id"],
+            "categoria": siguiente["categoria"],
             "subcategoria": siguiente["subcategoria"],
-            "nivel":        siguiente["nivel"],
-            "tipo":         siguiente["tipo"],
-            "enunciado":    siguiente["enunciado"],
-            "codigo":       siguiente.get("codigo", ""),
-            "opciones":     siguiente.get("opciones", []),
-            "hueco":        siguiente.get("hueco", ""),
-            "pista":        siguiente.get("pista", ""),
+            "nivel": siguiente["nivel"],
+            "tipo": siguiente["tipo"],
+            "enunciado": siguiente["enunciado"],
+            "codigo": siguiente.get("codigo", ""),
+            "opciones": siguiente.get("opciones", []),
+            "hueco": siguiente.get("hueco", ""),
+            "pista": siguiente.get("pista", ""),
             "contador": {
                 "vistas": len(vistas),
-                "total":  len(banco),
+                "total": len(banco),
             },
         }
 
     return JSONResponse(content={
-        "feedback":           feedback,
+        "feedback": feedback,
         "siguiente_pregunta": sig_data,
-        "fin_banco":          siguiente is None,
+        "fin_banco": siguiente is None,
         "stats": {
-            "intentos":  alumno.total_intentos(),
+            "intentos": alumno.total_intentos(),
             "correctas": alumno.total_correctas(),
             "precision": alumno.precision_global(),
         },
