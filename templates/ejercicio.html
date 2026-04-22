@@ -62,69 +62,55 @@
 
     /* Opciones múltiples */
     .options-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-    .option-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);
-        border-radius:8px;padding:12px 16px;cursor:pointer;text-align:left;
-        font-family:var(--mono);font-size:13px;color:var(--text);
-        transition:all .18s;display:flex;align-items:center;gap:10px}
+    .option-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;text-align:left;
+        font-family:var(--mono);font-size:13px;color:var(--text);transition:all .18s;display:flex;align-items:center;gap:10px}
     .option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(124,106,247,.08)}
-    .option-btn.selected{border-color:var(--accent);background:rgba(124,106,247,.12)}
-    .option-btn:disabled{cursor:default}
+    .option-btn.selected { border-color: var(--accent); background: rgba(124,106,247,.12); }
+    .option-btn.correct { border-color: var(--ok);   background: rgba(76,175,125,.12);  color: var(--ok); }
+    .option-btn.wrong { border-color: var(--fail);  background: rgba(240,98,146,.08); color: var(--fail); }
+    .option-btn:disabled { cursor: default; }
+    .fill-input.correct { border-color: var(--ok); }
+    .fill-input.wrong { border-color: var(--fail); }
     .option-idx{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);
         display:flex;align-items:center;justify-content:center;
         font-size:11px;color:var(--muted);flex-shrink:0}
     
+    /* Feedback */
+    .feedback-panel {margin-top: 20px;padding: 16px 20px;border-radius: 8px;border-left: 3px solid transparent;display: none;animation: fadeIn .3s ease;}
+    .feedback-panel.show  { display: block; }
+    .feedback-panel.ok    { background: rgba(76,175,125,.08);  border-color: var(--ok); }
+    .feedback-panel.fail  { background: rgba(240,98,146,.06);  border-color: var(--fail); }
+    .feedback-titulo      { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+    .feedback-panel.ok   .feedback-titulo { color: var(--ok); }
+    .feedback-panel.fail .feedback-titulo { color: var(--fail); }
+    .feedback-texto { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .feedback-pista { font-size: 13px; color: var(--accent2); margin-top: 8px; font-style: italic; }
+    .feedback-motiv { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .btn-siguiente {margin-top: 14px;background: transparent;border: 1px solid var(--accent);color: var(--accent);padding: 9px 22px;
+        border-radius: 8px;cursor: pointer;font-family: var(--sans);font-size: 14px;font-weight: 600;transition: all .2s;display: none;}
+    .btn-siguiente.show  { display: inline-block; }
+    .btn-siguiente:hover { background: rgba(124,106,247,.12); }
+
     /* Input completar código */
-    .fill-area { margin-bottom: 20px; }
+    .fill-area  { margin-bottom: 20px; }
     .fill-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
     .fill-input {
-        width: 100%;
-        background: #0a0c12;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-family: var(--mono);
-        font-size: 14px;
-        color: var(--text);
-        outline: none;
-        transition: border-color .2s;
-    }
+        width: 100%;background: #0a0c12;border: 1px solid var(--border);border-radius: 8px;padding: 12px 16px;font-family: var(--mono);
+        font-size: 14px;color: var(--text);outline: none;transition: border-color .2s;}
     .fill-input:focus { border-color: var(--accent); }
 
-    /* Selector de indentación (cat. 2) */
+    /* Selector de indentación */
     .indent-area { margin-bottom: 20px; }
     .indent-btns { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
-    .indent-btn {
-        background: rgba(255,255,255,.03);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 7px 14px;
-        cursor: pointer;
-        font-family: var(--mono);
-        font-size: 12px;
-        color: var(--muted);
-        transition: all .18s;
-    }
+    .indent-btn {background: rgba(255,255,255,.03);border: 1px solid var(--border);border-radius: 8px;padding: 7px 14px;
+        cursor: pointer;font-family: var(--mono);font-size: 12px;color: var(--muted);transition: all .18s;}
     .indent-btn:hover  { border-color: var(--accent); color: var(--accent); }
-    .indent-btn.active {
-        border-color: var(--accent);
-        background: rgba(124,106,247,.12);
-        color: var(--accent);
-        font-weight: 600;
-    }
-    .indent-preview {
-        background: #0a0c12;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 11px 16px;
-        font-family: var(--mono);
-        font-size: 13px;
-        min-height: 40px;
-        margin-bottom: 12px;
-    }
+    .indent-btn.active { border-color: var(--accent); background: rgba(124,106,247,.12); color: var(--accent); font-weight: 600; }
+    .indent-preview {background: #0a0c12;border: 1px solid var(--border);border-radius: 8px;padding: 11px 16px;font-family: var(--mono);
+        font-size: 13px;min-height: 40px;margin-bottom: 12px;}
 
     /* Botón comprobar */
-    .btn-responder{background:var(--accent);color:#fff;border:none;padding:11px 26px;
-        border-radius:8px;font-family:var(--sans);font-size:14px;font-weight:600;
+    .btn-responder{background:var(--accent);color:#fff;border:none;padding:11px 26px;border-radius:8px;font-family:var(--sans);font-size:14px;font-weight:600;
         cursor:pointer;transition:all .2s;margin-top:4px}
     .btn-responder:hover:not(:disabled){background:#6b59e8;transform:translateY(-1px)}
     .btn-responder:disabled{opacity:.4;cursor:default;transform:none}
@@ -208,6 +194,16 @@
                 <button class="btn-responder" id="btn-responder" onclick="enviarRespuesta()" disabled>
                     Comprobar
                 </button>
+                <div class="feedback-panel" id="feedback-panel">
+                    <div class="feedback-titulo" id="feedback-titulo"></div>
+                    <div class="feedback-texto"  id="feedback-texto"></div>
+                    <div class="feedback-pista"  id="feedback-pista" style="display:none"></div>
+                    <div class="feedback-motiv"  id="feedback-motiv"></div>
+                    <button class="btn-siguiente" id="btn-siguiente"
+                            onclick="cargarSiguienteEjercicio()">
+                        Siguiente ejercicio →
+                    </button>
+                </div>
             `;
             cont.style.display = 'block';
         }
@@ -252,15 +248,42 @@
             </div>`;
         }
 
+        async function enviarRespuesta() {
+            if (!preguntaActual) return;
+            const tiempo = Math.round((Date.now() - tiempoInicio) / 1000);
+            let respuesta = respuestaSeleccionada;
+            if (preguntaActual.tipo === 'completar_codigo') {
+                respuesta = document.getElementById('fill-input')?.value?.trim() || '';
+                if (!respuesta) return;
+            }
+            if (!respuesta && respuesta !== '0') return;
+            document.getElementById('btn-responder').disabled = true;
+            try {
+                const res  = await fetch('/api/ejercicio/responder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_alumno:   ID_ALUMNO,
+                        id_pregunta: preguntaActual.id,
+                        respuesta,
+                        tiempo,
+                    }),
+                });
+                const data = await res.json();
+                mostrarFeedback(data.feedback);
+                marcarOpcion(data.feedback.correcta, respuesta);
+                if (data.siguiente_pregunta) preguntaActual = data.siguiente_pregunta;
+            } catch(e) {
+                console.error(e);
+                document.getElementById('btn-responder').disabled = false;
+            }
+        }
+
         function seleccionarOpcion(idx) {
             document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
             document.getElementById(`opt-${idx}`)?.classList.add('selected');
             respuestaSeleccionada = String(idx);
             document.getElementById('btn-responder').disabled = false;
-        }
-
-        async function enviarRespuesta() {
-            // Se implementará en el siguiente commit (feedback)
         }
 
         function seleccionarIndent(niveles) {
@@ -273,6 +296,36 @@
                 `<span style="color:var(--accent2)">${'·'.repeat(niveles * 4)}</span>${cuerpo}`;
             document.getElementById('fill-input').value = valor;
             document.getElementById('btn-responder').disabled = !cuerpo;
+        }
+
+        function mostrarFeedback(fb) {
+            const panel = document.getElementById('feedback-panel');
+            const pista = document.getElementById('feedback-pista');
+            panel.classList.remove('ok', 'fail');
+            panel.classList.add(fb.correcta ? 'ok' : 'fail', 'show');
+            document.getElementById('feedback-titulo').textContent = fb.correcta ? '✓ Correcto' : '✗ Incorrecto';
+            document.getElementById('feedback-texto').textContent  = fb.explicacion || '';
+            document.getElementById('feedback-motiv').textContent  = fb.motivacion  || '';
+            if (!fb.correcta && fb.pista) {
+                pista.textContent   = '💡 ' + fb.pista;
+                pista.style.display = 'block';
+            } else {
+                pista.style.display = 'none';
+            }
+            document.getElementById('btn-siguiente').classList.add('show');
+        }
+
+        function marcarOpcion(correcta, respSeleccionada) {
+            document.querySelectorAll('.option-btn').forEach((b, i) => {
+                b.disabled = true;
+                if (String(i) === respSeleccionada)
+                    b.classList.add(correcta ? 'correct' : 'wrong');
+            });
+            const inp = document.getElementById('fill-input');
+            if (inp && inp.type !== 'hidden') {
+                inp.disabled = true;
+                inp.classList.add(correcta ? 'correct' : 'wrong');
+            }
         }
 
         function mostrarLoading(show) {
