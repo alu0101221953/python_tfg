@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 from src.modelos import Alumno, Traza, RespuestaAlumno
 from src.database import cargar_alumno, guardar_alumno, eliminar_alumno
 from src.analizador import construir_traza
+from src.bkt import calcular_bkt_alumno, resumen_bkt
 
 load_dotenv()
 
@@ -199,13 +200,27 @@ def responder_ejercicio(payload: RespuestaAlumno):
             },
         }
 
+    # Calcular BKT actualizado
+    bkt     = calcular_bkt_alumno(alumno.trazas)
+    resumen = resumen_bkt(bkt)
+
     return JSONResponse(content={
-        "feedback": feedback,
+        "feedback":           feedback,
         "siguiente_pregunta": sig_data,
-        "fin_banco": siguiente is None,
+        "fin_banco":          siguiente is None,
         "stats": {
-            "intentos": alumno.total_intentos(),
+            "intentos":  alumno.total_intentos(),
             "correctas": alumno.total_correctas(),
             "precision": alumno.precision_global(),
         },
+        "bkt": {
+            str(cat): {
+                "p_dominio":    v["p_dominio"],
+                "dominado":     v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre":       v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
+        "bkt_resumen": resumen,
     })
