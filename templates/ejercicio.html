@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>PyTutor - Ejercicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">    
     <style>
     :root {
         --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;
@@ -33,16 +33,32 @@
  
     /* Card */
     .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px}
- 
+
     /* Loading */
     .loading{display:flex;flex-direction:column;align-items:center;
-            justify-content:center;min-height:200px;gap:12px}
+        justify-content:center;min-height:200px;gap:12px}
     .spinner{width:32px;height:32px;border:2px solid var(--border);
-            border-top-color:var(--accent);border-radius:50%;
-            animation:spin .7s linear infinite}
+        border-top-color:var(--accent);border-radius:50%;
+        animation:spin .7s linear infinite}
     .loading-text{font-size:13px;color:var(--muted)}
-
     @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Badges */
+    .ex-meta{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+    .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
+        text-transform:uppercase;letter-spacing:.5px}
+    .badge-cat{background:rgba(79,195,247,.15);color:var(--accent2);border:1px solid rgba(79,195,247,.25)}
+    .badge-nivel{background:rgba(124,106,247,.15);color:var(--accent);border:1px solid rgba(124,106,247,.25)}
+    .badge-tipo{background:rgba(76,175,125,.1);color:var(--ok);border:1px solid rgba(76,175,125,.2)}
+ 
+    /* Enunciado y código */
+    .ex-enunciado{font-size:16px;line-height:1.6;margin-bottom:18px}
+    .code-block{background:#0a0c12;border:1px solid var(--border);border-radius:8px;
+        padding:18px 20px;margin-bottom:20px;overflow-x:auto}
+    .code-block pre{font-family:var(--mono);font-size:13.5px;line-height:1.7;white-space:pre}
+    .kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#f1fa8c}
+    .num{color:#bd93f9}.cm{color:#6272a4;font-style:italic}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
     </style>
 </head>
 <body>
@@ -55,21 +71,27 @@
     </div>
     
     <div class="main">
-        <div class="card">
-            <div class="loading">
+        <div class="card" id="ejercicio-card">
+            <div class="loading" id="loading-state">
                 <div class="spinner"></div>
                 <div class="loading-text">Cargando ejercicio...</div>
             </div>
+            <div id="ejercicio-content" style="display:none"></div>
         </div>
-    </div>    
+    </div>  
 
     <script>
         const ID_ALUMNO = new URLSearchParams(location.search).get('id_alumno') || '';
+        const CAT_NOMBRES = {
+            1:'Sintaxis', 2:'Indentación', 3:'Variables', 4:'Condicionales',
+            5:'Bucles', 6:'Funciones', 7:'Listas', 8:'Otros'
+        };
+        let preguntaActual = null;
 
         window.addEventListener('DOMContentLoaded', async () => {
             if (!ID_ALUMNO) { location.href = '/'; return; }
             await cargarPerfil();
-
+            await cargarSiguienteEjercicio();
         });
 
         async function cargarPerfil() {
@@ -79,6 +101,74 @@
                 const d = await res.json();
                 document.getElementById('alumno-nombre').textContent = d.nombre;
             } catch(e) { console.error(e); }
+        }
+
+        async function cargarSiguienteEjercicio() {
+            mostrarLoading(true);
+            try {
+                const res  = await fetch(`/api/ejercicio/siguiente?id_alumno=${ID_ALUMNO}`);
+                if (res.status === 404) { location.href = '/'; return; }
+                const data = await res.json();
+                if (data.fin_banco) { mostrarFin(data.mensaje); return; }
+                preguntaActual = data;
+                renderizarEjercicio(data);
+            } catch(e) { console.error(e); }
+            finally { mostrarLoading(false); }
+        }
+
+        function renderizarEjercicio(p) {
+            const esPrediccion = p.tipo === 'prediccion_output';
+            const cont = document.getElementById('ejercicio-content');
+            cont.innerHTML = `
+                <div class="ex-meta">
+                    <span class="badge badge-cat">${CAT_NOMBRES[p.categoria] || 'Cat ' + p.categoria}</span>
+                    <span class="badge badge-nivel">${p.nivel}</span>
+                    <span class="badge badge-tipo">${esPrediccion ? 'Predecir output' : 'Completar código'}</span>
+                </div>
+                <div class="ex-enunciado">${p.enunciado}</div>
+                ${p.codigo ? `<div class="code-block"><pre>${resaltarSintaxis(p.codigo)}</pre></div>` : ''}
+            `;
+            cont.style.display = 'block';
+        }
+
+        function mostrarLoading(show) {
+            document.getElementById('loading-state').style.display = show ? 'flex' : 'none';
+            document.getElementById('ejercicio-content').style.display = show ? 'none' : 'block';
+        }
+
+        function mostrarFin(msg) {
+            document.getElementById('ejercicio-content').innerHTML = `
+                <div style="text-align:center;padding:48px 24px">
+                <div style="font-size:48px;margin-bottom:16px">🎉</div>
+                <div style="font-size:22px;font-weight:600;color:var(--accent);margin-bottom:8px">¡Completado!</div>
+                <div style="font-size:14px;color:var(--muted)">${msg || '¡Has respondido todas las preguntas!'}</div>
+                <button class="btn-sm" style="margin-top:24px;padding:10px 24px"
+                    onclick="location.href='/'">Volver al inicio</button>
+                </div>`;
+            mostrarLoading(false);
+        }
+
+        function resaltarSintaxis(code) {
+            const KW  = /\b(def|return|if|elif|else|for|while|in|not|and|or|import|from|class|pass|break|continue|True|False|None|global|lambda)\b/g;
+            const FN  = /\b(print|input|range|len|int|float|str|list|dict|sum|append|extend|type|sorted|map|filter|enumerate|abs|max|min|round)\b/g;
+            const NUM = /\b(\d+\.?\d*)\b/g;
+            return code.split('\n').map(function(line) {
+                var l = line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                var comment = '';
+                var ci = l.indexOf('#');
+                if (ci !== -1) { comment = '<span class="cm">' + l.slice(ci) + '</span>'; l = l.slice(0, ci); }
+                var strs = [];
+                l = l.replace(/"[^"]*"|'[^']*'/g, function(m) {
+                strs.push('<span class="str">' + m + '</span>');
+                return 'STRPLACEHOLDER';
+                });
+                l = l.replace(KW, '<span class="kw">$1</span>');
+                l = l.replace(FN, '<span class="fn">$1</span>');
+                l = l.replace(NUM, '<span class="num">$1</span>');
+                var idx = 0;
+                l = l.replace(/STRPLACEHOLDER/g, function() { return strs[idx++]; });
+                return l + comment;
+            }).join('\n');
         }
     </script>
 </body>
