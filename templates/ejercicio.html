@@ -29,7 +29,7 @@
     .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
 
     /* Layout */
-    .main{flex:1;max-width:860px;margin:0 auto;width:100%;padding:28px 24px}
+    .main{flex:1}
  
     /* Card */
     .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px}
@@ -42,6 +42,22 @@
         animation:spin .7s linear infinite}
     .loading-text{font-size:13px;color:var(--muted)}
     @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Layout con sidebar */
+    .layout{display:grid;grid-template-columns:1fr 260px;gap:20px;max-width:1100px;margin:0 auto;width:100%;padding:28px 24px}
+
+    /* Sidebar BKT */
+    .sidebar{display:flex;flex-direction:column;gap:12px}
+    .bkt-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+    .bkt-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
+    .bkt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .bkt-name{font-size:12px;color:var(--text);width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bkt-bar-wrap{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+    .bkt-bar{height:100%;border-radius:3px;transition:width .5s ease}
+    .bkt-pct{font-family:var(--mono);font-size:11px;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
+    .bkt-dom{font-size:10px;color:var(--ok);width:12px;flex-shrink:0}
+    .bkt-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0}
 
     /* Badges */
     .ex-meta{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
@@ -126,12 +142,22 @@
     </div>
     
     <div class="main">
-        <div class="card" id="ejercicio-card">
-            <div class="loading" id="loading-state">
-                <div class="spinner"></div>
-                <div class="loading-text">Cargando ejercicio...</div>
+        <div class="layout">
+            <div class="card" id="ejercicio-card">
+                <div class="loading" id="loading-state">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Cargando ejercicio...</div>
+                </div>
+                <div id="ejercicio-content" style="display:none"></div>
             </div>
-            <div id="ejercicio-content" style="display:none"></div>
+            <div class="sidebar">
+                <div class="bkt-card">
+                    <div class="bkt-title">Progreso por categoría</div>
+                    <div id="bkt-rows">
+                        <div class="bkt-empty">Responde ejercicios<br>para ver tu progreso</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>  
 
@@ -254,6 +280,7 @@
             let respuesta = respuestaSeleccionada;
             if (preguntaActual.tipo === 'completar_codigo') {
                 const val = document.getElementById('fill-input')?.value || '';
+                // Para cat. 2 (indentación) preservar espacios iniciales
                 respuesta = preguntaActual.categoria === 2 ? val : val.trim();
                 if (!respuesta.trim()) return;
             }
@@ -274,6 +301,7 @@
                 mostrarFeedback(data.feedback);
                 marcarOpcion(data.feedback.correcta, respuesta);
                 if (data.siguiente_pregunta) preguntaActual = data.siguiente_pregunta;
+                if (data.bkt) actualizarBKT(data.bkt);
             } catch(e) {
                 console.error(e);
                 document.getElementById('btn-responder').disabled = false;
@@ -297,6 +325,25 @@
                 `<span style="color:var(--accent2)">${'·'.repeat(niveles * 4)}</span>${cuerpo}`;
             document.getElementById('fill-input').value = valor;
             document.getElementById('btn-responder').disabled = !cuerpo;
+        }
+
+        const CAT_COLORES = {1:'#f06292',2:'#ff9800',3:'#ffeb3b',4:'#4caf50',5:'#4fc3f7',6:'#7c6af7',7:'#e040fb',8:'#78909c'};
+
+        function actualizarBKT(bkt) {
+            const wrap = document.getElementById('bkt-rows');
+            const cats = Object.keys(bkt).map(Number).sort();
+            if (!cats.length) return;
+            wrap.innerHTML = cats.map(c => {
+                const v   = bkt[c];
+                const pct = Math.round(v.p_dominio * 100);
+                const col = v.dominado ? 'var(--ok)' : (CAT_COLORES[c] || 'var(--accent)');
+                return `<div class="bkt-row">
+                    <span class="bkt-name" title="${v.nombre}">${v.nombre}</span>
+                    <div class="bkt-bar-wrap"><div class="bkt-bar" style="width:${pct}%;background:${col}"></div></div>
+                    <span class="bkt-pct">${pct}%</span>
+                    <span class="bkt-dom">${v.dominado ? '✓' : ''}</span>
+                </div>`;
+            }).join('');
         }
 
         function mostrarFeedback(fb) {
