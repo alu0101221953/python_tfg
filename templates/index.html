@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFG — Inicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;
+            --accent:#7c6af7;--text:#e8eaf0;--muted:#6b7080;
+            --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--bg);color:var(--text);font-family:var(--sans);
+            min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .wrap{width:100%;max-width:420px;padding:24px}
+        .logo{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--accent);margin-bottom:6px}
+        .subtitle{font-size:14px;color:var(--muted);margin-bottom:36px;line-height:1.5}
+        .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px}
+        .card-title{font-size:17px;font-weight:600;margin-bottom:22px}
+        label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+        input{width:100%;background:#0a0c12;border:1px solid var(--border);border-radius:8px;
+                padding:11px 14px;font-family:var(--sans);font-size:14px;color:var(--text);
+                outline:none;margin-bottom:16px;transition:border-color .2s}
+        input:focus{border-color:var(--accent)}
+        .btn{width:100%;background:var(--accent);color:#fff;border:none;padding:12px;
+            border-radius:8px;font-family:var(--sans);font-size:15px;font-weight:600;
+            cursor:pointer;transition:background .2s}
+        .btn:hover{background:#6b59e8}
+        .btn:disabled{opacity:.5;cursor:default}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+    <div class="logo">PyTutor</div>
+    <div class="subtitle">Sistema tutor inteligente para aprender Python básico.<br>Adaptado a tu ritmo de aprendizaje.</div>
+    <div class="card">
+        <div class="card-title">¿Cómo te llamas?</div>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Ej: Víctor" autofocus
+            oninput="document.getElementById('btn-empezar').disabled=!this.value.trim()"
+            onkeydown="if(event.key==='Enter')empezar()">
+        <button class="btn" id="btn-empezar" onclick="empezar()" disabled>Empezar →</button>
+    </div>
+    </div>
+    <script>
+        async function empezar() {
+            const nombre = document.getElementById('nombre').value.trim();
+            if (!nombre) return;
+            document.gelElementById('btn-empezar').disabled = true;
+            try {
+                const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}`, { method: 'POST' });
+                const d = await res.json();
+                location.href = `/ejercicio?id_alumno=${d.id_alumno}`;
+            } catch (e) {
+                document.getElementById('btn-empezar').disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

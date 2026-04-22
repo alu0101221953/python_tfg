@@ -8,8 +8,9 @@ import random
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
 
 from src.modelos import Alumno, Traza, RespuestaAlumno
@@ -18,7 +19,8 @@ from src.analizador import construir_traza
 
 load_dotenv()
 
-app = FastAPI(title="TFG", version="0.1.0")
+app       = FastAPI(title="TFG", version="0.1.0")
+templates = Jinja2Templates(directory="templates")
 
 _banco_cache: list[dict] | None = None
 
@@ -30,12 +32,9 @@ def cargar_banco() -> list[dict]:
     return _banco_cache
 
 
-@app.get("/")
-def index():
-    return JSONResponse(content={
-        "mensaje": "TFG API funcionando",
-        "version": "0.1.0",
-    })
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse(request=request, name="index.html", context={})
 
 
 # ===========================================================================
