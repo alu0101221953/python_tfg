@@ -6,6 +6,18 @@ Define las estructuras principales usando Pydantic para validación automática.
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+# Mapa de categorías de error
+CATEGORIAS = {
+    1: "Sintaxis",
+    2: "Indentación",
+    3: "Variables",
+    4: "Condicionales",
+    5: "Bucles",
+    6: "Funciones",
+    7: "Listas",
+    8: "Otros",
+}
+
 
 class Traza(BaseModel):
     """Registro de una respuesta del alumno a un ejercicio."""
