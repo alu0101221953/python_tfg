@@ -17,10 +17,11 @@ from src.modelos import Alumno, Traza, RespuestaAlumno
 from src.database import cargar_alumno, guardar_alumno, eliminar_alumno
 from src.analizador import construir_traza
 from src.bkt import calcular_bkt_alumno, resumen_bkt
+from src.recomendador import seleccionar_siguiente_pregunta, cargar_banco as cargar_banco_recomendador
 
 load_dotenv()
 
-app       = FastAPI(title="TFG", version="0.1.0")
+app = FastAPI(title="PyTutor", version="0.1.0")
 templates = Jinja2Templates(directory="templates")
 
 _banco_cache: list[dict] | None = None
@@ -123,19 +124,17 @@ def siguiente_ejercicio(id_alumno: str):
     datos = cargar_alumno(id_alumno)
     if datos is None:
         return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-
+    
     alumno = Alumno(**datos)
-    vistas = alumno.preguntas_vistas()
     banco = cargar_banco()
-    disponibles = [p for p in banco if p["id"] not in vistas]
-
-    if not disponibles:
+    vistas = alumno.preguntas_vistas()
+    pregunta = seleccionar_siguiente_pregunta(alumno)
+ 
+    if pregunta is None:
         return JSONResponse(content={
             "fin_banco": True,
             "mensaje": "¡Has respondido todas las preguntas! Vuelve más tarde.",
         })
-
-    pregunta = random.choice(disponibles)
     return JSONResponse(content={
         "id": pregunta["id"],
         "categoria": pregunta["categoria"],
@@ -175,11 +174,10 @@ def responder_ejercicio(payload: RespuestaAlumno):
     alumno.trazas.append(Traza(**traza_dict))
     guardar_alumno(alumno)
 
-    # Siguiente pregunta aleatoria
+    # Siguiente pregunta adaptativa (BKT)
+    siguiente = seleccionar_siguiente_pregunta(alumno)
     vistas = alumno.preguntas_vistas()
     banco = cargar_banco()
-    disponibles = [p for p in banco if p["id"] not in vistas]
-    siguiente = random.choice(disponibles) if disponibles else None
 
     sig_data = None
     if siguiente:
