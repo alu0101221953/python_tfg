@@ -18,6 +18,7 @@ from src.database import cargar_alumno, guardar_alumno, eliminar_alumno
 from src.analizador import construir_traza
 from src.bkt import calcular_bkt_alumno, resumen_bkt
 from src.recomendador import seleccionar_siguiente_pregunta, cargar_banco as cargar_banco_recomendador
+from src.gamificacion import PerfilGamificacion, actualizar_gamificacion
 
 load_dotenv()
 
@@ -124,12 +125,10 @@ def siguiente_ejercicio(id_alumno: str):
     datos = cargar_alumno(id_alumno)
     if datos is None:
         return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-    
     alumno = Alumno(**datos)
     banco = cargar_banco()
     vistas = alumno.preguntas_vistas()
     pregunta = seleccionar_siguiente_pregunta(alumno)
- 
     if pregunta is None:
         return JSONResponse(content={
             "fin_banco": True,
@@ -172,6 +171,12 @@ def responder_ejercicio(payload: RespuestaAlumno):
         payload.tiempo,
     )
     alumno.trazas.append(Traza(**traza_dict))
+
+    # Actualizar gamificación
+    gami = PerfilGamificacion(**alumno.gamificacion)
+    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"])
+    alumno.gamificacion = gami.model_dump()
+
     guardar_alumno(alumno)
 
     # Siguiente pregunta adaptativa (BKT)
@@ -203,20 +208,22 @@ def responder_ejercicio(payload: RespuestaAlumno):
     resumen = resumen_bkt(bkt)
 
     return JSONResponse(content={
-        "feedback":           feedback,
+        "feedback": feedback,
         "siguiente_pregunta": sig_data,
-        "fin_banco":          siguiente is None,
+        "fin_banco": siguiente is None,
+        "gamificacion": alumno.gamificacion,
+        "eventos": eventos,
         "stats": {
-            "intentos":  alumno.total_intentos(),
+            "intentos": alumno.total_intentos(),
             "correctas": alumno.total_correctas(),
             "precision": alumno.precision_global(),
         },
         "bkt": {
             str(cat): {
-                "p_dominio":    v["p_dominio"],
-                "dominado":     v["dominado"],
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
                 "num_intentos": v["num_intentos"],
-                "nombre":       v["nombre"],
+                "nombre": v["nombre"],
             }
             for cat, v in bkt.items()
         },
