@@ -1,5 +1,5 @@
 """
-Modelos de datos.
+Modelos de datos de PyTutor.
 Define las estructuras principales usando Pydantic para validación automática.
 """
 
@@ -38,6 +38,7 @@ class Alumno(BaseModel):
     id_alumno: str
     nombre: str
     trazas: list[Traza] = []
+    gamificacion: dict = Field(default_factory=lambda: {"puntos": 0, "nivel": 1, "racha_actual": 0, "racha_maxima": 0})
     fecha_registro: str = Field(
         default_factory=lambda: datetime.now().isoformat()
     )
