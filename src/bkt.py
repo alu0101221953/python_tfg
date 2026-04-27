@@ -12,10 +12,10 @@ Parámetros del modelo:
   P(S)  — probabilidad de fallar sabiendo (slip)
 """
 
-P_L0 = 0.10   # conocimiento inicial
-P_T  = 0.20   # probabilidad de transición (aprendizaje)
-P_G  = 0.20   # probabilidad de acierto por azar
-P_S  = 0.10   # probabilidad de error al saber
+P_L0 = 0.10  # conocimiento inicial
+P_T = 0.20   # probabilidad de transición (aprendizaje)
+P_G = 0.20   # probabilidad de acierto por azar
+P_S = 0.10   # probabilidad de error al saber
 
 UMBRAL_DOMINIO = 0.80   # a partir de este valor se considera dominada
 
@@ -37,14 +37,14 @@ def actualizar_dominio(p_dominio: float, correcta: bool) -> float:
         Nueva probabilidad de dominio [0, 1]
     """
     if correcta:
-        p_correcto_conoce    = 1 - P_S
+        p_correcto_conoce = 1 - P_S
         p_correcto_no_conoce = P_G
     else:
-        p_correcto_conoce    = P_S
+        p_correcto_conoce = P_S
         p_correcto_no_conoce = 1 - P_G
 
     # Posterior: P(conoce | respuesta)
-    numerador   = p_correcto_conoce * p_dominio
+    numerador = p_correcto_conoce * p_dominio
     denominador = numerador + p_correcto_no_conoce * (1 - p_dominio)
 
     if denominador == 0:
@@ -88,14 +88,14 @@ def calcular_bkt_alumno(trazas: list) -> dict:
 
         if cat not in estado:
             estado[cat] = {
-                "p_dominio":    P_L0,
-                "dominado":     False,
+                "p_dominio": P_L0,
+                "dominado": False,
                 "num_intentos": 0,
-                "nombre":       CATEGORIAS.get(cat, f"Cat {cat}"),
+                "nombre": CATEGORIAS.get(cat, f"Cat {cat}"),
             }
 
-        estado[cat]["p_dominio"]    = actualizar_dominio(estado[cat]["p_dominio"], correcta)
-        estado[cat]["dominado"]     = estado[cat]["p_dominio"] >= UMBRAL_DOMINIO
+        estado[cat]["p_dominio"] = actualizar_dominio(estado[cat]["p_dominio"], correcta)
+        estado[cat]["dominado"] = estado[cat]["p_dominio"] >= UMBRAL_DOMINIO
         estado[cat]["num_intentos"] += 1
 
     return estado
@@ -115,17 +115,17 @@ def resumen_bkt(bkt: dict) -> dict:
     """
     from src.modelos import CATEGORIAS
 
-    todas        = set(CATEGORIAS.keys())
-    con_datos    = set(bkt.keys())
-    sin_datos    = sorted(todas - con_datos)
+    todas = set(CATEGORIAS.keys())
+    con_datos = set(bkt.keys())
+    sin_datos = sorted(todas - con_datos)
 
-    dominadas    = sorted([c for c, v in bkt.items() if v["dominado"]])
-    en_progreso  = sorted([c for c, v in bkt.items() if 0.50 <= v["p_dominio"] < UMBRAL_DOMINIO])
-    dificultad   = sorted([c for c, v in bkt.items() if v["p_dominio"] < 0.50])
+    dominadas = sorted([c for c, v in bkt.items() if v["dominado"]])
+    en_progreso = sorted([c for c, v in bkt.items() if 0.50 <= v["p_dominio"] < UMBRAL_DOMINIO])
+    dificultad = sorted([c for c, v in bkt.items() if v["p_dominio"] < 0.50])
 
     return {
-        "dominadas":   dominadas,
+        "dominadas": dominadas,
         "en_progreso": en_progreso,
-        "dificultad":  dificultad,
-        "sin_datos":   sin_datos,
+        "dificultad": dificultad,
+        "sin_datos": sin_datos,
     }

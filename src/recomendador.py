@@ -46,8 +46,8 @@ def _candidatas(cat: int, nivel: str, vistas: set) -> list[dict]:
     return [
         p for p in banco
         if p["categoria"] == cat
-        and p["nivel"]     == nivel
-        and p["id"]        not in vistas
+        and p["nivel"] == nivel
+        and p["id"] not in vistas
     ]
 
 
@@ -61,22 +61,22 @@ def seleccionar_siguiente_pregunta(alumno) -> dict | None:
     Returns:
         Dict con los datos de la pregunta, o None si no hay disponibles
     """
-    banco  = cargar_banco()
+    banco = cargar_banco()
     vistas = alumno.preguntas_vistas()
-    bkt    = calcular_bkt_alumno(alumno.trazas)
+    bkt = calcular_bkt_alumno(alumno.trazas)
     resumen = resumen_bkt(bkt)
 
     # Orden de prioridad de categorías
     orden = (
-        resumen["dificultad"]   +   # 1. refuerzo urgente
-        resumen["en_progreso"]  +   # 2. consolidación
-        resumen["sin_datos"]    +   # 3. exploración
+        resumen["dificultad"] +     # 1. refuerzo urgente
+        resumen["en_progreso"] +    # 2. consolidación
+        resumen["sin_datos"] +      # 3. exploración
         resumen["dominadas"]        # 4. repaso
     )
 
     for cat in orden:
         p_dominio = bkt.get(cat, {}).get("p_dominio", P_L0)
-        nivel     = _nivel_por_dominio(p_dominio)
+        nivel = _nivel_por_dominio(p_dominio)
 
         # Intentar con el nivel apropiado
         candidatas = _candidatas(cat, nivel, vistas)

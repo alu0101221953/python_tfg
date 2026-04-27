@@ -204,7 +204,7 @@ def responder_ejercicio(payload: RespuestaAlumno):
         }
 
     # Calcular BKT actualizado
-    bkt     = calcular_bkt_alumno(alumno.trazas)
+    bkt = calcular_bkt_alumno(alumno.trazas)
     resumen = resumen_bkt(bkt)
 
     return JSONResponse(content={

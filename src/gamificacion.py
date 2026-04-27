@@ -19,10 +19,10 @@ from pydantic import BaseModel, Field
 
 class PerfilGamificacion(BaseModel):
     """Estado de gamificación de un alumno."""
-    puntos:        int = 0
-    nivel:         int = 1
-    racha_actual:  int = 0
-    racha_maxima:  int = 0
+    puntos: int = 0
+    nivel: int = 1
+    racha_actual: int = 0
+    racha_maxima: int = 0
 
 
 def calcular_nivel(puntos: int) -> int:
@@ -75,9 +75,9 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool) -> tuple[P
         gami.racha_maxima = gami.racha_actual
 
     # Actualizar puntos y nivel
-    nivel_antes    = gami.nivel
-    gami.puntos   += puntos_ganados
-    gami.nivel     = calcular_nivel(gami.puntos)
+    nivel_antes = gami.nivel
+    gami.puntos += puntos_ganados
+    gami.nivel = calcular_nivel(gami.puntos)
 
     eventos.append(f"+{puntos_ganados} puntos")
 

@@ -6,7 +6,7 @@ Estrategia: un fichero JSON por alumno en data/alumnos/<id>.json
 import os
 import json
 
-BASE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALUMNOS_DIR = os.path.join(BASE_DIR, "data", "alumnos")
 
 
