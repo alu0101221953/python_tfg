@@ -371,7 +371,7 @@
       "enunciado": "Corrige el código para que funcione correctamente. ¿Cómo debes tratar la variable numero?",
       "codigo": "numero = input('Introduce un número: ')\nresultado = ___ + 10\nprint(resultado)",
       "hueco": "___",
-      "respuesta_correcta": "int(numero) + 10",
+      "respuesta_correcta": "int(numero)",
       "error_asociado": "3.3",
       "explicacion": "input() siempre devuelve un string. Hay que convertirlo con int() para operar con él.",
       "pista": "¿Qué tipo devuelve siempre la función input()?"
