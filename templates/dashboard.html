@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyTutor - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
     :root {
         --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;
@@ -86,6 +87,22 @@
                 <div id="bkt-content"></div>
             </div>
         </div>
+
+            <!-- Evolución temporal -->
+            <div class="section">
+                <div class="section-title">Evolución temporal</div>
+                <div id="evolucion-empty" style="display:none;font-size:13px;color:var(--muted)">
+                    Aún no hay suficientes datos para mostrar la evolución.
+                </div>
+                <canvas id="chart-evolucion" height="100"></canvas>
+            </div>
+
+            <!-- Insignias -->
+            <div class="section">
+                <div class="section-title">Insignias</div>
+                <div id="insignias-content"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -117,8 +134,100 @@
             // BKT
             renderizarBKT(data.bkt);
 
-            document.getElementById('loading-state').style.display = 'none';
+            // Evolución
+            renderizarEvolucion(data.evolucion || []);
+
+            // Insignias
+            renderizarInsignias(data.gamificacion?.insignias || []);
+
+            document.getElementById('loading-state').style.display    = 'none';
             document.getElementById('dashboard-content').style.display = 'block';
+        }
+
+        let chartEvolucion = null;
+
+        function renderizarEvolucion(evolucion) {
+            if (evolucion.length < 2) {
+                document.getElementById('evolucion-empty').style.display = 'block';
+                document.getElementById('chart-evolucion').style.display = 'none';
+                return;
+            }
+            const labels = evolucion.map(e => e.dia);
+            const precision = evolucion.map(e => e.precision);
+            const intentos = evolucion.map(e => e.intentos);
+
+            if (chartEvolucion) chartEvolucion.destroy();
+            chartEvolucion = new Chart(document.getElementById('chart-evolucion'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Precisión (%)',
+                            data: precision,
+                            borderColor: '#7c6af7',
+                            backgroundColor: 'rgba(124,106,247,.1)',
+                            tension: .3,
+                            fill: true,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Ejercicios',
+                            data: intentos,
+                            borderColor: '#4fc3f7',
+                            backgroundColor: 'transparent',
+                            tension: .3,
+                            borderDash: [4, 4],
+                            yAxisID: 'y1',
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { labels: { color: '#6b7080', font: { family: 'DM Sans' } } } },
+                    scales: {
+                        x: { ticks: { color: '#6b7080' }, grid: { color: '#2a2d3a' } },
+                        y: { min: 0, max: 100, ticks: { color: '#6b7080', callback: v => v + '%' }, grid: { color: '#2a2d3a' }, position: 'left' },
+                        y1: { min: 0, ticks: { color: '#4fc3f7' }, grid: { display: false }, position: 'right' },
+                    },
+                },
+            });
+        }
+
+        const INSIGNIA_DEF = {
+            'primer_acierto': { icon: '🏅', nombre: 'Primer acierto', desc: 'Primera respuesta correcta' },
+            'racha_3': { icon: '🔥', nombre: 'Racha de 3', desc: '3 aciertos consecutivos' },
+            'racha_5': { icon: '🔥', nombre: 'Racha de 5', desc: '5 aciertos consecutivos' },
+            'racha_10': { icon: '🔥', nombre: 'Racha de 10', desc: '10 aciertos consecutivos' },
+            'nivel_2': { icon: '⬆️', nombre: 'Nivel 2', desc: 'Alcanzar el nivel 2' },
+            'nivel_5': { icon: '⬆️', nombre: 'Nivel 5', desc: 'Alcanzar el nivel 5' },
+            'nivel_10': { icon: '⬆️', nombre: 'Nivel 10', desc: 'Alcanzar el nivel 10' },
+            '10_correctas': { icon: '✅', nombre: '10 correctas', desc: '10 respuestas correctas' },
+            '25_correctas': { icon: '✅', nombre: '25 correctas', desc: '25 respuestas correctas' },
+            '50_correctas': { icon: '✅', nombre: '50 correctas', desc: '50 respuestas correctas' },
+        };
+        const CAT_NOMBRES_INS = {1:'Sintaxis',2:'Indentación',3:'Variables',4:'Condicionales',5:'Bucles',6:'Funciones',7:'Listas',8:'Otros'};
+
+        function renderizarInsignias(insignias) {
+            const wrap = document.getElementById('insignias-content');
+            if (!insignias.length) {
+                wrap.innerHTML = '<p style="font-size:13px;color:var(--muted)">Aún no has desbloqueado ninguna insignia. ¡Sigue practicando!</p>';
+                return;
+            }
+            wrap.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:12px">
+                ${insignias.map(ins => {
+                    const cat = ins.match(/domina_cat_(\d+)/);
+                    const def = cat
+                        ? { icon: '🏆', nombre: `Dominas ${CAT_NOMBRES_INS[cat[1]] || 'categoría'}`, desc: 'Categoría dominada' }
+                        : (INSIGNIA_DEF[ins] || { icon: '🏅', nombre: ins, desc: '' });
+                    return `<div style="background:rgba(255,213,79,.06);border:1px solid rgba(255,213,79,.2);border-radius:10px;padding:14px 18px;text-align:center;min-width:110px">
+                        <div style="font-size:28px;margin-bottom:6px">${def.icon}</div>
+                        <div style="font-size:12px;font-weight:600;color:#ffd54f">${def.nombre}</div>
+                        <div style="font-size:11px;color:var(--muted);margin-top:2px">${def.desc}</div>
+                    </div>`;
+                }).join('')}
+            </div>`;
         }
 
         const CAT_COLORES = {1:'#f06292',2:'#ff9800',3:'#ffeb3b',4:'#4caf50',5:'#4fc3f7',6:'#7c6af7',7:'#e040fb',8:'#78909c'};
