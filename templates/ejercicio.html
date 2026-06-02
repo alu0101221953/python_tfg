@@ -42,6 +42,11 @@
         animation:spin .7s linear infinite}
     .loading-text{font-size:13px;color:var(--muted)}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .toasts-wrap{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:100;pointer-events:none}
+    .toast{background:var(--surface);border:1px solid var(--accent);color:var(--accent);padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:var(--sans);animation:toastIn .3s ease,toastOut .3s ease 2.2s forwards}
+    .toast.insignia{border-color:#ffd54f;color:#ffd54f;background:rgba(255,213,79,.08)}
+    @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
     @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
     /* Layout con sidebar */
@@ -167,6 +172,8 @@
             </div>
         </div>
     </div>  
+
+    <div class="toasts-wrap" id="toasts-wrap"></div>
 
     <script>
         const ID_ALUMNO = new URLSearchParams(location.search).get('id_alumno') || '';
@@ -310,6 +317,7 @@
                 if (data.siguiente_pregunta) preguntaActual = data.siguiente_pregunta;
                 if (data.bkt) actualizarBKT(data.bkt);
                 if (data.gamificacion) actualizarTopbar(data.gamificacion);
+                if (data.eventos) mostrarEventos(data.eventos);
             } catch(e) {
                 console.error(e);
                 document.getElementById('btn-responder').disabled = false;
@@ -333,6 +341,50 @@
                 `<span style="color:var(--accent2)">${'·'.repeat(niveles * 4)}</span>${cuerpo}`;
             document.getElementById('fill-input').value = valor;
             document.getElementById('btn-responder').disabled = !cuerpo;
+        }
+
+        const INSIGNIA_NOMBRES = {
+            'primer_acierto': '🏅 ¡Primer acierto!',
+            'racha_3': '🔥 ¡Racha de 3!',
+            'racha_5': '🔥 ¡Racha de 5!',
+            'racha_10': '🔥 ¡Racha de 10!',
+            'nivel_2': '⬆️ ¡Nivel 2!',
+            'nivel_5': '⬆️ ¡Nivel 5!',
+            'nivel_10': '⬆️ ¡Nivel 10!',
+            '10_correctas': '✅ ¡10 correctas!',
+            '25_correctas': '✅ ¡25 correctas!',
+            '50_correctas': '✅ ¡50 correctas!',
+        };
+
+        function mostrarEventos(eventos) {
+            const wrap = document.getElementById('toasts-wrap');
+            eventos.forEach((ev, i) => {
+                setTimeout(() => {
+                    const toast = document.createElement('div');
+                    const esInsignia = ev.startsWith('insignia:');
+                    toast.className = 'toast' + (esInsignia ? ' insignia' : '');
+                    if (esInsignia) {
+                        const nombre = ev.replace('insignia:', '');
+                        const cat = nombre.match(/domina_cat_(\d+)/);
+                        const CATS = {1:'Sintaxis',2:'Indentación',3:'Variables',4:'Condicionales',5:'Bucles',6:'Funciones',7:'Listas',8:'Otros'};
+                        toast.textContent = cat
+                            ? `🏆 ¡Dominas ${CATS[cat[1]] || 'la categoría'}!`
+                            : (INSIGNIA_NOMBRES[nombre] || `🏅 ${nombre}`);
+                    } else if (ev.startsWith('+') && ev.includes('puntos')) {
+                        toast.textContent = `✨ ${ev}`;
+                    } else if (ev.startsWith('racha_')) {
+                        const n = ev.replace('racha_', '');
+                        toast.textContent = `🔥 ¡Racha de ${n}!`;
+                    } else if (ev.startsWith('nivel_')) {
+                        const n = ev.replace('nivel_', '');
+                        toast.textContent = `⬆️ ¡Nivel ${n}!`;
+                    } else {
+                        toast.textContent = ev;
+                    }
+                    wrap.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2700);
+                }, i * 400);
+            });
         }
 
         function actualizarTopbar(gami) {

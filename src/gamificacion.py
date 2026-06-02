@@ -23,6 +23,7 @@ class PerfilGamificacion(BaseModel):
     nivel: int = 1
     racha_actual: int = 0
     racha_maxima: int = 0
+    insignias: list[str] = []
 
 
 def calcular_nivel(puntos: int) -> int:
@@ -38,6 +39,43 @@ def puntos_siguiente_nivel(puntos: int, nivel: int) -> int:
     """Devuelve los puntos que faltan para el siguiente nivel."""
     acumulado = sum(n * 100 for n in range(1, nivel))
     return nivel * 100 - (puntos - acumulado)
+
+
+def comprobar_insignias(gami: PerfilGamificacion, total_correctas: int, categorias_dominadas: list[int]) -> list[str]:
+    """
+    Comprueba si el alumno ha desbloqueado nuevas insignias.
+
+    Insignias disponibles:
+      - primer_acierto — primera respuesta correcta
+      - racha_3/5/10 — rachas de aciertos consecutivos
+      - nivel_2/5/10 — alcanzar niveles
+      - 10/25/50_correctas — hitos de respuestas correctas
+      - domina_cat_N — dominar una categoría (N = 1..8)
+    """
+    nuevas = []
+
+    def desbloquear(nombre):
+        if nombre not in gami.insignias:
+            gami.insignias.append(nombre)
+            nuevas.append(nombre)
+
+    if total_correctas >= 1: desbloquear('primer_acierto')
+    if total_correctas >= 10: desbloquear('10_correctas')
+    if total_correctas >= 25: desbloquear('25_correctas')
+    if total_correctas >= 50: desbloquear('50_correctas')
+
+    if gami.racha_maxima >= 3: desbloquear('racha_3')
+    if gami.racha_maxima >= 5: desbloquear('racha_5')
+    if gami.racha_maxima >= 10: desbloquear('racha_10')
+
+    if gami.nivel >= 2: desbloquear('nivel_2')
+    if gami.nivel >= 5: desbloquear('nivel_5')
+    if gami.nivel >= 10: desbloquear('nivel_10')
+
+    for cat in categorias_dominadas:
+        desbloquear(f'domina_cat_{cat}')
+
+    return nuevas
 
 
 def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool) -> tuple[PerfilGamificacion, list[str]]:

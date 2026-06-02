@@ -18,7 +18,7 @@ from src.database import cargar_alumno, guardar_alumno, eliminar_alumno
 from src.analizador import construir_traza
 from src.bkt import calcular_bkt_alumno, resumen_bkt
 from src.recomendador import seleccionar_siguiente_pregunta, cargar_banco as cargar_banco_recomendador
-from src.gamificacion import PerfilGamificacion, actualizar_gamificacion
+from src.gamificacion import PerfilGamificacion, actualizar_gamificacion, comprobar_insignias
 
 load_dotenv()
 
@@ -42,6 +42,10 @@ def index(request: Request):
 @app.get("/ejercicio", response_class=HTMLResponse)
 def ejercicio(request: Request):
     return templates.TemplateResponse(request=request, name="ejercicio.html", context={})
+
+@app.get("/dashboard", response_class=HTMLResponse)
+def dashboard(request: Request):
+    return templates.TemplateResponse(request=request, name="dashboard.html", context={})
 
 # ===========================================================================
 # API — Banco
@@ -229,3 +233,71 @@ def responder_ejercicio(payload: RespuestaAlumno):
         },
         "bkt_resumen": resumen,
     })
+
+# ===========================================================================
+# API — Dashboard
+# ===========================================================================
+ 
+@app.get("/api/dashboard/{id_alumno}")
+def dashboard_alumno(id_alumno: str):
+    """Devuelve el diagnóstico completo del alumno."""
+    from collections import defaultdict, Counter
+ 
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
+ 
+    alumno = Alumno(**datos)
+    bkt = calcular_bkt_alumno(alumno.trazas)
+    resumen = resumen_bkt(bkt)
+ 
+    # Evolución temporal agrupada por día
+    por_dia: dict = defaultdict(lambda: {"intentos": 0, "correctas": 0})
+    for t in alumno.trazas:
+        dia = t.timestamp[:10]
+        por_dia[dia]["intentos"] += 1
+        por_dia[dia]["correctas"] += int(t.correcta)
+ 
+    evolucion = [
+        {
+            "dia": dia,
+            "intentos": v["intentos"],
+            "correctas": v["correctas"],
+            "precision": round(v["correctas"] / v["intentos"] * 100) if v["intentos"] else 0,
+        }
+        for dia, v in sorted(por_dia.items())
+    ]
+ 
+    # Errores más frecuentes por subcategoría
+    errores = Counter(
+        t.subcategoria for t in alumno.trazas
+        if not t.correcta and t.subcategoria
+    )
+    errores_top = [
+        {"subcategoria": sub, "frecuencia": freq}
+        for sub, freq in errores.most_common(5)
+    ]
+ 
+    return JSONResponse(content={
+        "id_alumno": alumno.id_alumno,
+        "nombre": alumno.nombre,
+        "stats": {
+            "intentos": alumno.total_intentos(),
+            "correctas": alumno.total_correctas(),
+            "precision": alumno.precision_global(),
+        },
+        "gamificacion": alumno.gamificacion,
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre": v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
+        "bkt_resumen": resumen,
+        "evolucion": evolucion,
+        "errores_top": errores_top,
+    })
+ 

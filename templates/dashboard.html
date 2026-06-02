@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTutor - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;
+        --accent:#7c6af7;--accent2:#4fc3f7;--ok:#4caf7d;--fail:#f06292;
+        --text:#e8eaf0;--muted:#6b7080;
+        --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+
+    /* Topbar */
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface)}
+    .logo{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--accent)}
+    .topbar-right{display:flex;align-items:center;gap:16px}
+    .alumno-badge{background:var(--border);padding:4px 12px;border-radius:20px;font-size:13px;color:var(--muted)}
+    .btn-sm{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+    .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* Layout */
+    .main{flex:1;max-width:1000px;margin:0 auto;width:100%;padding:28px 24px}
+
+    /* Métricas */
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+    .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+    .metric-val{font-family:var(--mono);font-size:28px;font-weight:600;color:var(--accent);margin-bottom:4px}
+    .metric-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+    /* Sección genérica */
+    .section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:16px}
+
+    /* Loading */
+    .loading{display:flex;align-items:center;justify-content:center;min-height:200px;gap:12px;flex-direction:column}
+    .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <span class="logo">PyTutor</span>
+        <div class="topbar-right">
+            <span class="alumno-badge" id="alumno-nombre">Cargando...</span>
+            <button class="btn-sm" onclick="location.href='/ejercicio?id_alumno='+ID_ALUMNO">Practicar</button>
+            <button class="btn-sm" onclick="location.href='/'">Salir</button>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="loading" id="loading-state">
+            <div class="spinner"></div>
+            <div style="font-size:13px;color:var(--muted)">Cargando diagnóstico...</div>
+        </div>
+
+        <div id="dashboard-content" style="display:none">
+            <!-- Métricas -->
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-val" id="m-intentos">—</div>
+                    <div class="metric-lbl">Ejercicios</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="m-precision">—</div>
+                    <div class="metric-lbl">Precisión</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="m-puntos">—</div>
+                    <div class="metric-lbl">Puntos</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="m-nivel">—</div>
+                    <div class="metric-lbl">Nivel</div>
+                </div>
+            </div>
+
+            <!-- BKT -->
+            <div class="section">
+                <div class="section-title">Progreso por categoría</div>
+                <div id="bkt-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ID_ALUMNO = new URLSearchParams(location.search).get('id_alumno') || '';
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (!ID_ALUMNO) { location.href = '/'; return; }
+            await cargarDashboard();
+        });
+
+        async function cargarDashboard() {
+            try {
+                const res = await fetch(`/api/dashboard/${ID_ALUMNO}`);
+                if (!res.ok) { location.href = '/'; return; }
+                const data = await res.json();
+                renderizarDashboard(data);
+            } catch(e) { console.error(e); }
+        }
+
+        function renderizarDashboard(data) {
+            document.getElementById('alumno-nombre').textContent = data.nombre;
+
+            // Métricas
+            document.getElementById('m-intentos').textContent = data.stats.intentos;
+            document.getElementById('m-precision').textContent = data.stats.precision + '%';
+            document.getElementById('m-puntos').textContent = data.gamificacion.puntos;
+            document.getElementById('m-nivel').textContent = 'Nv. ' + data.gamificacion.nivel;
+
+            // BKT
+            renderizarBKT(data.bkt);
+
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+        }
+
+        const CAT_COLORES = {1:'#f06292',2:'#ff9800',3:'#ffeb3b',4:'#4caf50',5:'#4fc3f7',6:'#7c6af7',7:'#e040fb',8:'#78909c'};
+
+        function renderizarBKT(bkt) {
+            const cats = Object.keys(bkt).map(Number).sort();
+            if (!cats.length) {
+                document.getElementById('bkt-content').innerHTML =
+                    '<p style="color:var(--muted);font-size:13px">Aún no hay datos de progreso.</p>';
+                return;
+            }
+            document.getElementById('bkt-content').innerHTML = cats.map(c => {
+                const v = bkt[c];
+                const pct = Math.round(v.p_dominio * 100);
+                const col = v.dominado ? 'var(--ok)' : (CAT_COLORES[c] || 'var(--accent)');
+                return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                    <span style="width:100px;font-size:13px;color:var(--text)">${v.nombre}</span>
+                    <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+                        <div style="width:${pct}%;height:100%;background:${col};border-radius:4px;transition:width .5s ease"></div>
+                    </div>
+                    <span style="font-family:var(--mono);font-size:12px;color:var(--muted);width:36px;text-align:right">${pct}%</span>
+                    <span style="font-size:12px;color:var(--ok);width:14px">${v.dominado ? '✓' : ''}</span>
+                </div>`;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
