@@ -179,8 +179,14 @@ def responder_ejercicio(payload: RespuestaAlumno):
     # Actualizar gamificación
     gami = PerfilGamificacion(**alumno.gamificacion)
     gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"])
-    alumno.gamificacion = gami.model_dump()
 
+    # Comprobar insignias
+    bkt_temp = calcular_bkt_alumno(alumno.trazas)
+    cats_dominadas = [c for c, v in bkt_temp.items() if v["dominado"]]
+    nuevas_insignias = comprobar_insignias(gami, alumno.total_correctas(), cats_dominadas)
+    eventos += [f"insignia:{ins}" for ins in nuevas_insignias]
+
+    alumno.gamificacion = gami.model_dump()
     guardar_alumno(alumno)
 
     # Siguiente pregunta adaptativa (BKT)
@@ -300,4 +306,3 @@ def dashboard_alumno(id_alumno: str):
         "evolucion": evolucion,
         "errores_top": errores_top,
     })
- 
