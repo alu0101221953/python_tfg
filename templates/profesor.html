@@ -39,6 +39,12 @@
     .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px}
     .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Métricas */
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+    .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+    .metric-val{font-family:var(--mono);font-size:28px;font-weight:600;color:var(--accent);margin-bottom:4px}
+    .metric-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
     </style>
 </head>
 <body>
@@ -85,13 +91,42 @@
                     document.getElementById('btn-acceder').disabled = false;
                     return;
                 }
+                const data = await res.json();
                 claveActual = clave;
-                document.getElementById('login-wrap').style.display  = 'none';
-                document.getElementById('panel-wrap').style.display  = 'block';
+                document.getElementById('login-wrap').style.display = 'none';
+                document.getElementById('panel-wrap').style.display = 'block';
+                renderizarPanel(data);
             } catch(e) {
                 console.error(e);
                 document.getElementById('btn-acceder').disabled = false;
             }
+        }
+        function renderizarPanel(data) {
+            const alumnos = data.alumnos || [];
+            const totalEjercicios = alumnos.reduce((s, a) => s + a.intentos, 0);
+            const precMedia = alumnos.length
+                ? Math.round(alumnos.reduce((s, a) => s + a.precision, 0) / alumnos.length)
+                : 0;
+
+            document.getElementById('panel-content').innerHTML = `
+                <div class="metrics">
+                    <div class="metric-card">
+                        <div class="metric-val">${data.total_alumnos}</div>
+                        <div class="metric-lbl">Alumnos registrados</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-val">${precMedia}%</div>
+                        <div class="metric-lbl">Precisión media</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-val">${totalEjercicios}</div>
+                        <div class="metric-lbl">Ejercicios totales</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('panel-content').style.display = 'block';
         }
     </script>
 </body>
