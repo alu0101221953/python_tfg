@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyTutor - Panel del Profesor</title>
+    <title>Panel del Profesor</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -40,6 +40,19 @@
     .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    /* Tabla alumnos */
+    .section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:16px}
+    .tabla{width:100%;border-collapse:collapse}
+    .tabla th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .tabla td{padding:12px;border-bottom:1px solid rgba(42,45,58,.5);font-size:13px;vertical-align:middle}
+    .tabla tr:last-child td{border-bottom:none}
+    .tabla tr:hover td{background:rgba(124,106,247,.04)}
+    .nombre-btn{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:13px;font-family:var(--sans);text-decoration:underline;padding:0}
+    .nombre-btn:hover{color:var(--accent)}
+    .bkt-mini{display:flex;gap:3px;align-items:center}
+    .bkt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
     /* Métricas */
     .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
     .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
@@ -50,7 +63,7 @@
 <body>
 
     <div class="topbar">
-        <span class="logo">PyTutor — Panel del Profesor</span>
+        <span class="logo">Panel del Profesor</span>
         <button class="btn-sm" onclick="location.href='/'">Volver al inicio</button>
     </div>
 
@@ -122,6 +135,42 @@
                         <div class="metric-val">${totalEjercicios}</div>
                         <div class="metric-lbl">Ejercicios totales</div>
                     </div>
+                </div>
+            `;
+
+            const CAT_COLORES = {1:'#f06292',2:'#ff9800',3:'#ffeb3b',4:'#4caf50',5:'#4fc3f7',6:'#7c6af7',7:'#e040fb',8:'#78909c'};
+            const filas = alumnos.map(a => {
+                const bktDots = Object.entries(a.bkt || {}).sort((x,y) => x[0]-y[0]).map(([cat, v]) => {
+                    const col = v.dominado ? 'var(--ok)' : (CAT_COLORES[cat] || 'var(--muted)');
+                    const pct = Math.round(v.p_dominio * 100);
+                    return `<div class="bkt-dot" style="background:${col}" title="${v.nombre}: ${pct}%"></div>`;
+                }).join('');
+                return `<tr>
+                    <td><button class="nombre-btn" onclick="location.href='/dashboard?id_alumno=${a.id_alumno}'">${a.nombre}</button></td>
+                    <td>${a.intentos}</td>
+                    <td>${a.precision}%</td>
+                    <td>${a.puntos} pts</td>
+                    <td style="color:var(--muted)">${a.ultima}</td>
+                    <td><div class="bkt-mini">${bktDots || '<span style="color:var(--muted);font-size:11px">sin datos</span>'}</div></td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('panel-content').innerHTML += `
+                <div class="section">
+                    <div class="section-title">Alumnos</div>
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Ejercicios</th>
+                                <th>Precisión</th>
+                                <th>Puntos</th>
+                                <th>Última actividad</th>
+                                <th>Progreso BKT</th>
+                            </tr>
+                        </thead>
+                        <tbody>${filas}</tbody>
+                    </table>
                 </div>
             `;
 

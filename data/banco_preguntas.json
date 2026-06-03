@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "descripcion": "Banco de preguntas de PyTutor — Python básico",
+  "descripcion": "Banco de preguntas — Python básico",
   "categorias": {
     "1": "Sintaxis",
     "2": "Indentación",

@@ -22,7 +22,7 @@ from src.gamificacion import PerfilGamificacion, actualizar_gamificacion, compro
 
 load_dotenv()
 
-app = FastAPI(title="PyTutor", version="0.1.0")
+app = FastAPI(title="TFG", version="0.1.0")
 templates = Jinja2Templates(directory="templates")
 
 _banco_cache: list[dict] | None = None

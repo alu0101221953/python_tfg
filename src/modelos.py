@@ -1,5 +1,5 @@
 """
-Modelos de datos de PyTutor.
+Modelos de datos.
 Define las estructuras principales usando Pydantic para validación automática.
 """
 

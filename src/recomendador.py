@@ -1,5 +1,5 @@
 """
-Planificador instruccional de PyTutor.
+Planificador instruccional.
 
 Selecciona la siguiente pregunta según el estado BKT del alumno,
 priorizando las categorías con menor dominio estimado.

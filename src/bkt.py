@@ -1,5 +1,5 @@
 """
-Bayesian Knowledge Tracing (BKT) — PyTutor
+Bayesian Knowledge Tracing (BKT)
 Basado en: González et al. (2010) - Error detection and personalized learning
 
 El BKT estima la probabilidad de que un alumno domine una categoría
