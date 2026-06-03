@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyTutor - Inicio</title>
+    <title>Inicio</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -51,7 +51,7 @@
 </head>
 <body>
     <div class="wrap">
-        <div class="logo">PyTutor</div>
+        <div class="logo">TFG</div>
         <div class="subtitle">
             Sistema tutor inteligente para aprender Python básico.<br>
             Adaptado a tu ritmo de aprendizaje.
@@ -78,7 +78,7 @@
         window.addEventListener('DOMContentLoaded', cargarRecientes);
 
         function cargarRecientes() {
-            const recientes = JSON.parse(localStorage.getItem('pytutor_recientes') || '[]');
+            const recientes = JSON.parse(localStorage.getItem('TFG_recientes') || '[]');
             if (!recientes.length) return;
             document.getElementById('recientes-wrap').style.display = 'block';
             document.getElementById('alumnos-list').innerHTML = recientes.slice(0, 5).map((a, i) => `
@@ -111,9 +111,9 @@
 
         async function borrarCuenta(id, i) {
             try { await fetch(`/api/alumno/${id}`, { method: 'DELETE' }); } catch(e) {}
-            let recientes = JSON.parse(localStorage.getItem('pytutor_recientes') || '[]');
+            let recientes = JSON.parse(localStorage.getItem('TFG_recientes') || '[]');
             recientes = recientes.filter(a => a.id !== id);
-            localStorage.setItem('pytutor_recientes', JSON.stringify(recientes));
+            localStorage.setItem('TFG_recientes', JSON.stringify(recientes));
             cargarRecientes();
             if (!recientes.length) document.getElementById('recientes-wrap').style.display = 'none';
         }
@@ -145,10 +145,10 @@
         }
 
         function guardarReciente(id, nombre) {
-            let recientes = JSON.parse(localStorage.getItem('pytutor_recientes') || '[]');
+            let recientes = JSON.parse(localStorage.getItem('TFG_recientes') || '[]');
             recientes = recientes.filter(a => a.id !== id);
             recientes.unshift({ id, nombre });
-            localStorage.setItem('pytutor_recientes', JSON.stringify(recientes.slice(0, 5)));
+            localStorage.setItem('TFG_recientes', JSON.stringify(recientes.slice(0, 5)));
         }
     </script>
 </body>
