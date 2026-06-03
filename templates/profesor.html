@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTutor - Panel del Profesor</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;
+        --accent:#7c6af7;--fail:#f06292;
+        --text:#e8eaf0;--muted:#6b7080;
+        --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+
+    /* Topbar */
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface)}
+    .logo{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--accent)}
+    .btn-sm{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+    .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* Login */
+    .login-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;width:100%;max-width:380px}
+    .card-title{font-size:17px;font-weight:600;margin-bottom:22px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type=password]{width:100%;background:#0a0c12;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:var(--sans);font-size:14px;color:var(--text);outline:none;margin-bottom:16px;transition:border-color .2s}
+    input[type=password]:focus{border-color:var(--accent)}
+    input[type=password].error{border-color:var(--fail)}
+    .btn-primary{width:100%;background:var(--accent);color:#fff;border:none;padding:12px;border-radius:8px;font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-primary:hover{background:#6b59e8}
+    .btn-primary:disabled{opacity:.5;cursor:default}
+    .error-msg{font-size:13px;color:var(--fail);margin-top:10px;display:none}
+    .error-msg.show{display:block}
+
+    .panel-wrap{display:none;flex:1;max-width:1100px;margin:0 auto;width:100%;padding:28px 24px}
+    .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px}
+    .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <span class="logo">PyTutor — Panel del Profesor</span>
+        <button class="btn-sm" onclick="location.href='/'">Volver al inicio</button>
+    </div>
+
+    <div class="login-wrap" id="login-wrap">
+        <div class="card">
+            <div class="card-title">Acceso al panel</div>
+            <label for="clave">Clave de acceso</label>
+            <input type="password" id="clave" placeholder="••••••••" autofocus
+                   onkeydown="if(event.key==='Enter') acceder()"
+                   oninput="this.classList.remove('error');document.getElementById('error-msg').classList.remove('show')">
+            <button class="btn-primary" id="btn-acceder" onclick="acceder()">Entrar</button>
+            <div class="error-msg" id="error-msg">Clave incorrecta. Inténtalo de nuevo.</div>
+        </div>
+    </div>
+
+    <div class="panel-wrap" id="panel-wrap">
+        <div class="loading" id="loading-state">
+            <div class="spinner"></div>
+            <div style="font-size:13px;color:var(--muted)">Cargando datos de la clase...</div>
+        </div>
+        <div id="panel-content" style="display:none"></div>
+    </div>
+
+    <script>
+        let claveActual = '';
+
+        async function acceder() {
+            const clave = document.getElementById('clave').value.trim();
+            if (!clave) return;
+            document.getElementById('btn-acceder').disabled = true;
+
+            try {
+                const res = await fetch(`/api/profesor/alumnos?clave=${encodeURIComponent(clave)}`);
+                if (res.status === 401) {
+                    document.getElementById('clave').classList.add('error');
+                    document.getElementById('error-msg').classList.add('show');
+                    document.getElementById('clave').value = '';
+                    document.getElementById('btn-acceder').disabled = false;
+                    return;
+                }
+                claveActual = clave;
+                document.getElementById('login-wrap').style.display  = 'none';
+                document.getElementById('panel-wrap').style.display  = 'block';
+            } catch(e) {
+                console.error(e);
+                document.getElementById('btn-acceder').disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
