@@ -13,11 +13,11 @@ Parámetros del modelo:
 """
 
 P_L0 = 0.10  # conocimiento inicial
-P_T = 0.20   # probabilidad de transición (aprendizaje)
-P_G = 0.20   # probabilidad de acierto por azar
-P_S = 0.10   # probabilidad de error al saber
+P_T  = 0.15  # probabilidad de transición
+P_G  = 0.25  # probabilidad de acierto por azar
+P_S  = 0.10  # probabilidad de error al saber
 
-UMBRAL_DOMINIO = 0.80   # a partir de este valor se considera dominada
+UMBRAL_DOMINIO = 0.90  # umbral de dominio
 
 
 def actualizar_dominio(p_dominio: float, correcta: bool) -> float:
