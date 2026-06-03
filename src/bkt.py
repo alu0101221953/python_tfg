@@ -13,11 +13,11 @@ Parámetros del modelo:
 """
 
 P_L0 = 0.10  # conocimiento inicial
-P_T  = 0.15  # probabilidad de transición
+P_T  = 0.10  # probabilidad de transición
 P_G  = 0.25  # probabilidad de acierto por azar
-P_S  = 0.10  # probabilidad de error al saber
+P_S  = 0.20  # probabilidad de error al saber
 
-UMBRAL_DOMINIO = 0.90  # umbral de dominio
+UMBRAL_DOMINIO = 0.90
 
 
 def actualizar_dominio(p_dominio: float, correcta: bool) -> float:
@@ -95,8 +95,8 @@ def calcular_bkt_alumno(trazas: list) -> dict:
             }
 
         estado[cat]["p_dominio"] = actualizar_dominio(estado[cat]["p_dominio"], correcta)
-        estado[cat]["dominado"] = estado[cat]["p_dominio"] >= UMBRAL_DOMINIO
         estado[cat]["num_intentos"] += 1
+        estado[cat]["dominado"] = estado[cat]["p_dominio"] >= UMBRAL_DOMINIO
 
     return estado
 
