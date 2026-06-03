@@ -179,13 +179,6 @@ def responder_ejercicio(payload: RespuestaAlumno):
     # Actualizar gamificación
     gami = PerfilGamificacion(**alumno.gamificacion)
     gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"])
-
-    # Comprobar insignias
-    bkt_temp = calcular_bkt_alumno(alumno.trazas)
-    cats_dominadas = [c for c, v in bkt_temp.items() if v["dominado"]]
-    nuevas_insignias = comprobar_insignias(gami, alumno.total_correctas(), cats_dominadas)
-    eventos += [f"insignia:{ins}" for ins in nuevas_insignias]
-
     alumno.gamificacion = gami.model_dump()
     guardar_alumno(alumno)
 
@@ -239,6 +232,85 @@ def responder_ejercicio(payload: RespuestaAlumno):
         },
         "bkt_resumen": resumen,
     })
+
+# ===========================================================================
+# API — Profesor
+# ===========================================================================
+
+@app.get("/profesor", response_class=HTMLResponse)
+def profesor(request: Request):
+    return templates.TemplateResponse(request=request, name="profesor.html", context={})
+
+@app.get("/api/profesor/alumnos")
+def profesor_alumnos(clave: str = ""):
+    """Devuelve datos agregados de todos los alumnos (requiere clave)."""
+    import os
+    from collections import Counter
+    from src.database import listar_alumnos
+
+    clave_correcta = os.getenv("PROFESOR_CLAVE", "profesor123")
+    if clave != clave_correcta:
+        return JSONResponse(status_code=401, content={"error": "Clave incorrecta."})
+
+    ids = listar_alumnos()
+    alumnos_data = []
+
+    for id_alumno in ids:
+        datos = cargar_alumno(id_alumno)
+        if not datos:
+            continue
+        alumno = Alumno(**datos)
+        bkt = calcular_bkt_alumno(alumno.trazas)
+        resumen = resumen_bkt(bkt)
+
+        # Última actividad
+        ultima = max((t.timestamp for t in alumno.trazas), default="—")[:10]
+
+        # Errores más frecuentes
+        errores = Counter(
+            t.subcategoria for t in alumno.trazas
+            if not t.correcta and t.subcategoria
+        )
+
+        alumnos_data.append({
+            "id_alumno": alumno.id_alumno,
+            "nombre": alumno.nombre,
+            "intentos": alumno.total_intentos(),
+            "correctas": alumno.total_correctas(),
+            "precision": alumno.precision_global(),
+            "puntos": alumno.gamificacion.get("puntos", 0),
+            "nivel": alumno.gamificacion.get("nivel", 1),
+            "ultima": ultima,
+            "bkt": {
+                str(cat): {
+                    "p_dominio": v["p_dominio"],
+                    "dominado": v["dominado"],
+                    "nombre": v["nombre"],
+                }
+                for cat, v in bkt.items()
+            },
+            "bkt_resumen": resumen,
+            "errores_top": [
+                {"subcategoria": s, "frecuencia": f}
+                for s, f in errores.most_common(3)
+            ],
+        })
+
+    # Errores recurrentes globales de la clase
+    todos_errores = Counter()
+    for a in alumnos_data:
+        for e in a["errores_top"]:
+            todos_errores[e["subcategoria"]] += e["frecuencia"]
+
+    return JSONResponse(content={
+        "total_alumnos": len(alumnos_data),
+        "alumnos":       alumnos_data,
+        "errores_clase": [
+            {"subcategoria": s, "frecuencia": f}
+            for s, f in todos_errores.most_common(5)
+        ],
+    })
+
 
 # ===========================================================================
 # API — Dashboard
