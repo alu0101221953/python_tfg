@@ -28,6 +28,7 @@ class Traza(BaseModel):
     nivel: str
     tipo: str
     tiempo: int
+    pistas_usadas: int = 0
     timestamp: str = Field(
         default_factory=lambda: datetime.now().isoformat()
     )
@@ -65,3 +66,4 @@ class RespuestaAlumno(BaseModel):
     id_pregunta: str
     respuesta: str
     tiempo: int = Field(default=0, ge=0)
+    pistas_usadas: int = Field(default=0, ge=0, le=3)

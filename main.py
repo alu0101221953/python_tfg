@@ -151,7 +151,7 @@ def siguiente_ejercicio(id_alumno: str):
         "codigo": pregunta.get("codigo", ""),
         "opciones": pregunta.get("opciones", []),
         "hueco": pregunta.get("hueco", ""),
-        "pista": pregunta.get("pista", ""),
+        "pistas": pregunta.get("pistas", []),
         "contador": {
             "vistas": len(vistas),
             "total": len(banco),
@@ -176,12 +176,13 @@ def responder_ejercicio(payload: RespuestaAlumno):
         payload.id_pregunta,
         payload.respuesta,
         payload.tiempo,
+        payload.pistas_usadas,
     )
     alumno.trazas.append(Traza(**traza_dict))
 
-    # Actualizar gamificación
+    # Actualizar gamificación (con penalización por pistas usadas)
     gami = PerfilGamificacion(**alumno.gamificacion)
-    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"])
+    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"], payload.pistas_usadas)
 
     # Comprobar insignias
     bkt_temp = calcular_bkt_alumno(alumno.trazas)
@@ -209,7 +210,7 @@ def responder_ejercicio(payload: RespuestaAlumno):
             "codigo": siguiente.get("codigo", ""),
             "opciones": siguiente.get("opciones", []),
             "hueco": siguiente.get("hueco", ""),
-            "pista": siguiente.get("pista", ""),
+            "pistas": siguiente.get("pistas", []),
             "contador": {
                 "vistas": len(vistas),
                 "total": len(banco),

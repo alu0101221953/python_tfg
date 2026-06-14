@@ -35,11 +35,11 @@ def _normalizar(texto: str) -> str:
     - Convierte a minúsculas
     """
     stripped = texto.rstrip()
-    indent   = len(stripped) - len(stripped.lstrip())
-    niveles  = indent // 4
-    core     = stripped.lstrip().lower().strip("'\"")
-    core     = re.sub(r'\s+', '', core)
-    core     = core.replace('"', "'")
+    indent = len(stripped) - len(stripped.lstrip())
+    niveles = indent // 4
+    core = stripped.lstrip().lower().strip("'\"")
+    core = re.sub(r'\s+', '', core)
+    core = core.replace('"', "'")
     return ('    ' * niveles) + core
 
 
@@ -57,7 +57,6 @@ def evaluar_respuesta(id_pregunta: str, respuesta: str) -> dict:
         return {
             "correcta": False,
             "explicacion": "Pregunta no encontrada.",
-            "pista": "",
             "categoria": 0,
             "subcategoria": "",
             "nivel": "",
@@ -76,19 +75,24 @@ def evaluar_respuesta(id_pregunta: str, respuesta: str) -> dict:
         )
 
     return {
-        "correcta":     correcta,
-        "explicacion":  pregunta.get("explicacion", ""),
-        "pista":        pregunta.get("pista", "") if not correcta else "",
-        "categoria":    pregunta.get("categoria", 0),
+        "correcta": correcta,
+        "explicacion": pregunta.get("explicacion", ""),
+        "categoria": pregunta.get("categoria", 0),
         "subcategoria": pregunta.get("subcategoria", ""),
-        "nivel":        pregunta.get("nivel", ""),
-        "tipo":         pregunta.get("tipo", ""),
+        "nivel": pregunta.get("nivel", ""),
+        "tipo": pregunta.get("tipo", ""),
     }
 
 
-def construir_traza(id_pregunta: str, respuesta: str, tiempo: int) -> tuple[dict, dict]:
+def construir_traza(id_pregunta: str, respuesta: str, tiempo: int, pistas_usadas: int = 0) -> tuple[dict, dict]:
     """
     Evalúa la respuesta y construye la Traza y el feedback.
+
+    Args:
+        id_pregunta:   identificador de la pregunta
+        respuesta:     respuesta del alumno
+        tiempo:        segundos empleados
+        pistas_usadas: número de pistas vistas antes de responder (0-3)
  
     Returns:
         (traza_dict, feedback_dict)
@@ -96,26 +100,25 @@ def construir_traza(id_pregunta: str, respuesta: str, tiempo: int) -> tuple[dict
     resultado = evaluar_respuesta(id_pregunta, respuesta)
  
     traza = {
-        "id_pregunta":  id_pregunta,
-        "correcta":     resultado["correcta"],
-        "categoria":    resultado["categoria"],
+        "id_pregunta": id_pregunta,
+        "correcta": resultado["correcta"],
+        "categoria": resultado["categoria"],
         "subcategoria": resultado["subcategoria"],
-        "nivel":        resultado["nivel"],
-        "tipo":         resultado["tipo"],
-        "tiempo":       tiempo,
-        "timestamp":    datetime.now().isoformat(),
+        "nivel": resultado["nivel"],
+        "tipo": resultado["tipo"],
+        "tiempo": tiempo,
+        "pistas_usadas": pistas_usadas,
+        "timestamp": datetime.now().isoformat(),
     }
  
     feedback = {
-        "correcta":    resultado["correcta"],
+        "correcta": resultado["correcta"],
         "explicacion": resultado["explicacion"],
-        "pista":       resultado["pista"],
-        "motivacion":  (
+        "motivacion": (
             "¡Bien hecho! Sigue así."
             if resultado["correcta"]
-            else "No pasa nada. Lee la pista y vuelve a intentarlo."
+            else "No pasa nada. Revisa la explicación y vuelve a intentarlo."
         ),
     }
  
     return traza, feedback
- 

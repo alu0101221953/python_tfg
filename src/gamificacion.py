@@ -78,17 +78,23 @@ def comprobar_insignias(gami: PerfilGamificacion, total_correctas: int, categori
     return nuevas
 
 
-def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool) -> tuple[PerfilGamificacion, list[str]]:
+def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usadas: int = 0) -> tuple[PerfilGamificacion, list[str]]:
     """
     Actualiza el perfil de gamificación tras una respuesta.
 
     Args:
-        gami:     estado actual de gamificación
-        correcta: si la respuesta fue correcta
+        gami:          estado actual de gamificación
+        correcta:      si la respuesta fue correcta
+        pistas_usadas: número de pistas vistas antes de responder (0-3)
+
+    Sistema de penalización por pistas:
+        1 pista  → -1 punto
+        2 pistas → -1 -2 = -3 puntos
+        3 pistas → -1 -2 -3 = -6 puntos
 
     Returns:
         (perfil_actualizado, lista_de_eventos)
-        Eventos posibles: 'puntos', 'racha_3', 'racha_5', 'subida_nivel'
+        Eventos posibles: '+N puntos', 'pistas:-N', 'racha_3', 'racha_5', 'nivel_N'
     """
     eventos = []
 
@@ -96,8 +102,13 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool) -> tuple[P
         gami.racha_actual = 0
         return gami, eventos
 
-    # Puntos base
-    puntos_ganados = 10
+    # Puntos base con penalización progresiva por pistas
+    penalizacion = sum(range(1, pistas_usadas + 1))  # 0, 1, 3, 6
+    puntos_ganados = max(10 - penalizacion, 1)
+
+    if penalizacion > 0:
+        eventos.append(f"pistas:-{penalizacion}")
+
     gami.racha_actual += 1
 
     # Bonus por racha
