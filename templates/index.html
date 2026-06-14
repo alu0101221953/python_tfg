@@ -47,6 +47,11 @@
     .btn-cancel{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--sans)}
     .btn-delete{background:transparent;border:1px solid var(--fail);color:var(--fail);padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--sans)}
     .btn-delete:hover{background:rgba(240,98,146,.1)}
+
+    /* Enlace al panel del profesor */
+    .footer-link{text-align:center;margin-top:24px}
+    .footer-link a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+    .footer-link a:hover{color:var(--accent)}
     </style>
 </head>
 <body>
@@ -63,11 +68,6 @@
             <input type="text" id="nombre" placeholder="Ej: Víctor" autofocus
                    oninput="document.getElementById('btn-empezar').disabled = !this.value.trim()"
                    onkeydown="if(event.key==='Enter') empezar()">
-
-            <label for="curso">Curso o asignatura (opcional)</label>
-            <input type="text" id="curso" placeholder="Ej: Python"
-                   onkeydown="if(event.key==='Enter') empezar()">
-
             <button class="btn" id="btn-empezar" onclick="empezar()" disabled>Empezar →</button>
 
             <div id="recientes-wrap" style="display:none">
@@ -76,6 +76,9 @@
                 </div>
                 <div id="alumnos-list"></div>
             </div>
+        </div>
+        <div class="footer-link">
+            <a href="/profesor">Panel del profesor →</a>
         </div>
     </div>
 
@@ -137,11 +140,10 @@
 
         async function empezar() {
             const nombre = document.getElementById('nombre').value.trim();
-            const curso = document.getElementById('curso').value.trim();
             if (!nombre) return;
             document.getElementById('btn-empezar').disabled = true;
             try {
-                const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}&curso=${encodeURIComponent(curso)}`, { method: 'POST' });
+                const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}`, { method: 'POST' });
                 const d = await res.json();
                 guardarReciente(d.id_alumno, d.nombre);
                 location.href = `/ejercicio?id_alumno=${d.id_alumno}`;
