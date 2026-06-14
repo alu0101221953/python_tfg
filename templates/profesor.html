@@ -175,7 +175,10 @@
 
             document.getElementById('panel-content').innerHTML += `
                 <div class="section">
-                    <div class="section-title">Alumnos</div>
+                    <div class="section-title" style="display:flex;align-items:center;justify-content:space-between">
+                        <span>Alumnos</span>
+                        <button class="btn-sm" style="text-transform:none;letter-spacing:normal" onclick="window.open('/api/profesor/informe/pdf?clave='+encodeURIComponent(claveActual), '_blank')">Descargar informe de clase</button>
+                    </div>
                     <table class="tabla">
                         <thead>
                             <tr>

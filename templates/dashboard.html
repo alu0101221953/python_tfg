@@ -49,6 +49,7 @@
         <span class="logo">PyTutor</span>
         <div class="topbar-right">
             <span class="alumno-badge" id="alumno-nombre">Cargando...</span>
+            <button class="btn-sm" onclick="window.open('/api/dashboard/'+ID_ALUMNO+'/pdf', '_blank')">Descargar informe</button>
             <button class="btn-sm" onclick="location.href='/ejercicio?id_alumno='+ID_ALUMNO">Practicar</button>
             <button class="btn-sm" onclick="location.href='/'">Salir</button>
         </div>
@@ -82,6 +83,7 @@
                 <div class="section-title">Progreso por categoría</div>
                 <div id="bkt-content"></div>
             </div>
+        </div>
             <div class="section">
                 <div class="section-title">Evolución temporal</div>
                 <div id="evolucion-empty" style="display:none;font-size:13px;color:var(--muted)">
