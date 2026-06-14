@@ -63,6 +63,11 @@
             <input type="text" id="nombre" placeholder="Ej: Víctor" autofocus
                    oninput="document.getElementById('btn-empezar').disabled = !this.value.trim()"
                    onkeydown="if(event.key==='Enter') empezar()">
+
+            <label for="curso">Curso o asignatura (opcional)</label>
+            <input type="text" id="curso" placeholder="Ej: Python"
+                   onkeydown="if(event.key==='Enter') empezar()">
+
             <button class="btn" id="btn-empezar" onclick="empezar()" disabled>Empezar →</button>
 
             <div id="recientes-wrap" style="display:none">
@@ -123,7 +128,7 @@
             try {
                 const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}&id_alumno=${encodeURIComponent(id)}`,
                  { method: 'POST' });
-                const d   = await res.json();
+                const d = await res.json();
                 location.href = `/ejercicio?id_alumno=${d.id_alumno}`;
             } catch(e) {
                 location.href = `/ejercicio?id_alumno=${id}`;
@@ -132,11 +137,12 @@
 
         async function empezar() {
             const nombre = document.getElementById('nombre').value.trim();
+            const curso = document.getElementById('curso').value.trim();
             if (!nombre) return;
             document.getElementById('btn-empezar').disabled = true;
             try {
-                const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}`, { method: 'POST' });
-                const d   = await res.json();
+                const res = await fetch(`/api/alumno/iniciar?nombre=${encodeURIComponent(nombre)}&curso=${encodeURIComponent(curso)}`, { method: 'POST' });
+                const d = await res.json();
                 guardarReciente(d.id_alumno, d.nombre);
                 location.href = `/ejercicio?id_alumno=${d.id_alumno}`;
             } catch(e) {

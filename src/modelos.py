@@ -37,6 +37,7 @@ class Alumno(BaseModel):
     """Perfil completo de un alumno."""
     id_alumno: str
     nombre: str
+    curso: str = ""
     trazas: list[Traza] = []
     gamificacion: dict = Field(default_factory=lambda: {"puntos": 0, "nivel": 1, "racha_actual": 0, "racha_maxima": 0})
     fecha_registro: str = Field(

@@ -70,7 +70,7 @@ def banco_info():
 # ===========================================================================
 
 @app.post("/api/alumno/iniciar")
-def iniciar_sesion(nombre: str, id_alumno: str = ""):
+def iniciar_sesion(nombre: str, id_alumno: str = "", curso: str = ""):
     """Crea un perfil nuevo o carga uno existente."""
     if not id_alumno:
         sufijo = datetime.now().strftime("%H%M%S")
@@ -78,19 +78,22 @@ def iniciar_sesion(nombre: str, id_alumno: str = ""):
 
     datos = cargar_alumno(id_alumno)
     if datos is None:
-        alumno = Alumno(id_alumno=id_alumno, nombre=nombre)
+        alumno = Alumno(id_alumno=id_alumno, nombre=nombre, curso=curso)
         guardar_alumno(alumno)
         nuevo = True
     else:
         alumno = Alumno(**datos)
         if nombre and alumno.nombre != nombre:
             alumno.nombre = nombre
-            guardar_alumno(alumno)
+        if curso and alumno.curso != curso:
+            alumno.curso = curso
+        guardar_alumno(alumno)
         nuevo = False
 
     return JSONResponse(content={
         "id_alumno": alumno.id_alumno,
         "nombre": alumno.nombre,
+        "curso": alumno.curso,
         "nuevo": nuevo,
         "intentos":  alumno.total_intentos(),
         "precision": alumno.precision_global(),
@@ -282,6 +285,7 @@ def profesor_alumnos(clave: str = ""):
         alumnos_data.append({
             "id_alumno": alumno.id_alumno,
             "nombre": alumno.nombre,
+            "curso": alumno.curso,
             "intentos": alumno.total_intentos(),
             "correctas": alumno.total_correctas(),
             "precision": alumno.precision_global(),

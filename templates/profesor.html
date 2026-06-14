@@ -53,6 +53,9 @@
     .bkt-mini{display:flex;gap:3px;align-items:center}
     .bkt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
+    /* Errores recurrentes */
+    .error-tag{display:inline-block;background:rgba(240,98,146,.1);border:1px solid rgba(240,98,146,.2);color:var(--fail);padding:4px 10px;border-radius:6px;font-size:12px;margin:3px;font-family:var(--mono)}
+
     /* Métricas */
     .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
     .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
@@ -138,6 +141,20 @@
                 </div>
             `;
 
+            // Errores recurrentes de la clase
+            const erroresHtml = (data.errores_clase || []).length
+                ? data.errores_clase.map(e =>
+                    `<span class="error-tag">Subcategoría ${e.subcategoria} — ${e.frecuencia} ${e.frecuencia === 1 ? 'fallo' : 'fallos'}</span>`
+                  ).join('')
+                : '<p style="font-size:13px;color:var(--muted)">Sin datos suficientes todavía.</p>';
+
+            document.getElementById('panel-content').innerHTML += `
+                <div class="section">
+                    <div class="section-title">Errores más frecuentes en la clase</div>
+                    ${erroresHtml}
+                </div>
+            `;
+
             const CAT_COLORES = {1:'#f06292',2:'#ff9800',3:'#ffeb3b',4:'#4caf50',5:'#4fc3f7',6:'#7c6af7',7:'#e040fb',8:'#78909c'};
             const filas = alumnos.map(a => {
                 const bktDots = Object.entries(a.bkt || {}).sort((x,y) => x[0]-y[0]).map(([cat, v]) => {
@@ -147,6 +164,7 @@
                 }).join('');
                 return `<tr>
                     <td><button class="nombre-btn" onclick="location.href='/dashboard?id_alumno=${a.id_alumno}'">${a.nombre}</button></td>
+                    <td style="color:var(--muted)">${a.curso || '—'}</td>
                     <td>${a.intentos}</td>
                     <td>${a.precision}%</td>
                     <td>${a.puntos} pts</td>
@@ -162,6 +180,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Curso</th>
                                 <th>Ejercicios</th>
                                 <th>Precisión</th>
                                 <th>Puntos</th>
