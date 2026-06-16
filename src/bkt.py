@@ -19,8 +19,43 @@ P_S  = 0.20  # probabilidad de error al saber
 
 UMBRAL_DOMINIO = 0.90
 
+UMBRALES_TIEMPO = {
+    "basico": {"rapido": 10, "lento": 30},
+    "intermedio": {"rapido": 15, "lento": 45},
+    "avanzado": {"rapido": 20, "lento": 60},
+}
+P_S_MAX_LENTO = 0.45
 
-def actualizar_dominio(p_dominio: float, correcta: bool) -> float:
+
+def _p_s_efectivo(tiempo: int | None, nivel: str | None) -> float:
+    """
+    Calcula la probabilidad de slip efectiva en función del tiempo de
+    respuesta y el nivel de la pregunta.
+
+    Una respuesta correcta pero lenta es tratada con más escepticismo:
+    el modelo sube P(S) de forma progresiva entre los umbrales "rapido"
+    y "lento" definidos para ese nivel, alcanzando P_S_MAX_LENTO cuando
+    el tiempo iguala o supera el umbral lento.
+
+    Si no se dispone de tiempo o nivel (p. ej. trazas antiguas), se
+    devuelve el P(S) base sin modificar.
+    """
+    if tiempo is None or not nivel or nivel not in UMBRALES_TIEMPO:
+        return P_S
+
+    umbral = UMBRALES_TIEMPO[nivel]
+    rapido, lento = umbral["rapido"], umbral["lento"]
+
+    if tiempo <= rapido:
+        return P_S
+    if tiempo >= lento:
+        return P_S_MAX_LENTO
+
+    frac = (tiempo - rapido) / (lento - rapido)
+    return P_S + frac * (P_S_MAX_LENTO - P_S)
+
+
+def actualizar_dominio(p_dominio: float, correcta: bool, tiempo: int | None = None, nivel: str | None = None) -> float:
     """
     Actualiza la estimación de dominio tras una respuesta.
 
@@ -29,18 +64,26 @@ def actualizar_dominio(p_dominio: float, correcta: bool) -> float:
       2. Actualizar la probabilidad de conocimiento (posterior)
       3. Aplicar la probabilidad de transición (aprendizaje)
 
+    Si la respuesta es correcta pero lenta, se usa un P(S) efectivo más
+    alto (ver _p_s_efectivo): un acierto lento aporta menos confianza en
+    el dominio real que un acierto rápido.
+
     Args:
         p_dominio: probabilidad actual de dominio [0, 1]
         correcta:  si la respuesta fue correcta o no
+        tiempo:    segundos empleados en responder (opcional)
+        nivel:     nivel de dificultad de la pregunta (opcional)
 
     Returns:
         Nueva probabilidad de dominio [0, 1]
     """
+    p_s = _p_s_efectivo(tiempo, nivel) if correcta else P_S
+
     if correcta:
-        p_correcto_conoce = 1 - P_S
+        p_correcto_conoce = 1 - p_s
         p_correcto_no_conoce = P_G
     else:
-        p_correcto_conoce = P_S
+        p_correcto_conoce = p_s
         p_correcto_no_conoce = 1 - P_G
 
     # Posterior: P(conoce | respuesta)
@@ -84,7 +127,9 @@ def calcular_bkt_alumno(trazas: list) -> dict:
 
     for traza in trazas:
         cat = traza.categoria if hasattr(traza, 'categoria') else traza['categoria']
-        correcta = traza.correcta if hasattr(traza, 'correcta') else traza['correcta']
+        correcta = traza.correcta  if hasattr(traza, 'correcta')  else traza['correcta']
+        tiempo = traza.tiempo    if hasattr(traza, 'tiempo')    else traza.get('tiempo')
+        nivel = traza.nivel     if hasattr(traza, 'nivel')     else traza.get('nivel')
 
         if cat not in estado:
             estado[cat] = {
@@ -94,7 +139,7 @@ def calcular_bkt_alumno(trazas: list) -> dict:
                 "nombre": CATEGORIAS.get(cat, f"Cat {cat}"),
             }
 
-        estado[cat]["p_dominio"] = actualizar_dominio(estado[cat]["p_dominio"], correcta)
+        estado[cat]["p_dominio"] = actualizar_dominio(estado[cat]["p_dominio"], correcta, tiempo, nivel)
         estado[cat]["num_intentos"] += 1
         estado[cat]["dominado"] = estado[cat]["p_dominio"] >= UMBRAL_DOMINIO
 
