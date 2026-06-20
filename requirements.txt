@@ -3,3 +3,4 @@ uvicorn
 dotenv
 pydantic
 jinja2
+reportlab
