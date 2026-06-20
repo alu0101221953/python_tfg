@@ -21,6 +21,7 @@ from src.bkt import calcular_bkt_alumno, resumen_bkt
 from src.recomendador import seleccionar_siguiente_pregunta, cargar_banco as cargar_banco_recomendador
 from src.gamificacion import PerfilGamificacion, actualizar_gamificacion, comprobar_insignias
 from src.informes import generar_informe_alumno, generar_informe_clase
+from src.feedback_ia import generar_feedback_ia
 
 load_dotenv()
 
@@ -326,6 +327,53 @@ def profesor_alumnos(clave: str = ""):
 
 
 # ===========================================================================
+# API — Feedback IA
+# ===========================================================================
+
+@app.get("/api/dashboard/{id_alumno}/feedback")
+def dashboard_feedback(id_alumno: str):
+    """Genera feedback narrativo personalizado con IA para el alumno."""
+    from collections import Counter
+
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
+
+    alumno = Alumno(**datos)
+    bkt = calcular_bkt_alumno(alumno.trazas)
+
+    errores = Counter(
+        t.subcategoria for t in alumno.trazas
+        if not t.correcta and t.subcategoria
+    )
+
+    datos_dashboard = {
+        "nombre": alumno.nombre,
+        "stats": {
+            "intentos": alumno.total_intentos(),
+            "correctas": alumno.total_correctas(),
+            "precision": alumno.precision_global(),
+        },
+        "gamificacion": alumno.gamificacion,
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+            }
+            for cat, v in bkt.items()
+        },
+        "errores_top": [
+            {"subcategoria": s, "frecuencia": f}
+            for s, f in errores.most_common(5)
+        ],
+    }
+
+    resultado = generar_feedback_ia(datos_dashboard)
+    return JSONResponse(content=resultado)
+
+
+# ===========================================================================
 # API — Informes PDF
 # ===========================================================================
 
@@ -363,7 +411,7 @@ def dashboard_pdf(id_alumno: str):
         "bkt": {
             str(cat): {
                 "p_dominio": v["p_dominio"],
-                "dominado":  v["dominado"],
+                "dominado": v["dominado"],
                 "num_intentos": v["num_intentos"],
                 "nombre": v["nombre"],
             }
@@ -399,22 +447,17 @@ def profesor_informe_pdf(clave: str = ""):
             continue
         alumno = Alumno(**datos)
         bkt = calcular_bkt_alumno(alumno.trazas)
-
         errores = Counter(
             t.subcategoria for t in alumno.trazas
             if not t.correcta and t.subcategoria
         )
-
         alumnos_data.append({
             "nombre": alumno.nombre,
             "curso": alumno.curso,
             "intentos": alumno.total_intentos(),
             "precision": alumno.precision_global(),
             "puntos": alumno.gamificacion.get("puntos", 0),
-            "bkt": {
-                str(cat): {"dominado": v["dominado"]}
-                for cat, v in bkt.items()
-            },
+            "bkt": {str(cat): {"dominado": v["dominado"]} for cat, v in bkt.items()},
             "errores_top": [
                 {"subcategoria": s, "frecuencia": f}
                 for s, f in errores.most_common(3)

@@ -4,3 +4,4 @@ dotenv
 pydantic
 jinja2
 reportlab
+google-genai
