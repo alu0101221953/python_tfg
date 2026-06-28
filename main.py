@@ -154,7 +154,7 @@ def siguiente_ejercicio(id_alumno: str):
         "codigo": pregunta.get("codigo", ""),
         "opciones": pregunta.get("opciones", []),
         "hueco": pregunta.get("hueco", ""),
-        "pista": pregunta.get("pista", ""),
+        "pistas": pregunta.get("pistas", []),
         "contador": {
             "vistas": len(vistas),
             "total": len(banco),
@@ -184,7 +184,7 @@ def responder_ejercicio(payload: RespuestaAlumno):
 
     # Actualizar gamificación
     gami = PerfilGamificacion(**alumno.gamificacion)
-    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"])
+    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"], payload.pistas_usadas)
 
     # Comprobar insignias
     bkt_temp = calcular_bkt_alumno(alumno.trazas)
@@ -212,7 +212,7 @@ def responder_ejercicio(payload: RespuestaAlumno):
             "codigo": siguiente.get("codigo", ""),
             "opciones": siguiente.get("opciones", []),
             "hueco": siguiente.get("hueco", ""),
-            "pista": siguiente.get("pista", ""),
+            "pistas": siguiente.get("pistas", []),
             "contador": {
                 "vistas": len(vistas),
                 "total": len(banco),
@@ -327,165 +327,6 @@ def profesor_alumnos(clave: str = ""):
 
 
 # ===========================================================================
-# API — Feedback IA
-# ===========================================================================
-
-@app.get("/api/dashboard/{id_alumno}/feedback")
-def dashboard_feedback(id_alumno: str):
-    """Genera feedback narrativo personalizado con IA para el alumno."""
-    from collections import Counter
-
-    datos = cargar_alumno(id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-
-    alumno = Alumno(**datos)
-    bkt = calcular_bkt_alumno(alumno.trazas)
-
-    errores = Counter(
-        t.subcategoria for t in alumno.trazas
-        if not t.correcta and t.subcategoria
-    )
-
-    datos_dashboard = {
-        "nombre": alumno.nombre,
-        "stats": {
-            "intentos": alumno.total_intentos(),
-            "correctas": alumno.total_correctas(),
-            "precision": alumno.precision_global(),
-        },
-        "gamificacion": alumno.gamificacion,
-        "bkt": {
-            str(cat): {
-                "p_dominio": v["p_dominio"],
-                "dominado": v["dominado"],
-                "num_intentos": v["num_intentos"],
-            }
-            for cat, v in bkt.items()
-        },
-        "errores_top": [
-            {"subcategoria": s, "frecuencia": f}
-            for s, f in errores.most_common(5)
-        ],
-    }
-
-    resultado = generar_feedback_ia(datos_dashboard)
-    return JSONResponse(content=resultado)
-
-
-# ===========================================================================
-# API — Informes PDF
-# ===========================================================================
-
-@app.get("/api/dashboard/{id_alumno}/pdf")
-def dashboard_pdf(id_alumno: str):
-    """Genera y devuelve el informe PDF individual del alumno."""
-    from collections import Counter
-
-    datos = cargar_alumno(id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-
-    alumno = Alumno(**datos)
-    bkt = calcular_bkt_alumno(alumno.trazas)
-
-    errores = Counter(
-        t.subcategoria for t in alumno.trazas
-        if not t.correcta and t.subcategoria
-    )
-    errores_top = [
-        {"subcategoria": sub, "frecuencia": freq}
-        for sub, freq in errores.most_common(5)
-    ]
-
-    pdf_bytes = generar_informe_alumno({
-        "nombre": alumno.nombre,
-        "curso": alumno.curso,
-        "id_alumno": alumno.id_alumno,
-        "stats": {
-            "intentos": alumno.total_intentos(),
-            "correctas": alumno.total_correctas(),
-            "precision": alumno.precision_global(),
-        },
-        "gamificacion": alumno.gamificacion,
-        "bkt": {
-            str(cat): {
-                "p_dominio": v["p_dominio"],
-                "dominado": v["dominado"],
-                "num_intentos": v["num_intentos"],
-                "nombre": v["nombre"],
-            }
-            for cat, v in bkt.items()
-        },
-        "errores_top": errores_top,
-    })
-
-    return StreamingResponse(
-        io.BytesIO(pdf_bytes),
-        media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename=informe_{alumno.id_alumno}.pdf"},
-    )
-
-
-@app.get("/api/profesor/informe/pdf")
-def profesor_informe_pdf(clave: str = ""):
-    """Genera y devuelve el informe PDF de la clase (requiere clave)."""
-    import os
-    from collections import Counter
-    from src.database import listar_alumnos
-
-    clave_correcta = os.getenv("PROFESOR_CLAVE", "profesor123")
-    if clave != clave_correcta:
-        return JSONResponse(status_code=401, content={"error": "Clave incorrecta."})
-
-    ids = listar_alumnos()
-    alumnos_data = []
-
-    for id_alumno in ids:
-        datos = cargar_alumno(id_alumno)
-        if not datos:
-            continue
-        alumno = Alumno(**datos)
-        bkt = calcular_bkt_alumno(alumno.trazas)
-        errores = Counter(
-            t.subcategoria for t in alumno.trazas
-            if not t.correcta and t.subcategoria
-        )
-        alumnos_data.append({
-            "nombre": alumno.nombre,
-            "curso": alumno.curso,
-            "intentos": alumno.total_intentos(),
-            "precision": alumno.precision_global(),
-            "puntos": alumno.gamificacion.get("puntos", 0),
-            "bkt": {str(cat): {"dominado": v["dominado"]} for cat, v in bkt.items()},
-            "errores_top": [
-                {"subcategoria": s, "frecuencia": f}
-                for s, f in errores.most_common(3)
-            ],
-        })
-
-    todos_errores = Counter()
-    for a in alumnos_data:
-        for e in a["errores_top"]:
-            todos_errores[e["subcategoria"]] += e["frecuencia"]
-
-    pdf_bytes = generar_informe_clase({
-        "total_alumnos": len(alumnos_data),
-        "alumnos": alumnos_data,
-        "errores_clase": [
-            {"subcategoria": s, "frecuencia": f}
-            for s, f in todos_errores.most_common(5)
-        ],
-    })
-
-    return StreamingResponse(
-        io.BytesIO(pdf_bytes),
-        media_type="application/pdf",
-        headers={"Content-Disposition": "attachment; filename=informe_clase.pdf"},
-    )
-
-
-# ===========================================================================
 # API — Dashboard
 # ===========================================================================
  
@@ -551,3 +392,157 @@ def dashboard_alumno(id_alumno: str):
         "evolucion": evolucion,
         "errores_top": errores_top,
     })
+
+# ===========================================================================
+# API — Feedback IA
+# ===========================================================================
+
+@app.get("/api/dashboard/{id_alumno}/feedback")
+def dashboard_feedback(id_alumno: str):
+    """Genera feedback narrativo personalizado con IA para el alumno."""
+    from collections import Counter
+
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
+
+    alumno = Alumno(**datos)
+    bkt = calcular_bkt_alumno(alumno.trazas)
+
+    errores = Counter(
+        t.subcategoria for t in alumno.trazas
+        if not t.correcta and t.subcategoria
+    )
+
+    resultado = generar_feedback_ia({
+        "nombre": alumno.nombre,
+        "stats": {
+            "intentos": alumno.total_intentos(),
+            "correctas": alumno.total_correctas(),
+            "precision": alumno.precision_global(),
+        },
+        "gamificacion": alumno.gamificacion,
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+            }
+            for cat, v in bkt.items()
+        },
+        "errores_top": [
+            {"subcategoria": s, "frecuencia": f}
+            for s, f in errores.most_common(5)
+        ],
+    })
+    return JSONResponse(content=resultado)
+
+
+# ===========================================================================
+# API — Informes PDF
+# ===========================================================================
+
+@app.get("/api/dashboard/{id_alumno}/pdf")
+def dashboard_pdf(id_alumno: str):
+    """Genera y devuelve el informe PDF individual del alumno."""
+    from collections import Counter
+
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
+
+    alumno = Alumno(**datos)
+    bkt = calcular_bkt_alumno(alumno.trazas)
+    errores = Counter(
+        t.subcategoria for t in alumno.trazas
+        if not t.correcta and t.subcategoria
+    )
+
+    pdf_bytes = generar_informe_alumno({
+        "nombre": alumno.nombre,
+        "curso": alumno.curso,
+        "id_alumno": alumno.id_alumno,
+        "stats": {
+            "intentos": alumno.total_intentos(),
+            "correctas": alumno.total_correctas(),
+            "precision": alumno.precision_global(),
+        },
+        "gamificacion": alumno.gamificacion,
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre": v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
+        "errores_top": [
+            {"subcategoria": s, "frecuencia": f}
+            for s, f in errores.most_common(5)
+        ],
+    })
+
+    return StreamingResponse(
+        io.BytesIO(pdf_bytes),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=informe_{alumno.id_alumno}.pdf"},
+    )
+
+
+@app.get("/api/profesor/informe/pdf")
+def profesor_informe_pdf(clave: str = ""):
+    """Genera y devuelve el informe PDF de la clase (requiere clave)."""
+    import os
+    from collections import Counter
+    from src.database import listar_alumnos
+
+    clave_correcta = os.getenv("PROFESOR_CLAVE", "profesor123")
+    if clave != clave_correcta:
+        return JSONResponse(status_code=401, content={"error": "Clave incorrecta."})
+
+    ids = listar_alumnos()
+    alumnos_data = []
+
+    for id_alumno in ids:
+        datos = cargar_alumno(id_alumno)
+        if not datos:
+            continue
+        alumno = Alumno(**datos)
+        bkt    = calcular_bkt_alumno(alumno.trazas)
+        errores = Counter(
+            t.subcategoria for t in alumno.trazas
+            if not t.correcta and t.subcategoria
+        )
+        alumnos_data.append({
+            "nombre": alumno.nombre,
+            "curso": alumno.curso,
+            "intentos": alumno.total_intentos(),
+            "precision": alumno.precision_global(),
+            "puntos": alumno.gamificacion.get("puntos", 0),
+            "bkt": {str(cat): {"dominado": v["dominado"]} for cat, v in bkt.items()},
+            "errores_top": [
+                {"subcategoria": s, "frecuencia": f}
+                for s, f in errores.most_common(3)
+            ],
+        })
+
+    todos_errores = Counter()
+    for a in alumnos_data:
+        for e in a["errores_top"]:
+            todos_errores[e["subcategoria"]] += e["frecuencia"]
+
+    pdf_bytes = generar_informe_clase({
+        "total_alumnos": len(alumnos_data),
+        "alumnos": alumnos_data,
+        "errores_clase": [
+            {"subcategoria": s, "frecuencia": f}
+            for s, f in todos_errores.most_common(5)
+        ],
+    })
+
+    return StreamingResponse(
+        io.BytesIO(pdf_bytes),
+        media_type="application/pdf",
+        headers={"Content-Disposition": "attachment; filename=informe_clase.pdf"},
+    )

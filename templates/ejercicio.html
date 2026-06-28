@@ -42,10 +42,17 @@
         animation:spin .7s linear infinite}
     .loading-text{font-size:13px;color:var(--muted)}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .toast.penalty{border-color:var(--fail);color:var(--fail);background:rgba(240,98,146,.06)}
+    .hints-wrap{margin-bottom:16px}
+    .btn-hint{background:transparent;border:1px dashed var(--accent2);color:var(--accent2);padding:8px 16px;
+        border-radius:8px;font-family:var(--sans);font-size:12px;cursor:pointer;transition:all .2s;display:block;width:100%}
+    .btn-hint:hover:not([disabled]){background:rgba(79,195,247,.08)}
+    .btn-hint[disabled]{opacity:.35;cursor:default}
+    .pista-mostrada{background:rgba(79,195,247,.06);border-left:3px solid var(--accent2);color:var(--accent2);
+        padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:8px;line-height:1.5}
     .toasts-wrap{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:100;pointer-events:none}
     .toast{background:var(--surface);border:1px solid var(--accent);color:var(--accent);padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:var(--sans);animation:toastIn .3s ease,toastOut .3s ease 2.2s forwards}
     .toast.insignia{border-color:#ffd54f;color:#ffd54f;background:rgba(255,213,79,.08)}
-    .toast.penalty{border-color:var(--fail);color:var(--fail);background:rgba(240,98,146,.06)}
     @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
     @keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
     @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
@@ -81,15 +88,6 @@
     .kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#f1fa8c}
     .num{color:#bd93f9}.cm{color:#6272a4;font-style:italic}
     @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-    /* Pistas */
-    .hints-wrap{margin-bottom:18px}
-    .btn-hint{background:transparent;border:1px dashed var(--accent2);color:var(--accent2);padding:8px 16px;
-        border-radius:8px;font-family:var(--sans);font-size:12px;cursor:pointer;transition:all .2s}
-    .btn-hint:hover:not(:disabled){background:rgba(79,195,247,.08)}
-    .btn-hint:disabled{opacity:.35;cursor:default}
-    .pista-mostrada{background:rgba(79,195,247,.06);border-left:3px solid var(--accent2);color:var(--accent2);
-        padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:8px;animation:fadeIn .3s ease;line-height:1.5}
 
     /* Opciones múltiples */
     .options-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
@@ -314,7 +312,6 @@
             let respuesta = respuestaSeleccionada;
             if (preguntaActual.tipo === 'completar_codigo') {
                 const val = document.getElementById('fill-input')?.value || '';
-                // Para cat. 2 (indentación) preservar espacios iniciales
                 respuesta = preguntaActual.categoria === 2 ? val : val.trim();
                 if (!respuesta.trim()) return;
             }
@@ -351,7 +348,7 @@
             pistasUsadas++;
             const div = document.createElement('div');
             div.className = 'pista-mostrada';
-            div.textContent = `💡 ${texto}`;
+            div.textContent = '💡 ' + texto;
             document.getElementById('pistas-mostradas').appendChild(div);
             actualizarBotonPista();
         }
@@ -364,8 +361,8 @@
                 return;
             }
             const costo = pistasUsadas + 1;
-            btn.textContent = `💡 Ver pista ${pistasUsadas + 1}/${pistasDisponibles.length} (-${costo} pt${costo > 1 ? 's' : ''})`;
-            btn.style.display = 'inline-block';
+            btn.textContent = '💡 Ver pista ' + (pistasUsadas + 1) + '/' + pistasDisponibles.length + ' (-' + costo + ' pt' + (costo > 1 ? 's' : '') + ')';
+            btn.style.display = 'block';
         }
 
         function seleccionarOpcion(idx) {
@@ -416,7 +413,7 @@
                             : (INSIGNIA_NOMBRES[nombre] || `🏅 ${nombre}`);
                     } else if (ev.startsWith('pistas:')) {
                         toast.classList.add('penalty');
-                        toast.textContent = `💡 ${ev.replace('pistas:', '')} puntos (pistas)`;
+                        toast.textContent = '💡 ' + ev.replace('pistas:', '') + ' puntos (pistas)';
                     } else if (ev.startsWith('+') && ev.includes('puntos')) {
                         toast.textContent = `✨ ${ev}`;
                     } else if (ev.startsWith('racha_')) {
@@ -463,11 +460,18 @@
 
         function mostrarFeedback(fb) {
             const panel = document.getElementById('feedback-panel');
+            const pista = document.getElementById('feedback-pista');
             panel.classList.remove('ok', 'fail');
             panel.classList.add(fb.correcta ? 'ok' : 'fail', 'show');
             document.getElementById('feedback-titulo').textContent = fb.correcta ? '✓ Correcto' : '✗ Incorrecto';
             document.getElementById('feedback-texto').textContent = fb.explicacion || '';
-            document.getElementById('feedback-motiv').textContent = fb.motivacion || '';
+            document.getElementById('feedback-motiv').textContent = fb.motivacion  || '';
+            if (!fb.correcta && fb.pista) {
+                pista.textContent = '💡 ' + fb.pista;
+                pista.style.display = 'block';
+            } else {
+                pista.style.display = 'none';
+            }
             document.getElementById('btn-siguiente').classList.add('show');
         }
 
@@ -482,7 +486,8 @@
                 inp.disabled = true;
                 inp.classList.add(correcta ? 'correct' : 'wrong');
             }
-            document.getElementById('btn-hint')?.setAttribute('disabled', 'true');
+            const btnH = document.getElementById('btn-hint');
+            if (btnH) btnH.setAttribute('disabled', 'true');
         }
 
         function mostrarLoading(show) {

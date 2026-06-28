@@ -85,16 +85,13 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usa
     Args:
         gami:          estado actual de gamificación
         correcta:      si la respuesta fue correcta
-        pistas_usadas: número de pistas vistas antes de responder (0-3)
+        pistas_usadas: número de pistas vistas (0-3)
 
-    Sistema de penalización por pistas:
-        1 pista  → -1 punto
-        2 pistas → -1 -2 = -3 puntos
-        3 pistas → -1 -2 -3 = -6 puntos
+    Penalización por pistas:
+        1 pista  → -1 pt  |  2 pistas → -3 pts  |  3 pistas → -6 pts
 
     Returns:
         (perfil_actualizado, lista_de_eventos)
-        Eventos posibles: '+N puntos', 'pistas:-N', 'racha_3', 'racha_5', 'nivel_N'
     """
     eventos = []
 
