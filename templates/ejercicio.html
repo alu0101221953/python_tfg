@@ -266,13 +266,17 @@
             actualizarBotonPista();
         }
 
+        function escaparHtml(t) {
+            return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
         function renderOpciones(opciones) {
             if (!opciones?.length) return '';
             return `<div class="options-grid" id="options-grid">
                 ${opciones.map((op, i) => {
                     const opHtml = op.includes('\n')
-                        ? op.split('\n').map(l => `<span style="display:block">${l || '&nbsp;'}</span>`).join('')
-                        : op;
+                        ? op.split('\n').map(l => `<span style="display:block">${escaparHtml(l) || '&nbsp;'}</span>`).join('')
+                        : escaparHtml(op);
                     return `<button class="option-btn" id="opt-${i}" onclick="seleccionarOpcion(${i})">
                         <span class="option-idx">${String.fromCharCode(65 + i)}</span>
                         <code style="font-family:var(--mono);font-size:13px;text-align:left">${opHtml}</code>
