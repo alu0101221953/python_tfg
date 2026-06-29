@@ -37,6 +37,21 @@ def cargar_banco() -> list[dict]:
             _banco_cache = json.load(f)["preguntas"]
     return _banco_cache
 
+def _get_alumno_o_404(id_alumno: str):
+    """Carga un alumno o devuelve una JSONResponse 404."""
+    datos = cargar_alumno(id_alumno)
+    if datos is None:
+        return None, JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
+    return Alumno(**datos), None
+
+def _errores_top(alumno: "Alumno", n: int = 5) -> list[dict]:
+    """Devuelve los N errores más frecuentes por subcategoría del alumno."""
+    from collections import Counter
+    errores = Counter(
+        t.subcategoria for t in alumno.trazas
+        if not t.correcta and t.subcategoria
+    )
+    return [{"subcategoria": s, "frecuencia": f} for s, f in errores.most_common(n)]
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
@@ -66,7 +81,6 @@ def banco_info():
         "total": len(banco),
         "por_categoria": por_categoria,
     })
-
 
 # ===========================================================================
 # API — Alumno
@@ -98,17 +112,15 @@ def iniciar_sesion(nombre: str, id_alumno: str = "", curso: str = ""):
         "nombre": alumno.nombre,
         "curso": alumno.curso,
         "nuevo": nuevo,
-        "intentos":  alumno.total_intentos(),
+        "intentos": alumno.total_intentos(),
         "precision": alumno.precision_global(),
     })
 
 
 @app.get("/api/alumno/{id_alumno}")
 def obtener_alumno(id_alumno: str):
-    datos = cargar_alumno(id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-    alumno = Alumno(**datos)
+    alumno, err = _get_alumno_o_404(id_alumno)
+    if err: return err
     return JSONResponse(content={
         "id_alumno": alumno.id_alumno,
         "nombre": alumno.nombre,
@@ -132,10 +144,8 @@ def borrar_alumno(id_alumno: str):
 @app.get("/api/ejercicio/siguiente")
 def siguiente_ejercicio(id_alumno: str):
     """Devuelve una pregunta aleatoria no vista por el alumno."""
-    datos = cargar_alumno(id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-    alumno = Alumno(**datos)
+    alumno, err = _get_alumno_o_404(id_alumno)
+    if err: return err
     banco = cargar_banco()
     vistas = alumno.preguntas_vistas()
     pregunta = seleccionar_siguiente_pregunta(alumno)
@@ -168,12 +178,8 @@ def responder_ejercicio(payload: RespuestaAlumno):
     Evalúa la respuesta, guarda la traza y devuelve feedback
     junto con la siguiente pregunta.
     """
-    datos = cargar_alumno(payload.id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-
-    alumno = Alumno(**datos)
-
+    alumno, err = _get_alumno_o_404(payload.id_alumno)
+    if err: return err
     # Evaluar y guardar traza
     traza_dict, feedback = construir_traza(
         payload.id_pregunta,
@@ -185,21 +191,17 @@ def responder_ejercicio(payload: RespuestaAlumno):
     # Actualizar gamificación
     gami = PerfilGamificacion(**alumno.gamificacion)
     gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"], payload.pistas_usadas)
-
     # Comprobar insignias
     bkt_temp = calcular_bkt_alumno(alumno.trazas)
     cats_dominadas = [c for c, v in bkt_temp.items() if v["dominado"]]
     nuevas_insignias = comprobar_insignias(gami, alumno.total_correctas(), cats_dominadas)
     eventos += [f"insignia:{ins}" for ins in nuevas_insignias]
-
     alumno.gamificacion = gami.model_dump()
     guardar_alumno(alumno)
-
     # Siguiente pregunta adaptativa (BKT)
     siguiente = seleccionar_siguiente_pregunta(alumno)
     vistas = alumno.preguntas_vistas()
     banco = cargar_banco()
-
     sig_data = None
     if siguiente:
         sig_data = {
@@ -222,7 +224,6 @@ def responder_ejercicio(payload: RespuestaAlumno):
     # Calcular BKT actualizado
     bkt = calcular_bkt_alumno(alumno.trazas)
     resumen = resumen_bkt(bkt)
-
     return JSONResponse(content={
         "feedback": feedback,
         "siguiente_pregunta": sig_data,
@@ -260,14 +261,12 @@ def profesor_alumnos(clave: str = ""):
     import os
     from collections import Counter
     from src.database import listar_alumnos
-
     clave_correcta = os.getenv("PROFESOR_CLAVE", "profesor123")
     if clave != clave_correcta:
         return JSONResponse(status_code=401, content={"error": "Clave incorrecta."})
 
     ids = listar_alumnos()
     alumnos_data = []
-
     for id_alumno in ids:
         datos = cargar_alumno(id_alumno)
         if not datos:
@@ -275,16 +274,9 @@ def profesor_alumnos(clave: str = ""):
         alumno = Alumno(**datos)
         bkt = calcular_bkt_alumno(alumno.trazas)
         resumen = resumen_bkt(bkt)
-
         # Última actividad
         ultima = max((t.timestamp for t in alumno.trazas), default="—")[:10]
-
         # Errores más frecuentes
-        errores = Counter(
-            t.subcategoria for t in alumno.trazas
-            if not t.correcta and t.subcategoria
-        )
-
         alumnos_data.append({
             "id_alumno": alumno.id_alumno,
             "nombre": alumno.nombre,
@@ -304,10 +296,7 @@ def profesor_alumnos(clave: str = ""):
                 for cat, v in bkt.items()
             },
             "bkt_resumen": resumen,
-            "errores_top": [
-                {"subcategoria": s, "frecuencia": f}
-                for s, f in errores.most_common(3)
-            ],
+            "errores_top": _errores_top(alumno, 3),
         })
 
     # Errores recurrentes globales de la clase
@@ -334,15 +323,10 @@ def profesor_alumnos(clave: str = ""):
 def dashboard_alumno(id_alumno: str):
     """Devuelve el diagnóstico completo del alumno."""
     from collections import defaultdict, Counter
- 
-    datos = cargar_alumno(id_alumno)
-    if datos is None:
-        return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
- 
-    alumno = Alumno(**datos)
+    alumno, err = _get_alumno_o_404(id_alumno)
+    if err: return err
     bkt = calcular_bkt_alumno(alumno.trazas)
     resumen = resumen_bkt(bkt)
- 
     # Evolución temporal agrupada por día
     por_dia: dict = defaultdict(lambda: {"intentos": 0, "correctas": 0})
     for t in alumno.trazas:
@@ -361,15 +345,7 @@ def dashboard_alumno(id_alumno: str):
     ]
  
     # Errores más frecuentes por subcategoría
-    errores = Counter(
-        t.subcategoria for t in alumno.trazas
-        if not t.correcta and t.subcategoria
-    )
-    errores_top = [
-        {"subcategoria": sub, "frecuencia": freq}
-        for sub, freq in errores.most_common(5)
-    ]
- 
+    errores_top = _errores_top(alumno, 5)
     return JSONResponse(content={
         "id_alumno": alumno.id_alumno,
         "nombre": alumno.nombre,
@@ -401,19 +377,12 @@ def dashboard_alumno(id_alumno: str):
 def dashboard_feedback(id_alumno: str):
     """Genera feedback narrativo personalizado con IA para el alumno."""
     from collections import Counter
-
     datos = cargar_alumno(id_alumno)
     if datos is None:
         return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
 
     alumno = Alumno(**datos)
     bkt = calcular_bkt_alumno(alumno.trazas)
-
-    errores = Counter(
-        t.subcategoria for t in alumno.trazas
-        if not t.correcta and t.subcategoria
-    )
-
     resultado = generar_feedback_ia({
         "nombre": alumno.nombre,
         "stats": {
@@ -430,10 +399,7 @@ def dashboard_feedback(id_alumno: str):
             }
             for cat, v in bkt.items()
         },
-        "errores_top": [
-            {"subcategoria": s, "frecuencia": f}
-            for s, f in errores.most_common(5)
-        ],
+        "errores_top": _errores_top(alumno, 5),
     })
     return JSONResponse(content=resultado)
 
@@ -446,11 +412,10 @@ def dashboard_feedback(id_alumno: str):
 def dashboard_pdf(id_alumno: str):
     """Genera y devuelve el informe PDF individual del alumno."""
     from collections import Counter
-
     datos = cargar_alumno(id_alumno)
     if datos is None:
         return JSONResponse(status_code=404, content={"error": "Alumno no encontrado."})
-
+    
     alumno = Alumno(**datos)
     bkt = calcular_bkt_alumno(alumno.trazas)
     errores = Counter(
@@ -496,14 +461,12 @@ def profesor_informe_pdf(clave: str = ""):
     import os
     from collections import Counter
     from src.database import listar_alumnos
-
     clave_correcta = os.getenv("PROFESOR_CLAVE", "profesor123")
     if clave != clave_correcta:
         return JSONResponse(status_code=401, content={"error": "Clave incorrecta."})
 
     ids = listar_alumnos()
     alumnos_data = []
-
     for id_alumno in ids:
         datos = cargar_alumno(id_alumno)
         if not datos:
@@ -521,10 +484,7 @@ def profesor_informe_pdf(clave: str = ""):
             "precision": alumno.precision_global(),
             "puntos": alumno.gamificacion.get("puntos", 0),
             "bkt": {str(cat): {"dominado": v["dominado"]} for cat, v in bkt.items()},
-            "errores_top": [
-                {"subcategoria": s, "frecuencia": f}
-                for s, f in errores.most_common(3)
-            ],
+            "errores_top": _errores_top(alumno, 3),
         })
 
     todos_errores = Counter()
