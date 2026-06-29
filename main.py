@@ -53,6 +53,25 @@ def _errores_top(alumno: "Alumno", n: int = 5) -> list[dict]:
     )
     return [{"subcategoria": s, "frecuencia": f} for s, f in errores.most_common(n)]
 
+def _serializar_pregunta(p: dict, vistas: set, banco: list) -> dict:
+    """Serializa una pregunta del banco para devolverla al frontend."""
+    return {
+        "id": p["id"],
+        "categoria": p["categoria"],
+        "subcategoria": p["subcategoria"],
+        "nivel": p["nivel"],
+        "tipo": p["tipo"],
+        "enunciado": p["enunciado"],
+        "codigo": p.get("codigo", ""),
+        "opciones":  p.get("opciones", []),
+        "hueco": p.get("hueco", ""),
+        "pistas": p.get("pistas", []),
+        "contador": {
+            "vistas": len(vistas),
+            "total":  len(banco),
+        },
+    }
+
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(request=request, name="index.html", context={})
@@ -154,22 +173,7 @@ def siguiente_ejercicio(id_alumno: str):
             "fin_banco": True,
             "mensaje": "¡Has respondido todas las preguntas! Vuelve más tarde.",
         })
-    return JSONResponse(content={
-        "id": pregunta["id"],
-        "categoria": pregunta["categoria"],
-        "subcategoria": pregunta["subcategoria"],
-        "nivel": pregunta["nivel"],
-        "tipo": pregunta["tipo"],
-        "enunciado": pregunta["enunciado"],
-        "codigo": pregunta.get("codigo", ""),
-        "opciones": pregunta.get("opciones", []),
-        "hueco": pregunta.get("hueco", ""),
-        "pistas": pregunta.get("pistas", []),
-        "contador": {
-            "vistas": len(vistas),
-            "total": len(banco),
-        },
-    })
+    return JSONResponse(content=_serializar_pregunta(pregunta, vistas, banco))
 
 
 @app.post("/api/ejercicio/responder")
@@ -204,22 +208,7 @@ def responder_ejercicio(payload: RespuestaAlumno):
     banco = cargar_banco()
     sig_data = None
     if siguiente:
-        sig_data = {
-            "id": siguiente["id"],
-            "categoria": siguiente["categoria"],
-            "subcategoria": siguiente["subcategoria"],
-            "nivel": siguiente["nivel"],
-            "tipo": siguiente["tipo"],
-            "enunciado": siguiente["enunciado"],
-            "codigo": siguiente.get("codigo", ""),
-            "opciones": siguiente.get("opciones", []),
-            "hueco": siguiente.get("hueco", ""),
-            "pistas": siguiente.get("pistas", []),
-            "contador": {
-                "vistas": len(vistas),
-                "total": len(banco),
-            },
-        }
+        sig_data = _serializar_pregunta(siguiente, vistas, banco)
 
     # Calcular BKT actualizado
     bkt = calcular_bkt_alumno(alumno.trazas)
