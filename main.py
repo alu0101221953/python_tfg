@@ -19,7 +19,7 @@ from src.database import cargar_alumno, guardar_alumno, eliminar_alumno
 from src.analizador import construir_traza
 from src.bkt import calcular_bkt_alumno, resumen_bkt
 from src.recomendador import seleccionar_siguiente_pregunta, cargar_banco as cargar_banco_recomendador
-from src.gamificacion import PerfilGamificacion, actualizar_gamificacion, comprobar_insignias
+from src.gamificacion import PerfilGamificacion, actualizar_gamificacion, comprobar_insignias, comprobar_insignias_comportamiento
 from src.informes import generar_informe_alumno, generar_informe_clase
 from src.feedback_ia import generar_feedback_ia
 
@@ -52,51 +52,6 @@ def _errores_top(alumno: "Alumno", n: int = 5) -> list[dict]:
         if not t.correcta and t.subcategoria
     )
     return [{"subcategoria": s, "frecuencia": f} for s, f in errores.most_common(n)]
-
-def _serializar_pregunta(p: dict, vistas: set, banco: list) -> dict:
-    """Serializa una pregunta del banco para devolverla al frontend."""
-    return {
-        "id": p["id"],
-        "categoria": p["categoria"],
-        "subcategoria": p["subcategoria"],
-        "nivel": p["nivel"],
-        "tipo": p["tipo"],
-        "enunciado": p["enunciado"],
-        "codigo": p.get("codigo", ""),
-        "opciones": p.get("opciones", []),
-        "hueco": p.get("hueco", ""),
-        "pistas": p.get("pistas", []),
-        "contador": {
-            "vistas": len(vistas),
-            "total":  len(banco),
-        },
-    }
-
-def _serializar_bkt(bkt: dict, completo: bool = True) -> dict:
-    """
-    Serializa el estado BKT para devolverlo al frontend.
-
-    Args:
-        bkt:      resultado de calcular_bkt_alumno()
-        completo: si True incluye num_intentos y nombre; si False solo p_dominio y dominado
-    """
-    if completo:
-        return {
-            str(cat): {
-                "p_dominio": v["p_dominio"],
-                "dominado": v["dominado"],
-                "num_intentos": v["num_intentos"],
-                "nombre": v["nombre"],
-            }
-            for cat, v in bkt.items()
-        }
-    return {
-        str(cat): {
-            "p_dominio": v["p_dominio"],
-            "dominado": v["dominado"],
-        }
-        for cat, v in bkt.items()
-    }
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
@@ -196,7 +151,22 @@ def siguiente_ejercicio(id_alumno: str):
             "fin_banco": True,
             "mensaje": "¡Has respondido todas las preguntas! Vuelve más tarde.",
         })
-    return JSONResponse(content=_serializar_pregunta(pregunta, vistas, banco))
+    return JSONResponse(content={
+        "id": pregunta["id"],
+        "categoria": pregunta["categoria"],
+        "subcategoria": pregunta["subcategoria"],
+        "nivel": pregunta["nivel"],
+        "tipo": pregunta["tipo"],
+        "enunciado": pregunta["enunciado"],
+        "codigo": pregunta.get("codigo", ""),
+        "opciones": pregunta.get("opciones", []),
+        "hueco": pregunta.get("hueco", ""),
+        "pistas": pregunta.get("pistas", []),
+        "contador": {
+            "vistas": len(vistas),
+            "total": len(banco),
+        },
+    })
 
 
 @app.post("/api/ejercicio/responder")
@@ -231,7 +201,22 @@ def responder_ejercicio(payload: RespuestaAlumno):
     banco = cargar_banco()
     sig_data = None
     if siguiente:
-        sig_data = _serializar_pregunta(siguiente, vistas, banco)
+        sig_data = {
+            "id": siguiente["id"],
+            "categoria": siguiente["categoria"],
+            "subcategoria": siguiente["subcategoria"],
+            "nivel": siguiente["nivel"],
+            "tipo": siguiente["tipo"],
+            "enunciado": siguiente["enunciado"],
+            "codigo": siguiente.get("codigo", ""),
+            "opciones": siguiente.get("opciones", []),
+            "hueco": siguiente.get("hueco", ""),
+            "pistas": siguiente.get("pistas", []),
+            "contador": {
+                "vistas": len(vistas),
+                "total": len(banco),
+            },
+        }
 
     # Calcular BKT actualizado
     bkt = calcular_bkt_alumno(alumno.trazas)
@@ -247,7 +232,15 @@ def responder_ejercicio(payload: RespuestaAlumno):
             "correctas": alumno.total_correctas(),
             "precision": alumno.precision_global(),
         },
-        "bkt": _serializar_bkt(bkt),
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre": v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
         "bkt_resumen": resumen,
     })
 
@@ -291,7 +284,14 @@ def profesor_alumnos(clave: str = ""):
             "puntos": alumno.gamificacion.get("puntos", 0),
             "nivel": alumno.gamificacion.get("nivel", 1),
             "ultima": ultima,
-            "bkt": _serializar_bkt(bkt),
+            "bkt": {
+                str(cat): {
+                    "p_dominio": v["p_dominio"],
+                    "dominado": v["dominado"],
+                    "nombre": v["nombre"],
+                }
+                for cat, v in bkt.items()
+            },
             "bkt_resumen": resumen,
             "errores_top": _errores_top(alumno, 3),
         })
@@ -352,7 +352,15 @@ def dashboard_alumno(id_alumno: str):
             "precision": alumno.precision_global(),
         },
         "gamificacion": alumno.gamificacion,
-        "bkt": _serializar_bkt(bkt),
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre": v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
         "bkt_resumen": resumen,
         "evolucion": evolucion,
         "errores_top": errores_top,
@@ -380,7 +388,14 @@ def dashboard_feedback(id_alumno: str):
             "precision": alumno.precision_global(),
         },
         "gamificacion": alumno.gamificacion,
-        "bkt": _serializar_bkt(bkt),
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+            }
+            for cat, v in bkt.items()
+        },
         "errores_top": _errores_top(alumno, 5),
     })
     return JSONResponse(content=resultado)
@@ -415,7 +430,15 @@ def dashboard_pdf(id_alumno: str):
             "precision": alumno.precision_global(),
         },
         "gamificacion": alumno.gamificacion,
-        "bkt": _serializar_bkt(bkt),
+        "bkt": {
+            str(cat): {
+                "p_dominio": v["p_dominio"],
+                "dominado": v["dominado"],
+                "num_intentos": v["num_intentos"],
+                "nombre": v["nombre"],
+            }
+            for cat, v in bkt.items()
+        },
         "errores_top": [
             {"subcategoria": s, "frecuencia": f}
             for s, f in errores.most_common(5)
@@ -457,7 +480,7 @@ def profesor_informe_pdf(clave: str = ""):
             "intentos": alumno.total_intentos(),
             "precision": alumno.precision_global(),
             "puntos": alumno.gamificacion.get("puntos", 0),
-            "bkt": _serializar_bkt(bkt, completo=False),
+            "bkt": {str(cat): {"dominado": v["dominado"]} for cat, v in bkt.items()},
             "errores_top": _errores_top(alumno, 3),
         })
 

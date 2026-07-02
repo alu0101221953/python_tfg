@@ -266,17 +266,13 @@
             actualizarBotonPista();
         }
 
-        function escaparHtml(t) {
-            return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        }
-
         function renderOpciones(opciones) {
             if (!opciones?.length) return '';
             return `<div class="options-grid" id="options-grid">
                 ${opciones.map((op, i) => {
                     const opHtml = op.includes('\n')
-                        ? op.split('\n').map(l => `<span style="display:block">${escaparHtml(l) || '&nbsp;'}</span>`).join('')
-                        : escaparHtml(op);
+                        ? op.split('\n').map(l => `<span style="display:block">${l || '&nbsp;'}</span>`).join('')
+                        : op;
                     return `<button class="option-btn" id="opt-${i}" onclick="seleccionarOpcion(${i})">
                         <span class="option-idx">${String.fromCharCode(65 + i)}</span>
                         <code style="font-family:var(--mono);font-size:13px;text-align:left">${opHtml}</code>
@@ -393,6 +389,9 @@
             'racha_3': '🔥 ¡Racha de 3!',
             'racha_5': '🔥 ¡Racha de 5!',
             'racha_10': '🔥 ¡Racha de 10!',
+            'sin_pistas_5': '🧠 ¡5 sin pistas!',
+            'velocista_3': '⚡ ¡Velocista!',
+            'perseverante_3':'💪 ¡Perseverante!',
             'nivel_2': '⬆️ ¡Nivel 2!',
             'nivel_5': '⬆️ ¡Nivel 5!',
             'nivel_10': '⬆️ ¡Nivel 10!',
@@ -418,6 +417,10 @@
                     } else if (ev.startsWith('pistas:')) {
                         toast.classList.add('penalty');
                         toast.textContent = '💡 ' + ev.replace('pistas:', '') + ' puntos (pistas)';
+                    } else if (ev.startsWith('velocidad:')) {
+                        toast.textContent = '⚡ +2 pts (respuesta rápida)';
+                    } else if (ev.startsWith('dificultad:')) {
+                        toast.textContent = '💪 +5 pts (categoría difícil)';
                     } else if (ev.startsWith('+') && ev.includes('puntos')) {
                         toast.textContent = `✨ ${ev}`;
                     } else if (ev.startsWith('racha_')) {
