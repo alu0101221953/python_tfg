@@ -78,50 +78,18 @@ def comprobar_insignias(gami: PerfilGamificacion, total_correctas: int, categori
     return nuevas
 
 
-def comprobar_insignias_comportamiento(gami: PerfilGamificacion, racha_sin_pistas: int, racha_rapida: int, racha_dificiles: int,
-) -> list[str]:
-    """
-    Comprueba insignias basadas en comportamiento del alumno.
-
-    Insignias:
-      - sin_pistas_5:   5 aciertos consecutivos sin usar ninguna pista
-      - velocista_3:    3 respuestas correctas consecutivas por debajo del umbral rápido
-      - perseverante_3: 3 aciertos consecutivos en categorías con dominio < 0.50
-    """
-    nuevas = []
-
-    def desbloquear(nombre):
-        if nombre not in gami.insignias:
-            gami.insignias.append(nombre)
-            nuevas.append(nombre)
-
-    if racha_sin_pistas >= 5: desbloquear('sin_pistas_5')
-    if racha_rapida >= 3: desbloquear('velocista_3')
-    if racha_dificiles >= 3: desbloquear('perseverante_3')
-
-    return nuevas
-
-
 # Puntos base por nivel de dificultad
-PUNTOS_POR_NIVEL = {
-    "basico": 10,
-    "intermedio": 15,
-    "avanzado": 20,
-}
+PUNTOS_POR_NIVEL = {"basico": 10, "intermedio": 15, "avanzado": 20}
 
-# Umbrales de dominio para considerar categoría difícil
+# Umbral de tiempo rápido por nivel (segundos)
+UMBRAL_RAPIDO = {"basico": 10, "intermedio": 15, "avanzado": 20}
+
+# Umbral de dominio para considerar una categoría difícil
 UMBRAL_CATEGORIA_DIFICIL = 0.50
 
-# Umbral de tiempo rápido por nivel (segundos) — mismo que en bkt.py
-UMBRAL_RAPIDO = {
-    "basico": 10,
-    "intermedio": 15,
-    "avanzado": 20,
-}
 
-
-def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usadas: int   = 0, nivel: str   = "basico", 
-    tiempo: int   = 0, p_dominio_cat: float = 1.0,) -> tuple[PerfilGamificacion, list[str]]:
+def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usadas: int = 0, nivel: str = "basico",
+    tiempo: int = 0, p_dominio_cat: float = 1.0) -> tuple[PerfilGamificacion, list[str]]:
     """
     Actualiza el perfil de gamificación tras una respuesta.
 
@@ -131,14 +99,15 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usa
         pistas_usadas: pistas vistas antes de responder (0-3)
         nivel:         nivel de la pregunta (basico/intermedio/avanzado)
         tiempo:        segundos empleados en responder
-        p_dominio_cat: dominio estimado BKT de la categoría (0-1)
+        p_dominio_cat: dominio BKT estimado de la categoría (0-1)
 
     Sistema de puntos:
-        Base:           básico=10, intermedio=15, avanzado=20
-        Bonus velocidad: +2 pts si responde más rápido que el umbral rápido
-        Bonus dificultad: +5 pts si la categoría tiene dominio < 0.50
-        Bonus racha:    +5 pts cada 3 aciertos, +10 pts cada 5 aciertos
-        Penalización:   -1 pt pista1, -3 pts pista1+2, -6 pts pista1+2+3
+        Base:            básico=10, intermedio=15, avanzado=20
+        Bonus velocidad: +2 pts si responde por debajo del umbral rápido del nivel
+        Bonus dificultad:+5 pts si la categoría tiene dominio BKT < 0.50
+        Bonus racha:     +5 pts cada 3 aciertos, +10 pts cada 5
+        Penalización:    -1/-3/-6 pts según pistas usadas
+        Desglose:        evento 'desglose:...' para mostrar en el feedback
 
     Returns:
         (perfil_actualizado, lista_de_eventos)
@@ -150,34 +119,46 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usa
         return gami, eventos
 
     # Puntos base según dificultad
-    puntos_ganados = PUNTOS_POR_NIVEL.get(nivel, 10)
+    base = PUNTOS_POR_NIVEL.get(nivel, 10)
+    bonus_vel = 0
+    bonus_dif = 0
+    bonus_racha = 0
+    penalizacion  = sum(range(1, pistas_usadas + 1))
 
-    # Bonus por velocidad
+    # Bonus velocidad
     umbral_rap = UMBRAL_RAPIDO.get(nivel, 10)
     if tiempo > 0 and tiempo <= umbral_rap:
-        puntos_ganados += 2
+        bonus_vel = 2
         eventos.append("velocidad:+2")
 
-    # Bonus por categoría difícil
+    # Bonus categoría difícil
     if p_dominio_cat < UMBRAL_CATEGORIA_DIFICIL:
-        puntos_ganados += 5
+        bonus_dif = 5
         eventos.append("dificultad:+5")
 
-    # Penalización por pistas
-    penalizacion = sum(range(1, pistas_usadas + 1))  # 0, 1, 3, 6
-    puntos_ganados = max(puntos_ganados - penalizacion, 1)
+    # Penalización pistas
     if penalizacion > 0:
         eventos.append(f"pistas:-{penalizacion}")
 
     gami.racha_actual += 1
 
-    # Bonus por racha
+    # Bonus racha
     if gami.racha_actual % 5 == 0:
-        puntos_ganados += 10
+        bonus_racha = 10
         eventos.append(f"racha_{gami.racha_actual}")
     elif gami.racha_actual % 3 == 0:
-        puntos_ganados += 5
+        bonus_racha = 5
         eventos.append(f"racha_{gami.racha_actual}")
+
+    # Total
+    puntos_ganados = max(base + bonus_vel + bonus_dif + bonus_racha - penalizacion, 1)
+    partes = [f"+{base} ({nivel})"]
+    if bonus_vel: partes.append(f"+{bonus_vel} (velocidad)")
+    if bonus_dif: partes.append(f"+{bonus_dif} (categoría difícil)")
+    if bonus_racha: partes.append(f"+{bonus_racha} (racha)")
+    if penalizacion: partes.append(f"-{penalizacion} (pistas)")
+    partes.append(f"= +{puntos_ganados} pts")
+    eventos.append("desglose:" + " | ".join(partes))
 
     # Actualizar racha máxima
     if gami.racha_actual > gami.racha_maxima:
@@ -188,9 +169,29 @@ def actualizar_gamificacion(gami: PerfilGamificacion, correcta: bool, pistas_usa
     gami.puntos += puntos_ganados
     gami.nivel = calcular_nivel(gami.puntos)
 
-    eventos.append(f"+{puntos_ganados} puntos")
-
     if gami.nivel > nivel_antes:
         eventos.append(f"nivel_{gami.nivel}")
 
     return gami, eventos
+
+
+def comprobar_insignias_comportamiento( gami: PerfilGamificacion, racha_sin_pistas: int, racha_rapida: int, racha_dificiles: int ) -> list[str]:
+    """
+    Comprueba insignias basadas en comportamiento.
+
+    - sin_pistas_5:   5 aciertos consecutivos sin usar ninguna pista
+    - velocista_3:    3 respuestas rápidas consecutivas
+    - perseverante_3: 3 aciertos consecutivos en categorías difíciles
+    """
+    nuevas = []
+
+    def desbloquear(nombre):
+        if nombre not in gami.insignias:
+            gami.insignias.append(nombre)
+            nuevas.append(nombre)
+
+    if racha_sin_pistas >= 5: desbloquear('sin_pistas_5')
+    if racha_rapida >= 3: desbloquear('velocista_3')
+    if racha_dificiles  >= 3: desbloquear('perseverante_3')
+
+    return nuevas

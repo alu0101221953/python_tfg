@@ -186,12 +186,44 @@ def responder_ejercicio(payload: RespuestaAlumno):
     alumno.trazas.append(Traza(**traza_dict))
 
     # Actualizar gamificación
-    gami = PerfilGamificacion(**alumno.gamificacion)
-    gami, eventos = actualizar_gamificacion(gami, traza_dict["correcta"], payload.pistas_usadas)
-    # Comprobar insignias
     bkt_temp = calcular_bkt_alumno(alumno.trazas)
+    p_dominio_cat = bkt_temp.get(traza_dict["categoria"], {}).get("p_dominio", 1.0)
+
+    gami = PerfilGamificacion(**alumno.gamificacion)
+    gami, eventos = actualizar_gamificacion(
+        gami,
+        correcta = traza_dict["correcta"],
+        pistas_usadas = payload.pistas_usadas,
+        nivel = traza_dict["nivel"],
+        tiempo = traza_dict["tiempo"],
+        p_dominio_cat = p_dominio_cat,
+    )
+
+    # Rachas de comportamiento
+    from src.bkt import UMBRALES_TIEMPO
+    racha_sin_pistas = 0
+    racha_rapida = 0
+    racha_dificiles = 0
+    for t in reversed(alumno.trazas):
+        if not t.correcta:
+            break
+        if t.pistas_usadas == 0:
+            racha_sin_pistas += 1
+        umbral = UMBRALES_TIEMPO.get(t.nivel, {}).get("rapido", 10)
+        if t.tiempo > 0 and t.tiempo <= umbral:
+            racha_rapida += 1
+        else:
+            racha_rapida = 0
+        cat_dom = bkt_temp.get(t.categoria, {}).get("p_dominio", 1.0)
+        if cat_dom < 0.50:
+            racha_dificiles += 1
+        else:
+            racha_dificiles = 0
+
+    # Comprobar insignias
     cats_dominadas = [c for c, v in bkt_temp.items() if v["dominado"]]
     nuevas_insignias = comprobar_insignias(gami, alumno.total_correctas(), cats_dominadas)
+    nuevas_insignias += comprobar_insignias_comportamiento(gami, racha_sin_pistas, racha_rapida, racha_dificiles)
     eventos += [f"insignia:{ins}" for ins in nuevas_insignias]
     alumno.gamificacion = gami.model_dump()
     guardar_alumno(alumno)
