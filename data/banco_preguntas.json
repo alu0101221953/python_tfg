@@ -29,7 +29,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.1",
       "explicacion": "Falta el paréntesis de cierre. Python lanza un SyntaxError.",
-      "pista": "¿Están todos los paréntesis cerrados?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Están todos los paréntesis cerrados?",
+        "Pista final: Falta el paréntesis de cierre. Python lanza un SyntaxError."
+      ]
     },
     {
       "id": "cat1_basico_02",
@@ -43,7 +47,11 @@
       "respuesta_correcta": ":",
       "error_asociado": "1.1",
       "explicacion": "Los bloques if, for, while y def siempre terminan con dos puntos (:).",
-      "pista": "¿Qué símbolo va al final de un bloque if?"
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "¿Qué símbolo va al final de un bloque if?",
+        "Pista final: Los bloques if, for, while y def siempre terminan con dos puntos (:)."
+      ]
     },
     {
       "id": "cat1_basico_03",
@@ -62,7 +70,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.3",
       "explicacion": "x e y son enteros, así que + hace suma aritmética. Resultado: 8.",
-      "pista": "¿De qué tipo son x e y?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿De qué tipo son x e y?",
+        "Pista final: x e y son enteros, así que + hace suma aritmética. Resultado: 8."
+      ]
     },
     {
       "id": "cat1_basico_04",
@@ -81,7 +93,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.4",
       "explicacion": "El operador de asignación (=) no puede usarse en una condición. Para comparar se usa ==.",
-      "pista": "¿Cuál es la diferencia entre = y ==?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Cuál es la diferencia entre = y ==?",
+        "Pista final: El operador de asignación (=) no puede usarse en una condición. Para comparar se usa ==."
+      ]
     },
     {
       "id": "cat1_intermedio_01",
@@ -95,7 +111,11 @@
       "respuesta_correcta": ")",
       "error_asociado": "1.2",
       "explicacion": "Falta el paréntesis de cierre ) antes de los dos puntos. La definición correcta es def suma(a, b):",
-      "pista": "Los parámetros de una función van entre paréntesis."
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "Los parámetros de una función van entre paréntesis.",
+        "Pista final: Falta el paréntesis de cierre ) antes de los dos puntos. La definición correcta es def suma(a, b):"
+      ]
     },
     {
       "id": "cat1_intermedio_02",
@@ -114,7 +134,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.3",
       "explicacion": "x e y son strings. El operador + con strings hace concatenación, no suma.",
-      "pista": "¿De qué tipo son x e y? ¿Llevan comillas?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿De qué tipo son x e y? ¿Llevan comillas?",
+        "Pista final: x e y son strings. El operador + con strings hace concatenación, no suma."
+      ]
     },
     {
       "id": "cat1_intermedio_03",
@@ -128,7 +152,11 @@
       "respuesta_correcta": ":",
       "error_asociado": "1.1",
       "explicacion": "Los bucles for siempre terminan con dos puntos (:) antes del bloque indentado.",
-      "pista": "¿Qué símbolo va al final de un for?"
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "¿Qué símbolo va al final de un for?",
+        "Pista final: Los bucles for siempre terminan con dos puntos (:) antes del bloque indentado."
+      ]
     },
     {
       "id": "cat1_avanzado_01",
@@ -147,7 +175,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "1.4",
       "explicacion": "El operador ternario evalúa x > 3 (True) y devuelve 'mayor'.",
-      "pista": "¿Cuál es el valor de x > 3?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Cuál es el valor de x > 3?",
+        "Pista final: El operador ternario evalúa x > 3 (True) y devuelve 'mayor'."
+      ]
     },
     {
       "id": "cat1_avanzado_02",
@@ -161,7 +193,11 @@
       "respuesta_correcta": "==",
       "error_asociado": "1.4",
       "explicacion": "Para comparar igualdad en Python se usa == (doble igual), no = que es asignación.",
-      "pista": "¿Qué operador se usa para comparar igualdad?"
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "¿Qué operador se usa para comparar igualdad?",
+        "Pista final: Para comparar igualdad en Python se usa == (doble igual), no = que es asignación."
+      ]
     },
     {
       "id": "cat2_basico_01",
@@ -180,7 +216,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.1",
       "explicacion": "El print debe estar indentado dentro del if. Python lanza IndentationError.",
-      "pista": "¿Está el print dentro del bloque if?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Está el print dentro del bloque if?",
+        "Pista final: El print debe estar indentado dentro del if. Python lanza IndentationError."
+      ]
     },
     {
       "id": "cat2_basico_02",
@@ -194,7 +234,11 @@
       "respuesta_correcta": "    print('Hola')",
       "error_asociado": "2.1",
       "explicacion": "El cuerpo de una función debe indentarse con 4 espacios.",
-      "pista": "¿Cuántos espacios lleva el cuerpo de una función?"
+      "pistas": [
+        "Cuenta cuántos niveles de indentación necesita esta línea según el bloque en el que está.",
+        "¿Cuántos espacios lleva el cuerpo de una función?",
+        "Pista final: El cuerpo de una función debe indentarse con 4 espacios."
+      ]
     },
     {
       "id": "cat2_basico_03",
@@ -213,7 +257,11 @@
       "respuesta_correcta": 2,
       "error_asociado": "2.2",
       "explicacion": "print('mayor') está dentro del if y print('fin') está fuera, así que se imprimen los dos.",
-      "pista": "¿Qué líneas están dentro del if y cuáles fuera?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Qué líneas están dentro del if y cuáles fuera?",
+        "Pista final: print('mayor') está dentro del if y print('fin') está fuera, así que se imprimen los dos."
+      ]
     },
     {
       "id": "cat2_basico_04",
@@ -232,7 +280,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "2.2",
       "explicacion": "print('que cinco') no está indentado, así que siempre se ejecuta.",
-      "pista": "¿Dentro de qué bloque está cada print?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Dentro de qué bloque está cada print?",
+        "Pista final: print('que cinco') no está indentado, así que siempre se ejecuta."
+      ]
     },
     {
       "id": "cat2_intermedio_01",
@@ -251,7 +303,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.3",
       "explicacion": "La línea resultado tiene 2 espacios de indentación pero está fuera de la función. Python lanza IndentationError.",
-      "pista": "¿Cuántos espacios tiene la línea resultado?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Cuántos espacios tiene la línea resultado?",
+        "Pista final: La línea resultado tiene 2 espacios de indentación pero está fuera de la función. Python lanza IndentationError."
+      ]
     },
     {
       "id": "cat2_intermedio_02",
@@ -265,7 +321,11 @@
       "respuesta_correcta": "        return x * 2",
       "error_asociado": "2.1",
       "explicacion": "return x * 2 está dentro del if, que a su vez está dentro de la función. Necesita 8 espacios (2 niveles).",
-      "pista": "¿Dentro de cuántos bloques está ese return?"
+      "pistas": [
+        "Cuenta cuántos niveles de indentación necesita esta línea según el bloque en el que está.",
+        "¿Dentro de cuántos bloques está ese return?",
+        "Pista final: return x * 2 está dentro del if, que a su vez está dentro de la función. Necesita 8 espacios (2 niveles)."
+      ]
     },
     {
       "id": "cat2_intermedio_03",
@@ -284,7 +344,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.2",
       "explicacion": "print('uno') solo se ejecuta cuando i==1, pero print(i) se ejecuta siempre dentro del for.",
-      "pista": "¿Cuál de los dos print está dentro del if?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Cuál de los dos print está dentro del if?",
+        "Pista final: print('uno') solo se ejecuta cuando i==1, pero print(i) se ejecuta siempre dentro del for."
+      ]
     },
     {
       "id": "cat2_intermedio_04",
@@ -303,7 +367,11 @@
       "respuesta_correcta": 3,
       "error_asociado": "2.2",
       "explicacion": "print('ok') está fuera de ambos bucles, así que se ejecuta solo una vez.",
-      "pista": "¿Dentro de qué bloque está el print?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Dentro de qué bloque está el print?",
+        "Pista final: print('ok') está fuera de ambos bucles, así que se ejecuta solo una vez."
+      ]
     },
     {
       "id": "cat2_avanzado_01",
@@ -322,7 +390,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.3",
       "explicacion": "x es -3 (no > 0), así que se ejecuta return -x = -(-3) = 3.",
-      "pista": "¿Cuál de los dos return se ejecuta cuando x es negativo?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Cuál de los dos return se ejecuta cuando x es negativo?",
+        "Pista final: x es -3 (no > 0), así que se ejecuta return -x = -(-3) = 3."
+      ]
     },
     {
       "id": "cat3_basico_01",
@@ -341,7 +413,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.1",
       "explicacion": "La variable 'nombre' no ha sido definida antes de usarla. Python lanza NameError.",
-      "pista": "¿Ha sido definida la variable antes de usarla?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Ha sido definida la variable antes de usarla?",
+        "Pista final: La variable 'nombre' no ha sido definida antes de usarla. Python lanza NameError."
+      ]
     },
     {
       "id": "cat3_basico_02",
@@ -360,7 +436,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.2",
       "explicacion": "No se puede concatenar un string con un entero. Hay que convertir: str(edad).",
-      "pista": "¿De qué tipo es 'edad' y de qué tipo es el texto?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿De qué tipo es 'edad' y de qué tipo es el texto?",
+        "Pista final: No se puede concatenar un string con un entero. Hay que convertir: str(edad)."
+      ]
     },
     {
       "id": "cat3_basico_03",
@@ -374,7 +454,11 @@
       "respuesta_correcta": "int(numero)",
       "error_asociado": "3.3",
       "explicacion": "input() siempre devuelve un string. Hay que convertirlo con int() para operar con él.",
-      "pista": "¿Qué tipo devuelve siempre la función input()?"
+      "pistas": [
+        "Piensa en qué tipo de dato necesitas y qué función realiza esa conversión o cálculo.",
+        "¿Qué tipo devuelve siempre la función input()?",
+        "Pista final: input() siempre devuelve un string. Hay que convertirlo con int() para operar con él."
+      ]
     },
     {
       "id": "cat3_basico_04",
@@ -393,7 +477,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.2",
       "explicacion": "x e y son strings. El operador + con strings hace concatenación, no suma.",
-      "pista": "¿De qué tipo son x e y? ¿Llevan comillas?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿De qué tipo son x e y? ¿Llevan comillas?",
+        "Pista final: x e y son strings. El operador + con strings hace concatenación, no suma."
+      ]
     },
     {
       "id": "cat3_intermedio_01",
@@ -407,7 +495,11 @@
       "respuesta_correcta": "float(a), float(b)",
       "error_asociado": "3.3",
       "explicacion": "input() devuelve strings. Para sumar decimales hay que convertir con float().",
-      "pista": "¿Qué función convierte un string a número decimal?"
+      "pistas": [
+        "Piensa en qué tipo de dato necesitas y qué función realiza esa conversión o cálculo.",
+        "¿Qué función convierte un string a número decimal?",
+        "Pista final: input() devuelve strings. Para sumar decimales hay que convertir con float()."
+      ]
     },
     {
       "id": "cat3_intermedio_02",
@@ -426,7 +518,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.2",
       "explicacion": "x es un entero y y es un string. Aunque tienen el mismo valor, son de distinto tipo, así que == devuelve False.",
-      "pista": "¿Son del mismo tipo x e y?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Son del mismo tipo x e y?",
+        "Pista final: x es un entero y y es un string. Aunque tienen el mismo valor, son de distinto tipo, así que == devuelve False."
+      ]
     },
     {
       "id": "cat3_avanzado_01",
@@ -445,7 +541,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.4",
       "explicacion": "La x dentro de cambiar() es una variable local. No modifica la x global.",
-      "pista": "¿La x dentro de la función es la misma que la de fuera?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿La x dentro de la función es la misma que la de fuera?",
+        "Pista final: La x dentro de cambiar() es una variable local. No modifica la x global."
+      ]
     },
     {
       "id": "cat3_avanzado_02",
@@ -459,7 +559,11 @@
       "respuesta_correcta": "float",
       "error_asociado": "3.3",
       "explicacion": "float() convierte el string de input a número decimal para poder operar con él.",
-      "pista": "¿Qué función convierte a número decimal?"
+      "pistas": [
+        "Piensa en qué tipo de dato necesitas y qué función realiza esa conversión o cálculo.",
+        "¿Qué función convierte a número decimal?",
+        "Pista final: float() convierte el string de input a número decimal para poder operar con él."
+      ]
     },
     {
       "id": "cat4_basico_01",
@@ -478,7 +582,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.1",
       "explicacion": "x es 3, que no es mayor que 5, así que se ejecuta el else.",
-      "pista": "¿Es 3 mayor que 5?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Es 3 mayor que 5?",
+        "Pista final: x es 3, que no es mayor que 5, así que se ejecuta el else."
+      ]
     },
     {
       "id": "cat4_basico_02",
@@ -497,7 +605,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.1",
       "explicacion": "nota >= 5 es True (imprime aprobado), nota >= 7 es False (no imprime notable).",
-      "pista": "¿Cuáles de las condiciones son True?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cuáles de las condiciones son True?",
+        "Pista final: nota >= 5 es True (imprime aprobado), nota >= 7 es False (no imprime notable)."
+      ]
     },
     {
       "id": "cat4_basico_03",
@@ -516,7 +628,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.2",
       "explicacion": "x < 5 es False, x < 10 es True, así que imprime 'mediano'.",
-      "pista": "¿Cuál es la primera condición que resulta True?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cuál es la primera condición que resulta True?",
+        "Pista final: x < 5 es False, x < 10 es True, así que imprime 'mediano'."
+      ]
     },
     {
       "id": "cat4_basico_04",
@@ -530,7 +646,11 @@
       "respuesta_correcta": "else",
       "error_asociado": "4.3",
       "explicacion": "else captura todos los casos que no cumplen la condición del if.",
-      "pista": "¿Qué palabra clave se usa para el caso contrario del if?"
+      "pistas": [
+        "Piensa en qué palabra clave o símbolo falta para expresar correctamente esta condición.",
+        "¿Qué palabra clave se usa para el caso contrario del if?",
+        "Pista final: else captura todos los casos que no cumplen la condición del if."
+      ]
     },
     {
       "id": "cat4_intermedio_01",
@@ -549,7 +669,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.3",
       "explicacion": "x > 3 es True y x < 10 es True. Con and ambas deben ser True, que es el caso.",
-      "pista": "¿Qué hace el operador and?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Qué hace el operador and?",
+        "Pista final: x > 3 es True y x < 10 es True. Con and ambas deben ser True, que es el caso."
+      ]
     },
     {
       "id": "cat4_intermedio_02",
@@ -568,7 +692,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.3",
       "explicacion": "x > 10 es True, x > 20 es False, así que imprime 'grande'.",
-      "pista": "Evalúa primero el if exterior y luego el interior."
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "Evalúa primero el if exterior y luego el interior.",
+        "Pista final: x > 10 es True, x > 20 es False, así que imprime 'grande'."
+      ]
     },
     {
       "id": "cat4_intermedio_03",
@@ -587,7 +715,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.2",
       "explicacion": "elif solo se evalúa si las condiciones anteriores son False. x > 3 es la primera True.",
-      "pista": "¿Cuál es la primera condición que resulta True?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cuál es la primera condición que resulta True?",
+        "Pista final: elif solo se evalúa si las condiciones anteriores son False. x > 3 es la primera True."
+      ]
     },
     {
       "id": "cat4_intermedio_04",
@@ -601,7 +733,11 @@
       "respuesta_correcta": "and",
       "error_asociado": "4.3",
       "explicacion": "El operador and requiere que ambas condiciones sean True.",
-      "pista": "¿Qué operador lógico exige que se cumplan las dos condiciones?"
+      "pistas": [
+        "Piensa en qué palabra clave o símbolo falta para expresar correctamente esta condición.",
+        "¿Qué operador lógico exige que se cumplan las dos condiciones?",
+        "Pista final: El operador and requiere que ambas condiciones sean True."
+      ]
     },
     {
       "id": "cat4_avanzado_01",
@@ -620,7 +756,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.4",
       "explicacion": "En Python, 0 se evalúa como False en un contexto booleano.",
-      "pista": "¿Qué valores se consideran False en Python?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Qué valores se consideran False en Python?",
+        "Pista final: En Python, 0 se evalúa como False en un contexto booleano."
+      ]
     },
     {
       "id": "cat4_avanzado_02",
@@ -639,7 +779,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.4",
       "explicacion": "Una lista vacía se evalúa como False. not False es True, así que imprime 'vacía'.",
-      "pista": "¿Cómo se evalúa una lista vacía en un contexto booleano?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cómo se evalúa una lista vacía en un contexto booleano?",
+        "Pista final: Una lista vacía se evalúa como False. not False es True, así que imprime 'vacía'."
+      ]
     },
     {
       "id": "cat5_basico_01",
@@ -658,7 +802,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.1",
       "explicacion": "range(5) genera los números 0, 1, 2, 3, 4. El 5 no se incluye.",
-      "pista": "¿Desde qué número empieza range() y cuál es el último?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Desde qué número empieza range() y cuál es el último?",
+        "Pista final: range(5) genera los números 0, 1, 2, 3, 4. El 5 no se incluye."
+      ]
     },
     {
       "id": "cat5_basico_02",
@@ -677,7 +825,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "5.1",
       "explicacion": "0 + 1 + 2 + 3 = 6. range(4) genera 0, 1, 2, 3.",
-      "pista": "Suma los valores que genera range(4)."
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "Suma los valores que genera range(4).",
+        "Pista final: 0 + 1 + 2 + 3 = 6. range(4) genera 0, 1, 2, 3."
+      ]
     },
     {
       "id": "cat5_basico_03",
@@ -696,7 +848,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.2",
       "explicacion": "El bucle while imprime i y luego lo incrementa. Para cuando i es 6.",
-      "pista": "¿Cuándo se detiene el bucle while?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Cuándo se detiene el bucle while?",
+        "Pista final: El bucle while imprime i y luego lo incrementa. Para cuando i es 6."
+      ]
     },
     {
       "id": "cat5_basico_04",
@@ -715,7 +871,11 @@
       "respuesta_correcta": 2,
       "error_asociado": "5.2",
       "explicacion": "i nunca se incrementa, así que la condición siempre es True y el bucle no termina.",
-      "pista": "¿Cambia el valor de i en algún momento?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Cambia el valor de i en algún momento?",
+        "Pista final: i nunca se incrementa, así que la condición siempre es True y el bucle no termina."
+      ]
     },
     {
       "id": "cat5_intermedio_01",
@@ -734,7 +894,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.3",
       "explicacion": "Modificar una lista mientras se itera produce resultados inesperados. El 2 se elimina pero el 4 se salta.",
-      "pista": "¿Qué pasa cuando eliminas un elemento de una lista mientras la recorres?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Qué pasa cuando eliminas un elemento de una lista mientras la recorres?",
+        "Pista final: Modificar una lista mientras se itera produce resultados inesperados. El 2 se elimina pero el 4 se salta."
+      ]
     },
     {
       "id": "cat5_intermedio_02",
@@ -748,7 +912,11 @@
       "respuesta_correcta": "10, 0, -2",
       "error_asociado": "5.1",
       "explicacion": "range(inicio, fin, paso) con paso negativo genera una secuencia descendente.",
-      "pista": "¿Cómo se usa range con tres argumentos para ir hacia atrás?"
+      "pistas": [
+        "Piensa en cuántas veces debe repetirse el bucle y qué condición lo controla.",
+        "¿Cómo se usa range con tres argumentos para ir hacia atrás?",
+        "Pista final: range(inicio, fin, paso) con paso negativo genera una secuencia descendente."
+      ]
     },
     {
       "id": "cat5_intermedio_03",
@@ -762,7 +930,11 @@
       "respuesta_correcta": "x += 1",
       "error_asociado": "5.2",
       "explicacion": "Sin incrementar x el bucle sería infinito. x += 1 avanza la variable de control.",
-      "pista": "¿Qué le falta al bucle para que no sea infinito?"
+      "pistas": [
+        "Piensa en cuántas veces debe repetirse el bucle y qué condición lo controla.",
+        "¿Qué le falta al bucle para que no sea infinito?",
+        "Pista final: Sin incrementar x el bucle sería infinito. x += 1 avanza la variable de control."
+      ]
     },
     {
       "id": "cat5_avanzado_01",
@@ -781,7 +953,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.1",
       "explicacion": "range(0, 10, 3) genera 0, 3, 6, 9. El paso es 3 y el 10 no se incluye.",
-      "pista": "¿Cuál es el paso de este range?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Cuál es el paso de este range?",
+        "Pista final: range(0, 10, 3) genera 0, 3, 6, 9. El paso es 3 y el 10 no se incluye."
+      ]
     },
     {
       "id": "cat5_avanzado_02",
@@ -795,7 +971,11 @@
       "respuesta_correcta": "lista_copia = lista[:]",
       "error_asociado": "5.3",
       "explicacion": "Para evitar modificar la lista mientras se itera, se crea una copia con lista[:] y se itera sobre ella.",
-      "pista": "¿Cómo puedes iterar sobre una copia de la lista en vez de la original?"
+      "pistas": [
+        "Piensa en cuántas veces debe repetirse el bucle y qué condición lo controla.",
+        "¿Cómo puedes iterar sobre una copia de la lista en vez de la original?",
+        "Pista final: Para evitar modificar la lista mientras se itera, se crea una copia con lista[:] y se itera sobre ella."
+      ]
     },
     {
       "id": "cat6_basico_01",
@@ -814,7 +994,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "6.1",
       "explicacion": "La función saluda() se llama dos veces, por lo que imprime 'Hola' dos veces.",
-      "pista": "¿Cuántas veces se llama a la función?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Cuántas veces se llama a la función?",
+        "Pista final: La función saluda() se llama dos veces, por lo que imprime 'Hola' dos veces."
+      ]
     },
     {
       "id": "cat6_basico_02",
@@ -833,7 +1017,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "6.2",
       "explicacion": "doble(5) devuelve 5 * 2 = 10, que se guarda en resultado y se imprime.",
-      "pista": "¿Qué devuelve la función con x=5?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué devuelve la función con x=5?",
+        "Pista final: doble(5) devuelve 5 * 2 = 10, que se guarda en resultado y se imprime."
+      ]
     },
     {
       "id": "cat6_basico_03",
@@ -852,7 +1040,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.2",
       "explicacion": "suma(3,4) = 7 y suma(10,5) = 15. Se imprimen los dos resultados.",
-      "pista": "¿Cuántas veces se llama a la función y con qué valores?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Cuántas veces se llama a la función y con qué valores?",
+        "Pista final: suma(3,4) = 7 y suma(10,5) = 15. Se imprimen los dos resultados."
+      ]
     },
     {
       "id": "cat6_basico_04",
@@ -866,7 +1058,11 @@
       "respuesta_correcta": "return",
       "error_asociado": "6.3",
       "explicacion": "Sin return la función no devuelve el valor calculado, solo lo calcula.",
-      "pista": "¿Qué palabra clave devuelve un valor desde una función?"
+      "pistas": [
+        "Piensa en qué necesita la función: nombre, parámetros, valor por defecto o return.",
+        "¿Qué palabra clave devuelve un valor desde una función?",
+        "Pista final: Sin return la función no devuelve el valor calculado, solo lo calcula."
+      ]
     },
     {
       "id": "cat6_intermedio_01",
@@ -885,7 +1081,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.1",
       "explicacion": "y tiene valor por defecto 10. f(5) usa y=10 → 15. f(5,3) usa y=3 → 8.",
-      "pista": "¿Qué pasa con el parámetro y cuando no se especifica?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué pasa con el parámetro y cuando no se especifica?",
+        "Pista final: y tiene valor por defecto 10. f(5) usa y=10 → 15. f(5,3) usa y=3 → 8."
+      ]
     },
     {
       "id": "cat6_intermedio_02",
@@ -904,7 +1104,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.3",
       "explicacion": "El primer return termina la función inmediatamente. El segundo return nunca se ejecuta.",
-      "pista": "¿Qué ocurre cuando se ejecuta un return?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué ocurre cuando se ejecuta un return?",
+        "Pista final: El primer return termina la función inmediatamente. El segundo return nunca se ejecuta."
+      ]
     },
     {
       "id": "cat6_intermedio_03",
@@ -923,7 +1127,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "6.2",
       "explicacion": "La función imprime 12 pero no tiene return, así que devuelve None. resultado vale None.",
-      "pista": "¿Qué devuelve una función sin return?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué devuelve una función sin return?",
+        "Pista final: La función imprime 12 pero no tiene return, así que devuelve None. resultado vale None."
+      ]
     },
     {
       "id": "cat6_intermedio_04",
@@ -937,7 +1145,11 @@
       "respuesta_correcta": "global",
       "error_asociado": "6.4",
       "explicacion": "Sin global, Python crea una variable local. Con global se accede a la variable del ámbito global.",
-      "pista": "¿Qué palabra clave permite modificar una variable global desde una función?"
+      "pistas": [
+        "Piensa en qué necesita la función: nombre, parámetros, valor por defecto o return.",
+        "¿Qué palabra clave permite modificar una variable global desde una función?",
+        "Pista final: Sin global, Python crea una variable local. Con global se accede a la variable del ámbito global."
+      ]
     },
     {
       "id": "cat6_avanzado_01",
@@ -956,7 +1168,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "6.1",
       "explicacion": "Los argumentos por defecto mutables se crean una sola vez. La misma lista se reutiliza en cada llamada.",
-      "pista": "¿Se crea una lista nueva en cada llamada o se reutiliza la misma?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Se crea una lista nueva en cada llamada o se reutiliza la misma?",
+        "Pista final: Los argumentos por defecto mutables se crean una sola vez. La misma lista se reutiliza en cada llamada."
+      ]
     },
     {
       "id": "cat6_avanzado_02",
@@ -975,7 +1191,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.2",
       "explicacion": "potencia(3) usa exp=2 → 3²=9. potencia(2,10) → 2¹⁰=1024.",
-      "pista": "¿Qué valor toma exp en cada llamada?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué valor toma exp en cada llamada?",
+        "Pista final: potencia(3) usa exp=2 → 3²=9. potencia(2,10) → 2¹⁰=1024."
+      ]
     },
     {
       "id": "cat7_basico_01",
@@ -994,7 +1214,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.1",
       "explicacion": "lista[0] es el primer elemento (10) y lista[-1] es el último (40).",
-      "pista": "¿Qué índice tiene el primer y el último elemento?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Qué índice tiene el primer y el último elemento?",
+        "Pista final: lista[0] es el primer elemento (10) y lista[-1] es el último (40)."
+      ]
     },
     {
       "id": "cat7_basico_02",
@@ -1013,7 +1237,11 @@
       "respuesta_correcta": 2,
       "error_asociado": "7.1",
       "explicacion": "La lista tiene índices 0, 1 y 2. El índice 5 no existe y Python lanza IndexError.",
-      "pista": "¿Cuántos elementos tiene la lista y cuál es el último índice válido?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Cuántos elementos tiene la lista y cuál es el último índice válido?",
+        "Pista final: La lista tiene índices 0, 1 y 2. El índice 5 no existe y Python lanza IndexError."
+      ]
     },
     {
       "id": "cat7_basico_03",
@@ -1032,7 +1260,11 @@
       "respuesta_correcta": 2,
       "error_asociado": "7.2",
       "explicacion": "append() añade el elemento al final de la lista.",
-      "pista": "¿Dónde añade elementos el método append?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Dónde añade elementos el método append?",
+        "Pista final: append() añade el elemento al final de la lista."
+      ]
     },
     {
       "id": "cat7_intermedio_01",
@@ -1051,7 +1283,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.1",
       "explicacion": "lista[2:4] va del índice 2 al 3 (el 4 no se incluye). lista[:3] va del 0 al 2.",
-      "pista": "En un slice, ¿el índice final se incluye o no?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "En un slice, ¿el índice final se incluye o no?",
+        "Pista final: lista[2:4] va del índice 2 al 3 (el 4 no se incluye). lista[:3] va del 0 al 2."
+      ]
     },
     {
       "id": "cat7_intermedio_02",
@@ -1065,7 +1301,11 @@
       "respuesta_correcta": "extend",
       "error_asociado": "7.2",
       "explicacion": "extend() añade todos los elementos de otra lista. append() añadiría la lista como un único elemento.",
-      "pista": "¿Qué método añade todos los elementos de otra lista?"
+      "pistas": [
+        "Piensa en qué método o forma de indexado permite obtener el resultado pedido.",
+        "¿Qué método añade todos los elementos de otra lista?",
+        "Pista final: extend() añade todos los elementos de otra lista. append() añadiría la lista como un único elemento."
+      ]
     },
     {
       "id": "cat7_intermedio_03",
@@ -1084,7 +1324,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.3",
       "explicacion": "La lista tiene 6 elementos. La suma es 3+1+4+1+5+9 = 23.",
-      "pista": "Cuenta los elementos y súmalos."
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "Cuenta los elementos y súmalos.",
+        "Pista final: La lista tiene 6 elementos. La suma es 3+1+4+1+5+9 = 23."
+      ]
     },
     {
       "id": "cat7_avanzado_01",
@@ -1103,7 +1347,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "7.2",
       "explicacion": "La comprensión de lista filtra los elementos pares (divisibles por 2).",
-      "pista": "¿Qué condición tiene que cumplir x para incluirse?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Qué condición tiene que cumplir x para incluirse?",
+        "Pista final: La comprensión de lista filtra los elementos pares (divisibles por 2)."
+      ]
     },
     {
       "id": "cat7_avanzado_02",
@@ -1117,7 +1365,11 @@
       "respuesta_correcta": "x ** 2",
       "error_asociado": "7.2",
       "explicacion": "La comprensión de listas aplica la expresión x**2 a cada elemento del rango.",
-      "pista": "¿Qué expresión calcula el cuadrado de x?"
+      "pistas": [
+        "Piensa en qué método o forma de indexado permite obtener el resultado pedido.",
+        "¿Qué expresión calcula el cuadrado de x?",
+        "Pista final: La comprensión de listas aplica la expresión x**2 a cada elemento del rango."
+      ]
     },
     {
       "id": "cat8_basico_01",
@@ -1136,7 +1388,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "8.1",
       "explicacion": "type() devuelve el tipo del objeto en formato <class 'tipo'>.",
-      "pista": "¿Qué formato usa Python para mostrar los tipos?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué formato usa Python para mostrar los tipos?",
+        "Pista final: type() devuelve el tipo del objeto en formato <class 'tipo'>."
+      ]
     },
     {
       "id": "cat8_basico_02",
@@ -1150,7 +1406,11 @@
       "respuesta_correcta": "return",
       "error_asociado": "8.2",
       "explicacion": "Se necesita return en ambas ramas para devolver el valor correspondiente.",
-      "pista": "¿Qué palabra clave devuelve un valor?"
+      "pistas": [
+        "Piensa en qué operador o método de string/lista permite resolver esto.",
+        "¿Qué palabra clave devuelve un valor?",
+        "Pista final: Se necesita return en ambas ramas para devolver el valor correspondiente."
+      ]
     },
     {
       "id": "cat8_basico_03",
@@ -1169,7 +1429,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "8.1",
       "explicacion": "total = i sobreescribe total en cada iteración. Al final total vale 5 (el último valor de i).",
-      "pista": "¿Acumula o sobreescribe la variable total?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Acumula o sobreescribe la variable total?",
+        "Pista final: total = i sobreescribe total en cada iteración. Al final total vale 5 (el último valor de i)."
+      ]
     },
     {
       "id": "cat8_intermedio_01",
@@ -1188,7 +1452,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.3",
       "explicacion": "4 % 2 == 0 es True (4 es par). 7 % 2 == 0 es False (7 es impar).",
-      "pista": "¿Cuál es el resto de dividir 4 y 7 entre 2?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Cuál es el resto de dividir 4 y 7 entre 2?",
+        "Pista final: 4 % 2 == 0 es True (4 es par). 7 % 2 == 0 es False (7 es impar)."
+      ]
     },
     {
       "id": "cat8_intermedio_02",
@@ -1207,7 +1475,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.2",
       "explicacion": "filter() aplica la función lambda a cada elemento y conserva los que devuelven True.",
-      "pista": "¿Qué condición debe cumplir x para pasar el filtro?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué condición debe cumplir x para pasar el filtro?",
+        "Pista final: filter() aplica la función lambda a cada elemento y conserva los que devuelven True."
+      ]
     },
     {
       "id": "cat8_intermedio_03",
@@ -1221,7 +1493,11 @@
       "respuesta_correcta": "::-1",
       "error_asociado": "8.3",
       "explicacion": "El slice [::-1] recorre la cadena de fin a inicio con paso -1, invirtiendo el orden.",
-      "pista": "¿Cómo se usa el paso negativo en un slice para invertir?"
+      "pistas": [
+        "Piensa en qué operador o método de string/lista permite resolver esto.",
+        "¿Cómo se usa el paso negativo en un slice para invertir?",
+        "Pista final: El slice [::-1] recorre la cadena de fin a inicio con paso -1, invirtiendo el orden."
+      ]
     },
     {
       "id": "cat8_avanzado_01",
@@ -1240,7 +1516,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "8.3",
       "explicacion": "b = a no crea una copia, sino que ambas variables apuntan a la misma lista. Al modificar b, a también cambia.",
-      "pista": "¿b es una copia de a o apuntan a la misma lista?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿b es una copia de a o apuntan a la misma lista?",
+        "Pista final: b = a no crea una copia, sino que ambas variables apuntan a la misma lista. Al modificar b, a también cambia."
+      ]
     },
     {
       "id": "cat8_avanzado_02",
@@ -1259,7 +1539,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.2",
       "explicacion": "map() aplica la función lambda a cada elemento. x**2 calcula el cuadrado de cada número.",
-      "pista": "¿Qué hace la expresión lambda x: x**2?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué hace la expresión lambda x: x**2?",
+        "Pista final: map() aplica la función lambda a cada elemento. x**2 calcula el cuadrado de cada número."
+      ]
     },
     {
       "id": "cat1_basico_05",
@@ -1278,7 +1562,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.1",
       "explicacion": "Falta el paréntesis de cierre en el primer print. Python lanza SyntaxError.",
-      "pista": "¿Están todos los paréntesis cerrados?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Están todos los paréntesis cerrados?",
+        "Pista final: Falta el paréntesis de cierre en el primer print. Python lanza SyntaxError."
+      ]
     },
     {
       "id": "cat1_basico_06",
@@ -1316,7 +1604,11 @@
       "respuesta_correcta": "print",
       "error_asociado": "1.1",
       "explicacion": "La función print() es la que muestra texto por pantalla.",
-      "pista": "¿Qué función muestra texto en Python?"
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "¿Qué función muestra texto en Python?",
+        "Pista final: La función print() es la que muestra texto por pantalla."
+      ]
     },
     {
       "id": "cat1_basico_08",
@@ -1335,7 +1627,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.3",
       "explicacion": "// es la división entera. 10 // 3 = 3 (descarta el decimal).",
-      "pista": "¿Qué hace el operador //?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Qué hace el operador //?",
+        "Pista final: // es la división entera. 10 // 3 = 3 (descarta el decimal)."
+      ]
     },
     {
       "id": "cat1_intermedio_04",
@@ -1354,7 +1650,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.2",
       "explicacion": "% es el módulo (resto de la división). 10 % 3 = 1.",
-      "pista": "¿Qué hace el operador módulo %?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Qué hace el operador módulo %?",
+        "Pista final: % es el módulo (resto de la división). 10 % 3 = 1."
+      ]
     },
     {
       "id": "cat1_intermedio_05",
@@ -1368,7 +1668,11 @@
       "respuesta_correcta": "**",
       "error_asociado": "1.3",
       "explicacion": "El operador ** calcula la potencia. 2 ** 8 = 256.",
-      "pista": "¿Qué operador eleva a una potencia en Python?"
+      "pistas": [
+        "Piensa en qué elemento de sintaxis falta para que esta línea sea válida en Python.",
+        "¿Qué operador eleva a una potencia en Python?",
+        "Pista final: El operador ** calcula la potencia. 2 ** 8 = 256."
+      ]
     },
     {
       "id": "cat1_intermedio_06",
@@ -1387,7 +1691,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "1.1",
       "explicacion": "Falta el dos puntos (:) al final de la condición if. Python lanza SyntaxError.",
-      "pista": "¿Qué símbolo va al final de una condición if?"
+      "pistas": [
+        "Revisa con atención cada símbolo del código: paréntesis, comillas, dos puntos y operadores.",
+        "¿Qué símbolo va al final de una condición if?",
+        "Pista final: Falta el dos puntos (:) al final de la condición if. Python lanza SyntaxError."
+      ]
     },
     {
       "id": "cat1_avanzado_03",
@@ -1454,7 +1762,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.1",
       "explicacion": "El cuerpo de la función debe estar indentado. Python lanza IndentationError.",
-      "pista": "¿Está el print dentro de la función?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Está el print dentro de la función?",
+        "Pista final: El cuerpo de la función debe estar indentado. Python lanza IndentationError."
+      ]
     },
     {
       "id": "cat2_basico_06",
@@ -1473,7 +1785,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "2.2",
       "explicacion": "print('A') está dentro del for (3 veces) y print('B') está fuera (1 vez).",
-      "pista": "¿Cuál de los dos print está dentro del bucle?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Cuál de los dos print está dentro del bucle?",
+        "Pista final: print('A') está dentro del for (3 veces) y print('B') está fuera (1 vez)."
+      ]
     },
     {
       "id": "cat2_intermedio_05",
@@ -1492,7 +1808,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "2.2",
       "explicacion": "x>0 y x>3 son True, así que imprime 'grande', luego 'positivo' (fuera del if interior) y 'fin'.",
-      "pista": "¿Qué bloque contiene cada print?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Qué bloque contiene cada print?",
+        "Pista final: x>0 y x>3 son True, así que imprime 'grande', luego 'positivo' (fuera del if interior) y 'fin'."
+      ]
     },
     {
       "id": "cat2_intermedio_06",
@@ -1506,7 +1826,11 @@
       "respuesta_correcta": "        return -x",
       "error_asociado": "2.1",
       "explicacion": "return -x está dentro del if que está dentro de la función. Necesita 8 espacios.",
-      "pista": "¿Dentro de cuántos bloques está ese return?"
+      "pistas": [
+        "Cuenta cuántos niveles de indentación necesita esta línea según el bloque en el que está.",
+        "¿Dentro de cuántos bloques está ese return?",
+        "Pista final: return -x está dentro del if que está dentro de la función. Necesita 8 espacios."
+      ]
     },
     {
       "id": "cat2_avanzado_02",
@@ -1525,7 +1849,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "2.3",
       "explicacion": "0+1+2+3=6. return está fuera del for (indentado al nivel de la función).",
-      "pista": "¿Dónde está el return respecto al for?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Dónde está el return respecto al for?",
+        "Pista final: 0+1+2+3=6. return está fuera del for (indentado al nivel de la función)."
+      ]
     },
     {
       "id": "cat2_avanzado_03",
@@ -1544,7 +1872,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "2.3",
       "explicacion": "El bucle externo va de 0 a 2 y el interno de 0 a 1. Se imprimen todas las combinaciones.",
-      "pista": "¿Cuántas veces se ejecuta el print interior?"
+      "pistas": [
+        "Fíjate en la indentación de cada línea para saber qué bloque la contiene.",
+        "¿Cuántas veces se ejecuta el print interior?",
+        "Pista final: El bucle externo va de 0 a 2 y el interno de 0 a 1. Se imprimen todas las combinaciones."
+      ]
     },
     {
       "id": "cat3_basico_05",
@@ -1563,7 +1895,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.1",
       "explicacion": "La segunda asignación sobreescribe la primera. x vale 20.",
-      "pista": "¿Cuál es el último valor asignado a x?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Cuál es el último valor asignado a x?",
+        "Pista final: La segunda asignación sobreescribe la primera. x vale 20."
+      ]
     },
     {
       "id": "cat3_basico_06",
@@ -1582,7 +1918,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.2",
       "explicacion": "str(a) convierte 3 a '3' y str(b) a '4'. La concatenación da '34'.",
-      "pista": "¿Qué hace str() con un número?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Qué hace str() con un número?",
+        "Pista final: str(a) convierte 3 a '3' y str(b) a '4'. La concatenación da '34'."
+      ]
     },
     {
       "id": "cat3_basico_07",
@@ -1596,7 +1936,11 @@
       "respuesta_correcta": "int",
       "error_asociado": "3.3",
       "explicacion": "int() convierte un string numérico a entero.",
-      "pista": "¿Qué función convierte un string a entero?"
+      "pistas": [
+        "Piensa en qué tipo de dato necesitas y qué función realiza esa conversión o cálculo.",
+        "¿Qué función convierte un string a entero?",
+        "Pista final: int() convierte un string numérico a entero."
+      ]
     },
     {
       "id": "cat3_intermedio_03",
@@ -1615,7 +1959,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "3.2",
       "explicacion": "type(x) devuelve <class 'int'> y int es el tipo entero. Son iguales, así que True.",
-      "pista": "¿Qué devuelve type() y con qué lo comparamos?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Qué devuelve type() y con qué lo comparamos?",
+        "Pista final: type(x) devuelve <class 'int'> y int es el tipo entero. Son iguales, así que True."
+      ]
     },
     {
       "id": "cat3_intermedio_04",
@@ -1634,7 +1982,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "3.3",
       "explicacion": "float('3.14') convierte el string a 3.14 y lo multiplica por 2: 6.28.",
-      "pista": "¿Qué hace float() con el string '3.14'?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Qué hace float() con el string '3.14'?",
+        "Pista final: float('3.14') convierte el string a 3.14 y lo multiplica por 2: 6.28."
+      ]
     },
     {
       "id": "cat3_avanzado_03",
@@ -1653,7 +2005,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "3.4",
       "explicacion": "global x permite modificar la variable global desde dentro de la función.",
-      "pista": "¿Qué efecto tiene la palabra global?"
+      "pistas": [
+        "Sigue el valor y el tipo de cada variable a medida que avanza el código.",
+        "¿Qué efecto tiene la palabra global?",
+        "Pista final: global x permite modificar la variable global desde dentro de la función."
+      ]
     },
     {
       "id": "cat3_avanzado_04",
@@ -1667,7 +2023,11 @@
       "respuesta_correcta": "round",
       "error_asociado": "3.3",
       "explicacion": "round(numero, decimales) redondea al número de decimales indicado.",
-      "pista": "¿Qué función redondea un número en Python?"
+      "pistas": [
+        "Piensa en qué tipo de dato necesitas y qué función realiza esa conversión o cálculo.",
+        "¿Qué función redondea un número en Python?",
+        "Pista final: round(numero, decimales) redondea al número de decimales indicado."
+      ]
     },
     {
       "id": "cat4_basico_05",
@@ -1686,7 +2046,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.1",
       "explicacion": "x == 10 es True (imprime 'diez'). x == 5 es False (no imprime nada).",
-      "pista": "¿Cuál de las condiciones es True?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cuál de las condiciones es True?",
+        "Pista final: x == 10 es True (imprime 'diez'). x == 5 es False (no imprime nada)."
+      ]
     },
     {
       "id": "cat4_basico_06",
@@ -1700,7 +2064,11 @@
       "respuesta_correcta": ">=",
       "error_asociado": "4.1",
       "explicacion": ">= es el operador mayor o igual. La condición nota >= 5 es True para nota=7.",
-      "pista": "¿Qué operador significa 'mayor o igual'?"
+      "pistas": [
+        "Piensa en qué palabra clave o símbolo falta para expresar correctamente esta condición.",
+        "¿Qué operador significa 'mayor o igual'?",
+        "Pista final: >= es el operador mayor o igual. La condición nota >= 5 es True para nota=7."
+      ]
     },
     {
       "id": "cat4_intermedio_05",
@@ -1719,7 +2087,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.3",
       "explicacion": "x > 5 es False pero x == 4 es True. Con or basta que una sea True.",
-      "pista": "¿Qué hace el operador or?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Qué hace el operador or?",
+        "Pista final: x > 5 es False pero x == 4 es True. Con or basta que una sea True."
+      ]
     },
     {
       "id": "cat4_intermedio_06",
@@ -1733,7 +2105,11 @@
       "respuesta_correcta": "elif",
       "error_asociado": "4.2",
       "explicacion": "elif permite añadir condiciones adicionales entre if y else.",
-      "pista": "¿Qué palabra clave añade una condición intermedia?"
+      "pistas": [
+        "Piensa en qué palabra clave o símbolo falta para expresar correctamente esta condición.",
+        "¿Qué palabra clave añade una condición intermedia?",
+        "Pista final: elif permite añadir condiciones adicionales entre if y else."
+      ]
     },
     {
       "id": "cat4_avanzado_03",
@@ -1752,7 +2128,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "4.4",
       "explicacion": "Un string vacío se evalúa como False. not False es True.",
-      "pista": "¿Cómo evalúa Python un string vacío?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Cómo evalúa Python un string vacío?",
+        "Pista final: Un string vacío se evalúa como False. not False es True."
+      ]
     },
     {
       "id": "cat4_avanzado_04",
@@ -1771,7 +2151,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "4.3",
       "explicacion": "Es un operador ternario. 7 % 2 == 0 es False, así que toma el valor 'impar'.",
-      "pista": "¿Qué valor toma el operador ternario cuando la condición es False?"
+      "pistas": [
+        "Evalúa la condición paso a paso: ¿es True o False? Eso determina qué bloque se ejecuta.",
+        "¿Qué valor toma el operador ternario cuando la condición es False?",
+        "Pista final: Es un operador ternario. 7 % 2 == 0 es False, así que toma el valor 'impar'."
+      ]
     },
     {
       "id": "cat5_basico_05",
@@ -1790,7 +2174,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.1",
       "explicacion": "range(2, 6) empieza en 2 y termina en 5 (el 6 no se incluye).",
-      "pista": "¿Desde dónde empieza y hasta dónde llega range(2, 6)?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Desde dónde empieza y hasta dónde llega range(2, 6)?",
+        "Pista final: range(2, 6) empieza en 2 y termina en 5 (el 6 no se incluye)."
+      ]
     },
     {
       "id": "cat5_basico_06",
@@ -1804,7 +2192,11 @@
       "respuesta_correcta": "<=",
       "error_asociado": "5.2",
       "explicacion": "<= es 'menor o igual'. El bucle continúa mientras i sea <= 5.",
-      "pista": "¿Qué condición debe cumplir i para seguir en el bucle?"
+      "pistas": [
+        "Piensa en cuántas veces debe repetirse el bucle y qué condición lo controla.",
+        "¿Qué condición debe cumplir i para seguir en el bucle?",
+        "Pista final: <= es 'menor o igual'. El bucle continúa mientras i sea <= 5."
+      ]
     },
     {
       "id": "cat5_intermedio_04",
@@ -1823,7 +2215,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "5.1",
       "explicacion": "Solo suma los pares: 2 + 4 = 6.",
-      "pista": "¿Qué valores de i son pares en range(1, 6)?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Qué valores de i son pares en range(1, 6)?",
+        "Pista final: Solo suma los pares: 2 + 4 = 6."
+      ]
     },
     {
       "id": "cat5_intermedio_05",
@@ -1842,7 +2238,11 @@
       "respuesta_correcta": 2,
       "error_asociado": "5.2",
       "explicacion": "10→7→4→1→-2. Cuando i=-2 ya no es >0 y sale del bucle.",
-      "pista": "Sigue los pasos: 10, 7, 4, 1, ..."
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "Sigue los pasos: 10, 7, 4, 1, ...",
+        "Pista final: 10→7→4→1→-2. Cuando i=-2 ya no es >0 y sale del bucle."
+      ]
     },
     {
       "id": "cat5_avanzado_03",
@@ -1861,7 +2261,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.1",
       "explicacion": "break detiene el bucle cuando i es 3. Se imprimen 0, 1 y 2.",
-      "pista": "¿Qué hace break cuando se ejecuta?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Qué hace break cuando se ejecuta?",
+        "Pista final: break detiene el bucle cuando i es 3. Se imprimen 0, 1 y 2."
+      ]
     },
     {
       "id": "cat5_avanzado_04",
@@ -1880,7 +2284,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "5.1",
       "explicacion": "continue salta la iteración actual. Cuando i es 2 no imprime y pasa al siguiente.",
-      "pista": "¿Qué hace continue?"
+      "pistas": [
+        "Simula el bucle iteración por iteración, anotando el valor de las variables en cada paso.",
+        "¿Qué hace continue?",
+        "Pista final: continue salta la iteración actual. Cuando i es 2 no imprime y pasa al siguiente."
+      ]
     },
     {
       "id": "cat6_basico_05",
@@ -1899,7 +2307,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.1",
       "explicacion": "La función recibe el nombre como parámetro y lo imprime. Se llama dos veces.",
-      "pista": "¿Qué valor toma el parámetro nombre en cada llamada?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué valor toma el parámetro nombre en cada llamada?",
+        "Pista final: La función recibe el nombre como parámetro y lo imprime. Se llama dos veces."
+      ]
     },
     {
       "id": "cat6_basico_06",
@@ -1918,7 +2330,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.3",
       "explicacion": "Una función sin return devuelve None. pass no devuelve nada.",
-      "pista": "¿Qué devuelve una función sin return?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué devuelve una función sin return?",
+        "Pista final: Una función sin return devuelve None. pass no devuelve nada."
+      ]
     },
     {
       "id": "cat6_intermedio_05",
@@ -1937,7 +2353,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.2",
       "explicacion": "*args recoge todos los argumentos en una tupla. sum() los suma: 1+2+3+4=10.",
-      "pista": "¿Qué hace *args?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué hace *args?",
+        "Pista final: *args recoge todos los argumentos en una tupla. sum() los suma: 1+2+3+4=10."
+      ]
     },
     {
       "id": "cat6_intermedio_06",
@@ -1951,7 +2371,11 @@
       "respuesta_correcta": "'mundo'",
       "error_asociado": "6.1",
       "explicacion": "Los parámetros con valor por defecto se asignan con = en la definición.",
-      "pista": "¿Cómo se define un valor por defecto en un parámetro?"
+      "pistas": [
+        "Piensa en qué necesita la función: nombre, parámetros, valor por defecto o return.",
+        "¿Cómo se define un valor por defecto en un parámetro?",
+        "Pista final: Los parámetros con valor por defecto se asignan con = en la definición."
+      ]
     },
     {
       "id": "cat6_avanzado_03",
@@ -1970,7 +2394,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.2",
       "explicacion": "Las funciones son objetos en Python. Se pasa abs como argumento y se aplica a -5.",
-      "pista": "¿Qué devuelve abs(-5)?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué devuelve abs(-5)?",
+        "Pista final: Las funciones son objetos en Python. Se pasa abs como argumento y se aplica a -5."
+      ]
     },
     {
       "id": "cat6_avanzado_04",
@@ -1989,7 +2417,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "6.4",
       "explicacion": "nonlocal permite modificar una variable del ámbito superior. n persiste entre llamadas.",
-      "pista": "¿Qué hace nonlocal?"
+      "pistas": [
+        "Identifica qué recibe la función como parámetros y qué devuelve con return.",
+        "¿Qué hace nonlocal?",
+        "Pista final: nonlocal permite modificar una variable del ámbito superior. n persiste entre llamadas."
+      ]
     },
     {
       "id": "cat7_basico_04",
@@ -2008,7 +2440,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.1",
       "explicacion": "lista[1:3] toma desde el índice 1 hasta el 2 (el 3 no se incluye): [2, 3].",
-      "pista": "¿El índice final de un slice se incluye?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿El índice final de un slice se incluye?",
+        "Pista final: lista[1:3] toma desde el índice 1 hasta el 2 (el 3 no se incluye): [2, 3]."
+      ]
     },
     {
       "id": "cat7_basico_05",
@@ -2022,7 +2458,11 @@
       "respuesta_correcta": "pop",
       "error_asociado": "7.2",
       "explicacion": "pop(i) elimina y devuelve el elemento en el índice i.",
-      "pista": "¿Qué método elimina un elemento por índice?"
+      "pistas": [
+        "Piensa en qué método o forma de indexado permite obtener el resultado pedido.",
+        "¿Qué método elimina un elemento por índice?",
+        "Pista final: pop(i) elimina y devuelve el elemento en el índice i."
+      ]
     },
     {
       "id": "cat7_basico_06",
@@ -2041,7 +2481,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "7.1",
       "explicacion": "len() devuelve el número de elementos de la lista: 3.",
-      "pista": "¿Cuántos elementos tiene la lista?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Cuántos elementos tiene la lista?",
+        "Pista final: len() devuelve el número de elementos de la lista: 3."
+      ]
     },
     {
       "id": "cat7_intermedio_04",
@@ -2060,7 +2504,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.2",
       "explicacion": "sort() ordena la lista in-place de menor a mayor.",
-      "pista": "¿Qué hace el método sort()?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Qué hace el método sort()?",
+        "Pista final: sort() ordena la lista in-place de menor a mayor."
+      ]
     },
     {
       "id": "cat7_intermedio_05",
@@ -2079,7 +2527,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.3",
       "explicacion": "index() devuelve el índice de la primera aparición del valor. El 2 está en el índice 1.",
-      "pista": "¿Qué índice tiene el elemento 2 en la lista?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Qué índice tiene el elemento 2 en la lista?",
+        "Pista final: index() devuelve el índice de la primera aparición del valor. El 2 está en el índice 1."
+      ]
     },
     {
       "id": "cat7_avanzado_03",
@@ -2098,7 +2550,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "7.2",
       "explicacion": "[::-1] invierte la lista usando un slice con paso -1.",
-      "pista": "¿Qué hace el paso -1 en un slice?"
+      "pistas": [
+        "Recuerda que los índices empiezan en 0 y que los slices no incluyen el índice final.",
+        "¿Qué hace el paso -1 en un slice?",
+        "Pista final: [::-1] invierte la lista usando un slice con paso -1."
+      ]
     },
     {
       "id": "cat7_avanzado_04",
@@ -2112,7 +2568,11 @@
       "respuesta_correcta": "%",
       "error_asociado": "7.2",
       "explicacion": "x % 2 == 0 comprueba si x es par. El operador % calcula el resto de la división.",
-      "pista": "¿Qué operador comprueba si un número es par?"
+      "pistas": [
+        "Piensa en qué método o forma de indexado permite obtener el resultado pedido.",
+        "¿Qué operador comprueba si un número es par?",
+        "Pista final: x % 2 == 0 comprueba si x es par. El operador % calcula el resto de la división."
+      ]
     },
     {
       "id": "cat8_basico_04",
@@ -2131,7 +2591,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.1",
       "explicacion": "Los strings se indexan igual que las listas. El índice 0 es el primer carácter: 'P'.",
-      "pista": "¿Qué índice tiene el primer carácter de un string?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué índice tiene el primer carácter de un string?",
+        "Pista final: Los strings se indexan igual que las listas. El índice 0 es el primer carácter: 'P'."
+      ]
     },
     {
       "id": "cat8_basico_05",
@@ -2150,7 +2614,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.1",
       "explicacion": "upper() convierte todos los caracteres a mayúsculas.",
-      "pista": "¿Qué hace el método upper()?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué hace el método upper()?",
+        "Pista final: upper() convierte todos los caracteres a mayúsculas."
+      ]
     },
     {
       "id": "cat8_basico_06",
@@ -2164,7 +2632,11 @@
       "respuesta_correcta": "in",
       "error_asociado": "8.2",
       "explicacion": "El operador in comprueba si un elemento está dentro de una secuencia.",
-      "pista": "¿Qué operador comprueba pertenencia en Python?"
+      "pistas": [
+        "Piensa en qué operador o método de string/lista permite resolver esto.",
+        "¿Qué operador comprueba pertenencia en Python?",
+        "Pista final: El operador in comprueba si un elemento está dentro de una secuencia."
+      ]
     },
     {
       "id": "cat8_intermedio_04",
@@ -2183,7 +2655,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.3",
       "explicacion": "strip() elimina los espacios en blanco al inicio y al final del string.",
-      "pista": "¿Qué hace el método strip()?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué hace el método strip()?",
+        "Pista final: strip() elimina los espacios en blanco al inicio y al final del string."
+      ]
     },
     {
       "id": "cat8_intermedio_05",
@@ -2202,7 +2678,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.2",
       "explicacion": "join() une los elementos de la lista con el separador indicado: ', '.",
-      "pista": "¿Qué hace el método join()?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué hace el método join()?",
+        "Pista final: join() une los elementos de la lista con el separador indicado: ', '."
+      ]
     },
     {
       "id": "cat8_intermedio_06",
@@ -2221,7 +2701,11 @@
       "respuesta_correcta": 1,
       "error_asociado": "8.3",
       "explicacion": "copy() crea una copia independiente. Modificar y no afecta a x.",
-      "pista": "¿copy() crea una copia independiente o comparte la referencia?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿copy() crea una copia independiente o comparte la referencia?",
+        "Pista final: copy() crea una copia independiente. Modificar y no afecta a x."
+      ]
     },
     {
       "id": "cat8_avanzado_03",
@@ -2240,7 +2724,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.3",
       "explicacion": "d.keys() devuelve las claves del diccionario. list() las convierte a lista.",
-      "pista": "¿Qué devuelve el método keys() de un diccionario?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué devuelve el método keys() de un diccionario?",
+        "Pista final: d.keys() devuelve las claves del diccionario. list() las convierte a lista."
+      ]
     },
     {
       "id": "cat8_avanzado_04",
@@ -2259,7 +2747,11 @@
       "respuesta_correcta": 0,
       "error_asociado": "8.2",
       "explicacion": "split() divide el string por espacios. partes = ['Python', '3']. partes[1] es '3'.",
-      "pista": "¿Qué hace split() sin argumentos?"
+      "pistas": [
+        "Piensa en qué hace ese método sobre strings, listas o diccionarios.",
+        "¿Qué hace split() sin argumentos?",
+        "Pista final: split() divide el string por espacios. partes = ['Python', '3']. partes[1] es '3'."
+      ]
     }
   ]
 }

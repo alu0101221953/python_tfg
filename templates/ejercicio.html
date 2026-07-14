@@ -204,10 +204,11 @@
 
         async function cargarPerfil() {
             try {
-                const res = await fetch(`/api/alumno/${ID_ALUMNO}`);
+                const res = await fetch(`/api/dashboard/${ID_ALUMNO}`);
                 if (!res.ok) { location.href = '/'; return; }
                 const d = await res.json();
                 document.getElementById('alumno-nombre').textContent = d.nombre;
+                if (d.gamificacion) actualizarTopbar(d.gamificacion);
             } catch(e) { console.error(e); }
         }
 
